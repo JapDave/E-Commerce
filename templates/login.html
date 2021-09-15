@@ -1,13 +1,18 @@
-{% extends 'enterprise_temp/base.html' %} 
+{% extends 'base.html' %} 
+{% load static %}
+
+{% block head %}
+	<link rel="stylesheet" href={% static 'css/login.css'%}>
+{% endblock head %}
 
 {% block title %}
-	Enterprise-Login
+	{{title}}
 {% endblock title %}
 
 {% block body %}
 <section class="main-bg">
 		<div class="login-container  ">
-				<p class="text-c">Enterprise Login</p>
+				<p class="text-c">{{header}}</p>
 				<div class="container-content">
 					{% for message in messages %}
 						<div class="alert alert-danger">

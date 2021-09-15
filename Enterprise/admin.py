@@ -11,3 +11,4 @@ enterprise_admin_site.register(Categories)
 
 admin.site.register(Enterprise_Detail)
 admin.site.register(Categories)
+admin.site.register(Products)

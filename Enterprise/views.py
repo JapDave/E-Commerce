@@ -7,7 +7,11 @@ from .models import *
 
 class Enterprise_login(View):
     def get(self, request):
-        return render(request,'enterprise_temp/login.html')
+        rendered_data = {
+            'title':'Enterprise-login',
+            'header':'Enterprise'
+        }
+        return render(request,'login.html',rendered_data)
 
     def post(self, request):
         user_name = request.POST['username']

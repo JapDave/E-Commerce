@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'smart_selects'
 ]
 
 MIDDLEWARE = [
@@ -152,3 +153,6 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'japdavev@gmail.com'
 EMAIL_HOST_PASSWORD = 'hgkaobxaqsuimcho'
+
+
+USE_DJANGO_JQUERY = True

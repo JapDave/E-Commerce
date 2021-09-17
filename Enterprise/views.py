@@ -5,6 +5,14 @@ from django.contrib import messages
 from django.views import View
 from .models import *
 
+
+def is_authenticate(request):
+    if request.session.get('enterprise_key'):
+        return True
+    return False
+        
+
+
 class Enterprise_login(View):
     def get(self, request):
         rendered_data = {
@@ -31,20 +39,37 @@ class Enterprise_login(View):
 
 class Enterprise_logout(View):
     def get(self,request):
-        if request.session.get('enterprise_key'):
+        if is_authenticate(request):
             del request.session['enterprise_key']
-        return redirect(reverse('enterprise_login'))
+            return redirect(reverse('enterprise_login'))
 
 class Enterprise_index(View):
     def get(self, request):
-        if request.session.get('enterprise_key'):
+        try:
+            if is_authenticate(request):
+                enterprise_data = Enterprise_Detail.objects.filter(id = request.session.get('enterprise_key')).first()
+                categories_data = Categories.objects.all()
+                rendered_data = {
+                    'enterprise_name':enterprise_data.enterprise_name,
+                    'categories':categories_data
+                }
+                return render(request,'enterprise_temp/index.html',rendered_data)
+            else:
+                return redirect(reverse('enterprise_login'))
+
+        except Exception as e:
+            return HttpResponse('404')
+
+           
+
+class Enterprise_category(View):
+    def get(self, request):
+        if is_authenticate(request):
             enterprise_data = Enterprise_Detail.objects.filter(id = request.session.get('enterprise_key')).first()
-            categories_data = Categories.objects.all()
             rendered_data = {
-                'enterprise_name':enterprise_data.enterprise_name,
-                'categories':categories_data
+                'categories':enterprise_data.enterprise_categories.all()
             }
-            return render(request,'enterprise_temp/index.html',rendered_data)
+            return render(request,'enterprise_temp/list-categories.html',rendered_data)
         else:
             return redirect(reverse('enterprise_login'))
 

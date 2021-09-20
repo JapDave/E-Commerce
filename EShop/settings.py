@@ -17,6 +17,7 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+SAFE_DELETE_INTERPRET_UNDELETED_OBJECTS_AS_CREATED = True
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -41,7 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'smart_selects'
+    'django_paranoid',
+    'django_filters',
+   
+    
 ]
 
 MIDDLEWARE = [
@@ -60,14 +64,19 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
-        'APP_DIRS': True,
+        #'APP_DIRS': True,
         'OPTIONS': {
+            'loaders': (
+                  'django.template.loaders.filesystem.Loader',
+                  'django.template.loaders.app_directories.Loader',
+              ),
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            
         },
     },
 ]

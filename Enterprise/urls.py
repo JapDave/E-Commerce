@@ -3,8 +3,10 @@ from .views import *
 
 
 urlpatterns = [
- path('',Enterprise_login.as_view(),name='enterprise_login'),
- path('index/',Enterprise_index.as_view(),name='enterprise_index'),
- path('logout/',Enterprise_logout.as_view(),name='enterprise_logout'),
- path('categories/',Enterprise_category.as_view(),name='enterprise_category')
+ path('',EnterpriseLogin.as_view(),name='enterprise_login'),
+ path('index/',EnterpriseIndex.as_view(),name='enterprise_index'),
+ path('logout/',EnterpriseLogout.as_view(),name='enterprise_logout'),
+ path('products/',EnterpriseProducts.as_view(),name='enterprise_products'),
+ path('add/',EnterpriseProductAdd.as_view(),name='product_add'),
+
 ]

@@ -31,6 +31,63 @@ table tr{
     font-weight: lighter;
 }
 
-.list-categories{
-    
+.page-header{
+    font-family: system-ui;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
 }
+
+.page-header h6{
+    font-weight: 100;
+}
+
+.add-btn{
+    background-color: #6b6b6b94;
+    border-radius: 11px;
+    font-size: smaller;
+    padding: 4px;
+    font-weight: bold;
+    color: white;
+}
+.add-btn:hover{
+    background-color: #42424286 ;
+    color: white;
+    text-decoration: none;
+}
+
+.list-products{
+    width: 38%;
+    margin-top: 2%;
+}
+
+.list-products a,
+.list-products h6{
+    color: #417690;
+    font-family: ui-sans-serif;
+    font-weight: bold;
+}
+
+.list-products a:hover{
+    color: #203e4d;
+}
+ 
+.list-products table{
+    border-collapse: collapse;
+    width: 100%;
+}
+input[type=submit]{
+    font-size: 13px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    box-shadow: 0 -15px 20px -10px rgb(0 0 0 / 15%) inset;
+    cursor: pointer;
+    height: 28px;
+    padding: 4px 8px;
+}
+
+.search-bar input{
+    border: groove;
+    border-radius: 5px;
+}
+

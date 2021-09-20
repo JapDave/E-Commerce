@@ -1,7 +1,7 @@
-{% extends 'enterprise_temp/enterprise-base.html' %} 
+{% extends 'enterprise_temp/enterprise_base.html' %} 
 {% load static %}
 {% block head %}
-    <link rel="stylesheet" href={% static 'css/enterprise_style.css' %}>
+  
 {% endblock head %}
     
 {% block title %}
@@ -10,21 +10,19 @@
 
 {% block body %}
 
-
-
 <section class="container-fluid ml-3">
     <div id="main">
         <table cellpadding="10px">
             <h5 class="pl-2 ">{{enterprise_name}}</h5>
                 <tr>
-                    <td style="width:100%"><a href="{% url 'enterprise_category'%}">Categories</a></td>
+                    <td style="width:100%"><a href="#">Categories</a></td>
                     <td><a href="#">Add</a></td>
                     <td><a href="#">Update</a></td>
                     
                 </tr>
                 <tr>
-                    <td style="width:100%"><a href="#">Products</a></td>
-                    <td><a href="#">Add</a></td>
+                    <td style="width:100%"><a href="{% url 'enterprise_products'%}">Products</a></td>
+                    <td><a href="{% url 'product_add' %}">Add</a></td>
                     <td><a href="#">Update</a></td>
                 </tr>
         </table>

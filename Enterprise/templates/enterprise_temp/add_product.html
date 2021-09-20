@@ -1,0 +1,49 @@
+{% extends 'enterprise_temp/enterprise_base.html' %}
+{% load static %}
+
+{% block title %}
+    Add Product
+{% endblock title %}
+
+{% block body %}
+<section class="conatiner-fluid">
+    <div class=" container page-header">
+      <h6>Add Products</h6>
+    </div>
+    <div class="container">
+        <form method="POST">
+            <table cellpadding="15px">
+                <tr>
+                    <td>Product-Enterprise:</td>
+                    <td>{{enterprise.enterprise_name}}</td>
+                </tr>   
+                <tr>
+                    <td>Product-Categories:</td>
+                    <td><select name="" id="">
+                    </select></td>
+                </tr>
+                <tr>
+                    <td>Product-Name:</td>
+                    <td><input type="text" name="product_name"></td>
+                </tr>
+                <tr>
+                    <td>Product-image:</td>
+                    <td><input type="file" name="product_image"></td>
+                </tr>
+                <tr>
+                    <td>Price:</td>
+                    <td><input type="number" name="product_price"></td>
+                </tr>
+                <tr>
+                    <td>Description:</td>
+                    <td><textarea></textarea>   </td>
+                </tr>
+                <tr>
+                    <td>Product-quantity:</td>
+                    <td><input type="number" name="product_quantity"></td>
+                </tr>      
+            </table>
+        </form>
+    </div>    
+</section>
+{% endblock body %}

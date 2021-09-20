@@ -17,12 +17,13 @@ from django.contrib import admin
 from django.urls import path,include
 from django.conf.urls.static import static
 from django.conf import settings
-
+from Enterprise.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('category/',CategoryFilter.as_view(),name='category_filter'),
     #path('admin/', include('smart_selects.urls')),
-    path('chaining/', include('smart_selects.urls')),
+    # path('chaining/', include('smart_selects.urls')),
     path('user', include('User.urls')),
     path('enterprise/',include('Enterprise.urls'))
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

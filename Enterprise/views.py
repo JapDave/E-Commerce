@@ -1,9 +1,33 @@
-from django.http.response import HttpResponse, HttpResponseRedirect
+from django import http
+from django.http.response import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render,redirect
 from django.urls import reverse
 from django.contrib import messages
 from django.views import View
 from .models import *
+# from .filters import ProductFilter
+
+
+class CategoryFilter(View):
+    def get(self,request):
+        pass
+
+    def post(self,request):
+        filtered_categories = {}
+        selected_enterprise = request.POST.get('product_enterprsie')
+        print(selected_enterprise)
+        try:
+            if selected_enterprise:
+                filtered_enterpirse = Enterprise_Detail.objects.get(id=selected_enterprise)
+                all_categories = filtered_enterpirse.enterprise_categories.all()
+                # for cat in all_categories:
+                #     print(cat.id)
+                filtered_categories = {category.category_name:category.id for category in all_categories}
+       
+        except:
+            pass
+     
+        return JsonResponse(data=filtered_categories, safe=False)
 
 
 def is_authenticate(request):
@@ -13,7 +37,7 @@ def is_authenticate(request):
         
 
 
-class Enterprise_login(View):
+class EnterpriseLogin(View):
     def get(self, request):
         rendered_data = {
             'title':'Enterprise-login',
@@ -37,13 +61,13 @@ class Enterprise_login(View):
         except Exception as e:
             return HttpResponse('404')# 404 file
 
-class Enterprise_logout(View):
+class EnterpriseLogout(View):
     def get(self,request):
         if is_authenticate(request):
             del request.session['enterprise_key']
             return redirect(reverse('enterprise_login'))
 
-class Enterprise_index(View):
+class EnterpriseIndex(View):
     def get(self, request):
         try:
             if is_authenticate(request):
@@ -62,14 +86,52 @@ class Enterprise_index(View):
 
            
 
-class Enterprise_category(View):
+class EnterpriseProducts(View):
     def get(self, request):
         if is_authenticate(request):
-            enterprise_data = Enterprise_Detail.objects.filter(id = request.session.get('enterprise_key')).first()
+            products_data  = Products.objects.filter(product_enterprsie_id = request.session.get('enterprise_key'))
             rendered_data = {
-                'categories':enterprise_data.enterprise_categories.all()
+                'products': products_data,
+                'total_products':len(products_data)
             }
-            return render(request,'enterprise_temp/list-categories.html',rendered_data)
+            return render(request,'enterprise_temp/list-products.html',rendered_data)
         else:
             return redirect(reverse('enterprise_login'))
 
+    def post(self,request):
+            if request.POST.get('search_text') != None:
+                searched_text = request.POST.get('search_text')
+                filtered_product = Products.objects.filter(product_name__contains = searched_text,product_enterprsie_id = request.session.get('enterprise_key'))
+                rendered_data = {
+                    'filtered_products':filtered_product,
+                    'searched_text':searched_text,
+                    'total_products':len(filtered_product)
+                }
+                return render(request,'enterprise_temp/list-products.html',rendered_data)
+            elif request.POST['submit_action']:
+                selected_action = request.POST.get( 'actions')
+                selected_item = request.POST.getlist('products')
+                if selected_item == None or selected_action == None:
+                    messages.error(request,'please select item and the prefered action to perform.')
+                    return redirect(reverse('enterprise_products'))
+                else:
+                    for product_id in selected_item:
+                        deleted_product = Products.objects.get(id=product_id)
+                        deleted_product.delete()
+                    return redirect(reverse('enterprise_products'))
+          
+
+class EnterpriseProductAdd(View):
+    def get(self,request):
+        if is_authenticate(request):
+            enterprise_data = Enterprise_Detail.objects.filter(id = request.session.get('enterprise_key')).first()
+            rendered_data = {
+                'enterprise':enterprise_data
+            }
+            return render(request,'enterprise_temp/add_product.html',rendered_data)
+       
+        else:
+            return redirect(reverse('enterprise_login'))
+
+    def post(self,request):
+        pass

@@ -1,27 +1,41 @@
 from django.contrib import admin
 from django import forms
 from .models import *
-from django_paranoid.admin import ParanoidAdmin
+
 
 class ProductsForm(forms.ModelForm):
     class Meta:
-        model : Products
+        model = Products
+        exclude = ['deleted_at']
 
-class CategoriesAdmin(ParanoidAdmin,admin.ModelAdmin):
-    #  list_filter = ('category_name',)
-     search_fields = ('category_name',)
+class CategoriesForm(forms.ModelForm):
+    class Meta:
+        model = Categories
+        exclude = ['deleted_at']
 
-class EnterpriseAdmin(ParanoidAdmin,admin.ModelAdmin):
-    #  list_filter = ('enterprise_name',)
-     search_fields = ('enterprise_name',)
 
-class ProductAdmin(ParanoidAdmin,admin.ModelAdmin):
-    #  list_filter = ('product_name',)
-      search_fields = ('product_name',)
-      form = ProductsForm
-     
-      class Media:
-            js = ('js/chained_list.js',)
+class EnterpriseForm(forms.ModelForm):
+    class Meta:
+        model = Enterprise_Detail
+        exclude = ['deleted_at']
+
+
+class CategoriesAdmin(admin.ModelAdmin):
+    fields = ('category_name',)
+    form = CategoriesForm
+    search_fields = ('category_name',)
+
+
+class EnterpriseAdmin(admin.ModelAdmin):
+    form = EnterpriseForm
+    search_fields = ('enterprise_name',)
+
+class ProductAdmin(admin.ModelAdmin):
+    form = ProductsForm
+    search_fields = ('product_name',)
+   
+    class Media:
+        js = ('js/chained_list.js',)
 
 
      

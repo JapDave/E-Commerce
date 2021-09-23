@@ -14,5 +14,8 @@ class User_Detail(models.Model):
     user_contact = models.CharField(validators = [phoneNumberRegex], max_length = 13, unique = True)
     user_address = models.TextField(("Address"),blank=False)
 
+    class Meta:
+           verbose_name_plural = "Users"
+
     def __str__(self):
         return self.user_name

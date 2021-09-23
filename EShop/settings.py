@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_paranoid',
     'django_filters',
    
     
@@ -92,14 +91,15 @@ WSGI_APPLICATION = 'EShop.wsgi.application'
 #         'ENGINE': 'django.db.backends.sqlite3',
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
-# }
+# ' }
 
 DATABASES = {
      'default': {
          'ENGINE': 'djongo',
          'NAME': 'E-Shop',
+         'ENFORCE_SCHEMA': False,
          'CLIENT': {
-           'host': 'mongodb+srv://admin:admin@cluster0.cfwvt.mongodb.net/E-Shop?retryWrites=true&w=majority',
+           'host': 'mongodb://localhost:27017/E-Shop',
         }
      }
  }
@@ -165,3 +165,4 @@ EMAIL_HOST_PASSWORD = 'hgkaobxaqsuimcho'
 
 
 USE_DJANGO_JQUERY = True
+

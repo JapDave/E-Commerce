@@ -76,7 +76,7 @@ table tr{
     border-collapse: collapse;
     width: 100%;
 }
-input[type=submit]{
+.list-products input[type=submit]{
     font-size: 13px;
     border: 1px solid var(--border-color);
     border-radius: 4px;
@@ -91,3 +91,22 @@ input[type=submit]{
     border-radius: 5px;
 }
 
+.add-item{
+    padding: 17px;
+}
+
+.add-item input[type=submit]{
+    background-color: #417690;
+    border-radius: 5px;
+    color: white;
+    font-weight: 500;
+    padding: 8px;
+    cursor: pointer;
+    width: 14%;
+    border: none;
+}
+
+.add-item label{
+    font-size: 13px;
+    font-weight: bold;
+}

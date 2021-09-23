@@ -11,37 +11,21 @@
       <h6>Add Products</h6>
     </div>
     <div class="container">
-        <form method="POST">
-            <table cellpadding="15px">
+        <form method="POST" class="add-item" enctype="multipart/form-data">
+           {% csrf_token %}
+            <table cellpadding="10px">  
                 <tr>
-                    <td>Product-Enterprise:</td>
-                    <td>{{enterprise.enterprise_name}}</td>
-                </tr>   
-                <tr>
-                    <td>Product-Categories:</td>
-                    <td><select name="" id="">
+                    <td><label>Product-Categories:</label></td>
+                    <td><select name="product_category" id="">
+                        {% for category in categories %}
+                         <option value={{category.category_name}}>{{category.category_name}}</option>
+                        {% endfor %} 
                     </select></td>
                 </tr>
-                <tr>
-                    <td>Product-Name:</td>
-                    <td><input type="text" name="product_name"></td>
-                </tr>
-                <tr>
-                    <td>Product-image:</td>
-                    <td><input type="file" name="product_image"></td>
-                </tr>
-                <tr>
-                    <td>Price:</td>
-                    <td><input type="number" name="product_price"></td>
-                </tr>
-                <tr>
-                    <td>Description:</td>
-                    <td><textarea></textarea>   </td>
-                </tr>
-                <tr>
-                    <td>Product-quantity:</td>
-                    <td><input type="number" name="product_quantity"></td>
-                </tr>      
+                     {{ form.as_table }}  
+                 <tr >
+                    <td colspan='2'><input type="submit" value ='save'></td>
+                </tr>     
             </table>
         </form>
     </div>    

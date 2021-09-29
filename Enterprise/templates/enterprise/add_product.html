@@ -1,0 +1,25 @@
+{% extends 'enterprise/enterprise_base.html' %}
+{% load static %}
+
+{% block title %}
+    Add Product
+{% endblock title %}
+
+{% block body %}
+<section class="conatiner-fluid">
+    <div class=" container page-header">
+      <h6>Add Products</h6>
+    </div>
+    <div class="container">
+        <form enctype="multipart/form-data" method="POST"  class="add-item">
+            {% csrf_token %}
+            <table cellpadding="10px">  
+                     {{ form.as_table }}  
+                 <tr >
+                    <td colspan='2'><input type="submit" value ='save'></td>
+                </tr>     
+            </table>
+        </form>
+    </div>    
+</section>
+{% endblock body %}

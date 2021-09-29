@@ -8,3 +8,5 @@ class EnterpriseConfig(AppConfig):
 
     def ready(self):
         import Enterprise.signals
+
+

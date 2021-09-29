@@ -1,0 +1,84 @@
+{% extends 'enterprise/enterprise_base.html' %} 
+{% load static %}
+{% load tagger%}
+
+{% block head %}
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <!-- <script src ="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src = "https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script> -->
+    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css"/> -->
+
+   <script>
+        $(document).ready(function () {
+         $('#dtBasicExample').DataTable({
+        lengthChange: false
+
+         });
+        });
+   </script>
+{% endblock head %}
+    
+{% block title %} Prodcuts {% endblock title %}
+
+{% block body %}
+<body id="search-results">
+    {% if messages %}
+        <div>
+            {% for message in messages %}
+              <div class="alert alert-warning">
+                 <a class="close" href="#" data-dismiss="alert">×</a>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <section class="container-fluid mt-3">
+        <div class="container page-header">
+            <h6> Select Products to change </h6>
+            <a href="{% url 'product_add' %}" class="add-btn">Add Product+</a>
+        </div>    
+        <div class="container ">
+            <!-- <div class="search-bar">
+                <form method="POST">
+                    {% csrf_token %}
+                    <i class="fas fa-search"></i>
+                    <input type="text"  placeholder="Search.." name="search_text" id="search"> 
+                </form>
+            </div> -->
+            <div class="list-products">   
+                <form method="POST" name="actions" name="actions">
+                    {% csrf_token %}
+                    <table cellpadding="15px" id="dtBasicExample" class= "table table-striped table-bordered">
+                        <label for="action">Actions:</label>&nbsp
+                        <select name="actions" id="action">
+                            <option disabled selected value> -- select an option -- </option>
+                            <option value="Delete">Delete the selected...</option>
+                        </select>&nbsp
+                        <input type="submit" value="GO" name="submit_action">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Category</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in products %}
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" value="{{product|private:'_id'}}" name="products">
+                                        <a href={% url 'product_update' product|private:'_id' %}>{{product}}</a>
+                                    </td>
+                                    <td>
+                                        {{product.product_categories}} 
+                                    </td>
+                                </tr>
+                            {% endfor %} 
+                        </tbody>    
+                    </table>
+                </form>   
+            </div>  
+        </div>
+       
+    </section>
+</body>
+{% endblock body %}

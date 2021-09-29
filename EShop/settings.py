@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_filters',
+
    
     
 ]
@@ -75,6 +76,10 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            
+            'libraries':{
+                'tagger': 'Enterprise.tagger',
+            }
             
         },
     },
@@ -154,15 +159,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #---------MEDIA -------------
 MEDIA_ROOT = BASE_DIR /'uploads/'
-MEDIA_URL = '/media-file/'
+MEDIA_URL = '/uploads/'
 
 MAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'japdavev@gmail.com'
-EMAIL_HOST_PASSWORD = 'hgkaobxaqsuimcho'
 
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.mailtrap.io'
+EMAIL_HOST_USER = '5d7b30b79a1cd5'
+EMAIL_HOST_PASSWORD = 'f6084ca87993e3'
+EMAIL_PORT = '2525'
 
 USE_DJANGO_JQUERY = True
 

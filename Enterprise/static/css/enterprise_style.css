@@ -7,8 +7,13 @@
     color:wheat;
 }
 
+.navigation a:hover{
+    color:rgba(245, 222, 179, 0.651);
+    text-decoration: none;
+}
+
 #main{
-    width: 37%;
+    width: 37%; 
     margin-top: 10%;
     color: #417690;
     font-weight: bold;
@@ -57,7 +62,7 @@ table tr{
 }
 
 .list-products{
-    width: 38%;
+    width: 60%;
     margin-top: 2%;
 }
 
@@ -65,11 +70,14 @@ table tr{
 .list-products h6{
     color: #417690;
     font-family: ui-sans-serif;
+    
+    text-transform: capitalize;
     font-weight: bold;
 }
 
 .list-products a:hover{
     color: #203e4d;
+    text-decoration: none;
 }
  
 .list-products table{
@@ -109,4 +117,10 @@ table tr{
 .add-item label{
     font-size: 13px;
     font-weight: bold;
+}
+
+.profile h3{
+    font: status-bar;
+    margin: 2%;
+
 }

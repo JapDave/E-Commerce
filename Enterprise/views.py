@@ -100,10 +100,10 @@ class Login(View):
         return render(request,'login.html',rendered_data)
 
     def post(self, request):
-        user_name = request.POST['username']
+        user_mail = request.POST['usermail']
         user_password = request.POST['password']
         try:
-            fetched_data = Enterprise.objects.filter(enterprise_name=user_name).first()
+            fetched_data = Enterprise.objects.filter(enterprise_email=user_mail).first()
             if fetched_data != None and fetched_data.enterprise_password == user_password:
                 request.session['enterprise_key'] = str(fetched_data._id)
                 return redirect(reverse('enterprise_index')) # redirect to Home page
@@ -236,3 +236,9 @@ class UpdateProduct(View):
             elif request.POST.get('delete'):
                 product_data.delete()
                 return redirect(reverse('product_list'))
+
+class DeleteProduct(View):
+    def get(self,request,id):
+        product_data = Products.objects.get(_id=id)
+        product_data.delete()
+        return redirect(reverse('product_list'))

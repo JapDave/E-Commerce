@@ -2,6 +2,7 @@ from django.contrib import admin
 from django import forms
 from .models import *
 from django.contrib.auth.apps import AuthConfig
+from django.utils.html import format_html
 
 
 class ProductsForm(forms.ModelForm):
@@ -35,7 +36,7 @@ class ProductAdmin(admin.ModelAdmin):
     form = ProductsForm
     search_fields = ('product_name',)
     list_per_page = 10
-    list_display = ('product_name','get_product_name','get_category_name','created_at')
+    list_display = ('product_name','get_product_name','get_category_name','created_at','Price','get_image')
 
     @admin.display(description='Enterprise Name', ordering='product_enterprsie__enterprise_name')
     def get_product_name(self, obj):
@@ -44,6 +45,12 @@ class ProductAdmin(admin.ModelAdmin):
     @admin.display(description='Category Name', ordering='product_categories__enterprise_categories')
     def get_category_name(self, obj):
         return obj.product_categories.category_name
+
+    @admin.display(description='Image')
+    def get_image(self, obj):
+        return format_html('<img src="{}" width=80px height=75px/>'.format(obj.product_img.url))
+
+
 
 
     # class Media:

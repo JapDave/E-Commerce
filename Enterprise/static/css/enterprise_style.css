@@ -69,8 +69,7 @@ table tr{
 .list-products a,
 .list-products h6{
     color: #417690;
-    font-family: ui-sans-serif;
-    
+    font-family: serif;
     text-transform: capitalize;
     font-weight: bold;
 }

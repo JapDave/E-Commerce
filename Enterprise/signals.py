@@ -23,7 +23,11 @@ def delete_product(sender, instance, **kwargs):
 def notify_user(sender, instance, created, **kwargs):
     if created:
             subject = 'New Account Registered'
-            message = 'http://127.0.0.1:8000/enterprise/'
+            message = f''' Thank-you for registering into our site.
+            Your Login link : http://127.0.0.1:8000/enterprise/ .
+            username : {instance.enterprise_name}.
+            password: {instance.enterprise_password}.'''
+
             email_from = settings.EMAIL_HOST_USER
             recepient  = [instance.enterprise_email,]
             send_mail(subject, message, email_from, recepient)

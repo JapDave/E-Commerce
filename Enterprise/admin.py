@@ -35,7 +35,7 @@ class ProductAdmin(admin.ModelAdmin):
     form = ProductsForm
     search_fields = ('product_name',)
     list_per_page = 10
-    list_display = ('product_name','get_product_name','get_category_name')
+    list_display = ('product_name','get_product_name','get_category_name','created_at')
 
     @admin.display(description='Enterprise Name', ordering='product_enterprsie__enterprise_name')
     def get_product_name(self, obj):

@@ -14,9 +14,34 @@
         <form enctype="multipart/form-data" method="POST"  class="add-item">
             {% csrf_token %}
             <table cellpadding="10px">  
-                     {{ form.as_table }}  
+                 {{form.product_enterprsie}}
+                <tr>
+                    <td><label>Product-categories:</label></td>
+                    <td>{{form.product_categories}}</td>
+                </tr>
+                <tr>
+                    <td><label>Product-Name:</label></td>
+                    <td>{{form.product_name}}</td>
+                </tr>
+                <tr>
+                    <td><label>Product-Image:</label></td>
+                    <td>{{form.product_img}}</td>
+                </tr>
+                <tr>
+                    <td><label>Price:</label></td>
+                    <td>{{form.Price}}</td>
+                </tr>
+                 <tr>
+                    <td><label>Description:</label></td>
+                    <td>{{form.Description}}</td>
+                </tr>
+                 <tr>
+                    <td><label>Product-qty:</label></td>
+                    <td>{{form.product_qty}}</td>
+                </tr>
+                    
                  <tr >
-                    <td colspan='2'><input type="submit" value ='save'></td>
+                    <td><input type="submit" value ='save' class='btn-save'></td>
                 </tr>     
             </table>
         </form>

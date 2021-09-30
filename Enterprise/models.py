@@ -42,14 +42,15 @@ class Enterprise(models.Model):
     enterprise_password = models.CharField(("Password"), max_length=50, null=False, blank=False)
     enterprise_email = models.EmailField(("E-mail"),null=False, blank=False)
     enterprise_photo = models.ImageField(("Profile-photo"), upload_to='Enterprise/profile_photo', height_field=None, width_field=None, max_length=None)
-    phoneNumberRegex = RegexValidator(regex = r"^\+?1?\d{8,15}$")
-    enterprise_contact = models.CharField(validators = [phoneNumberRegex], max_length = 13, unique = True)
+    phoneNumberRegex = RegexValidator(regex = r"^\+?1?\d{10}$")
+    enterprise_contact = models.CharField(validators = [phoneNumberRegex],max_length = 10, unique = True)
     # enterprise_categories = models.ArrayReferenceField(to=Categories, db_column='enterprise_categories',on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(blank=True, null=True, default=None)
     objects = ParanoidModelManager()
- 
+    
+
     class Meta:
            verbose_name_plural = "Enterprises"
 
@@ -60,6 +61,7 @@ class Enterprise(models.Model):
     def delete(self, hard=False, **kwargs):
         cls = self.__class__
         signals.pre_delete.send(sender=cls, instance=self)
+        
         if hard:
             super(Enterprise, self).delete()
         else:
@@ -69,7 +71,7 @@ class Enterprise(models.Model):
     
 class Products(models.Model):
     _id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    product_enterprsie = models.ForeignKey(Enterprise,on_delete=models.CASCADE,null=True,verbose_name=("Product-Enterprise") )
+    product_enterprsie = models.ForeignKey(Enterprise,on_delete=models.CASCADE,null=True,blank=True,verbose_name=("Product-Enterprise") )
     product_categories = models.ForeignKey(Categories,on_delete=models.CASCADE, verbose_name=("Product-Categories"))
     product_name = models.CharField(("Product-Name"), max_length=50, null=False, blank=False)
     product_img = models.ImageField(("Product-image"), upload_to='Product', height_field=None, width_field=None,validators=[FileExtensionValidator(['jpg','jpeg','png'])] ,max_length=None)

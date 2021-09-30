@@ -1,4 +1,3 @@
-from django.http import request
 from django.http.response import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render,redirect
 from django.urls import reverse
@@ -6,6 +5,9 @@ from django.contrib import messages
 from django.views import View
 from .models import *
 from .forms import ProductForm,EnterpriseForm
+from django.conf import settings
+from django.core.mail import send_mail
+import random
 # from .filters import ProductFilter
 
 
@@ -33,6 +35,61 @@ def is_authenticate(request):
          return True
     return False
         
+
+class ForgotPassword(View):
+    def get(self,request):
+        return render(request,'email_verification.html')
+    
+    def post(self,request):
+        user_email = request.POST['email']
+        
+        try:
+            enterprise_data = Enterprise.objects.get(enterprise_email=user_email)
+            request.session['temp_data'] = str(enterprise_data._id)
+            generated_otp = random.randint(1111,9999)
+            request.session['otp']=generated_otp
+            subject = 'Acount Recovery'
+            message = f'''your otp for account recovery is {generated_otp}'''
+            email_from = settings.EMAIL_HOST_USER
+            recepient  = [user_email,]
+            send_mail(subject, message, email_from, recepient)
+            return redirect(reverse('otp_verification'))
+
+        except:
+            messages.error(request,'Email id not found try again.')
+            return redirect(reverse('forgot_password'))
+
+class OtpVerification(View):
+    def get(self,request):
+        return render(request,'otp.html')
+
+    def post(self,request):
+        user_otp = request.POST['otp']
+        if user_otp == str(request.session.get('otp')):
+            return redirect(reverse('change_password'))
+        else:
+            messages.error(request,'Wrong otp try again.')
+            return redirect(reverse('otp_verification'))
+
+
+class ChangePassword(View):
+    def get(self,request):
+        return render(request,'change_password.html')
+
+    def post(self,request):
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+        if password == confirm_password:
+            enterprise_id = request.session.get('temp_data')
+            enterprise_data = Enterprise.objects.get(_id=enterprise_id)
+            enterprise_data.enterprise_password = confirm_password
+            enterprise_data.save()
+            del request.session['temp_data']
+            del request.session['otp']
+            return redirect(reverse('enterprise_login'))
+        else:
+            messages.error(request,'Password does not match.')
+            return redirect(reverse('change_password'))
 
 class Login(View):
     def get(self, request):
@@ -76,9 +133,10 @@ class Profile(View):
     def post(self,request):
         enterprise_data = Enterprise.objects.filter(_id = request.session.get('enterprise_key')).first()
         form=EnterpriseForm(request.POST,request.FILES,instance=enterprise_data) 
+        print(form['enterprise_photo'].value)
         if form.is_valid():
             form.save()
-            return render(request,'enterprise/profile.html',{'form':form})
+            return redirect(reverse('enterprise_profile'))
         else:
             print(form.errors)
             return render(request,'enterprise/profile.html',{'form':form})
@@ -110,7 +168,7 @@ class ProductsList(View):
                 'products': products_data,
                 'total_products':len(products_data)                
             }
-            return render(request,'enterprise/list-products.html',rendered_data)
+            return render(request,'enterprise/list_products.html',rendered_data)
         else:
             return redirect(reverse('enterprise_login'))
 
@@ -119,21 +177,21 @@ class ProductsList(View):
         selected_item = request.POST.getlist('products')
         if selected_item == [] or selected_action == None:
             messages.error(request,'please select item and the prefered action to perform.')
-            return redirect(reverse('enterprise_products'))
+            return redirect(reverse('product_list'))
         else:
             for product in selected_item:
                 deleted_product = Products.objects.get(_id=product)
                 deleted_product.delete()
-            return redirect(reverse('enterprise_products'))
+            return redirect(reverse('product_list'))
         
 
 class AddProduct(View):
     def get(self,request):
         if is_authenticate(request):
-            form=ProductForm()
             enterprise_data = Enterprise.objects.filter(_id = request.session.get('enterprise_key')).first()
+            form=ProductForm(initial={'product_enterprsie': enterprise_data})
             rendered_data = {
-                'enterprise':enterprise_data.enterprise_name,
+                'enterprise':enterprise_data,
                 'form':form
             }
             return render(request,'enterprise/add_product.html',rendered_data)
@@ -141,12 +199,13 @@ class AddProduct(View):
             return redirect(reverse('enterprise_login'))
 
     def post(self,request):
-            form = ProductForm(request.POST,request.FILES)
+            form = ProductForm(request.POST,request.FILES)    
             if form.is_valid():
                     form.save()
-                    return redirect(reverse('enterprise_products'))
+                    messages.success(request,'Product Added Successfully.')
+                    return redirect(reverse('product_list'))
             else:
-                render(request,'enterprise_temp/add_product.html',form=form)
+                return render(request,'enterprise/add_product.html',{'form':form})
                
 class UpdateProduct(View):
     def get(self,request,id):
@@ -164,12 +223,16 @@ class UpdateProduct(View):
 
     
     def post(self,request,id):
-            product_data = Products.objects.get(_id = id)
+            product_data = Products.objects.get(_id=id)
             form = ProductForm(request.POST,request.FILES,instance=product_data)
-
-            if form.is_valid():
-                form.save()
-                return redirect(reverse('enterprise_products'))
-            else:
-                render(request,'enterprise/add_product.html',form=form)
-         
+            
+            if request.POST.get('save'):
+                if form.is_valid():
+                    form.save()
+                    return redirect(reverse('product_list'))
+                else:
+                    render(request,'enterprise/add_product.html',form=form)
+            
+            elif request.POST.get('delete'):
+                product_data.delete()
+                return redirect(reverse('product_list'))

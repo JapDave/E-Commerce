@@ -95,6 +95,9 @@ body {
 .margin-b-lg {
     margin-bottom: 30px;
 }
+ul li {
+    list-style: none;
+}
 
 /* Container */
 

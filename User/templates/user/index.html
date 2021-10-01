@@ -1,0 +1,24 @@
+{% extends 'user/user_base.html' %}
+{% block title %}Home{% endblock title %}
+{% load tagger %}
+{% block body %}
+<section class="main container">
+    <table>
+    <div class="row container-fluid m-auto">
+    <tr>
+        {% for category in categories %}
+            <td>
+            <div class="col-sm card category team_item mb-3">
+                <a href="{% url 'all_products' category|private:'_id' %}"><img class="card-img-top mt-2 rounded" src="{{category.category_image.url}}" width="200px" height="200px"/></a>
+                <p class="card-title text-center mt-1">{{category.category_name}}</p>
+            </div>
+            </td>
+            {% if forloop.counter|divisibleby:3 %}
+                <tr></tr>
+            {% endif %} 
+        {% endfor %}
+    </tr>    
+    </div>
+    </table>
+</section>
+{% endblock body %}

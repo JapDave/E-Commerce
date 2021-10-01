@@ -17,4 +17,7 @@ class EnterpriseForm(forms.ModelForm):
     class Meta:
         model = Enterprise
         exclude = ['deleted_at']
+        widgets = {'enterprise_password': forms.PasswordInput()}
+      
+    
       

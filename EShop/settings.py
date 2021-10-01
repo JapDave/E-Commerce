@@ -78,7 +78,7 @@ TEMPLATES = [
             ],
             
             'libraries':{
-                'tagger': 'Enterprise.tagger',
+                'tagger': 'tagger',
             }
             
         },

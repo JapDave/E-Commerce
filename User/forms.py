@@ -1,0 +1,12 @@
+from django import forms
+from django.forms import widgets
+from .models import Users
+
+class RegisterForm(forms.ModelForm):
+    
+    class Meta:
+        model = Users
+        fields = ("__all__")
+        exclude = ['deleted_at']
+        CHOICES = [('M','Male'),('F','Female')]
+        widgets = {'user_gender':forms.RadioSelect(choices=CHOICES)}

@@ -14,6 +14,7 @@ class ParanoidModelManager(models.Manager):
 class Categories(models.Model):
     _id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     category_name = models.CharField(("Category-Name"),max_length=50)
+    category_image = models.ImageField(("Category-Image"), upload_to='Category', height_field=None, width_field=None, max_length=None)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(blank=True,null=True ,default=None)

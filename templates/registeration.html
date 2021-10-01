@@ -1,0 +1,69 @@
+ {% extends 'base.html' %} 
+{% load static %}
+
+{% block head %}
+	<link rel="stylesheet" href={% static 'css/login.css'%}>
+{% endblock head %}
+
+{% block title %}
+	User|Registeration
+{% endblock title %}
+
+{% block body %}
+<section class="main-bg">
+		<div class="login-container  ">
+				<p class="text-c">Registration</p>
+				<div class="container-content">
+					{% for message in messages %}
+						<div class="alert alert-danger">
+							 <a class="close" href="#" data-dismiss="alert">×</a>
+								{{ message }}
+						</div>
+					{% endfor %}
+
+					<form class="margin-t" method="POST">
+						{% csrf_token %}
+                        <div class="form-group">
+                        <label for="">Name: </label>
+							{{form.user_name}}
+						</div>
+                         <div class="form-group">
+                        <label for="">Password: </label>
+							{{form.user_password}}
+						</div>
+                         <div class="form-group">
+                        <label for="">Email: </label>
+							{{form.user_email}}
+						</div>
+                         <div class="form-group">
+                        <label for="">Profile: </label>
+							{{form.user_photo}}
+						</div>
+                         <div class="form-group">
+                        <label for="">Age: </label>
+							{{form.user_age}}
+						</div>
+                         <div class="form-group">
+                        <label for="">Gender: </label>                             
+							{{form.user_gender}}
+						</div>
+                         <div class="form-group">
+                        <label for="">Contact-No: </label>
+							{{form.user_contact}}
+						</div>
+                         <div class="form-group">
+                         <label for="">Address:</label>
+							{{form.user_address1}}
+						</div> 
+                        <div class="text-c">
+							<button type="submit" class="form-button button-l margin-b ">Register</button>  
+						</div>
+					    <div class="text-c">
+						<a href="{% url 'login' %}"><small>Already have an account?</small></a>
+						</div>
+					</form>
+
+				</div>
+		</div>
+</section>
+{% endblock body %}

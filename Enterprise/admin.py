@@ -23,7 +23,7 @@ class EnterpriseForm(forms.ModelForm):
 
 
 class CategoriesAdmin(admin.ModelAdmin):
-    fields = ('category_name',)
+    fields = ('category_name','category_image')
     form = CategoriesForm
     search_fields = ('category_name',)
 
@@ -36,7 +36,7 @@ class ProductAdmin(admin.ModelAdmin):
     form = ProductsForm
     search_fields = ('product_name',)
     list_per_page = 10
-    list_display = ('product_name','get_product_name','get_category_name','created_at','Price','get_image')
+    list_display = ('product_name','get_image','get_product_name','get_category_name','Price','created_at',)
 
     @admin.display(description='Enterprise Name', ordering='product_enterprsie__enterprise_name')
     def get_product_name(self, obj):

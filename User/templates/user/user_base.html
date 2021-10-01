@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} {% endblock title %}</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+    <link rel="stylesheet" href="{%static 'css/user_style.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    {% block head %} {% endblock head %}
+
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top navigation">
+        <div class="container-fluid">
+            <div class="navbar-header d-flex">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#wrapper"
+                    aria-expanded="false" aria-controls="wrapper">
+                     <span><i class="fas fa-bars nav-btn"></i></span>
+                    <!-- <span class="navbar-toggler-icon"></span> -->
+                </button>
+                <a class="navbar-brand ml-2" href="#">E-Shop</a>
+            </div>
+            <div class="navigationitem">
+                <ul class="nav navbar-right">
+                    <li><a href="{% url 'index' %}">Home</a></li>
+                    {% if users %}
+                         <li><a href="{% url 'logout' %}">Logout</a></li>
+                        {% else %}
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                         <li><a href="{% url 'registeration' %}">Registration</a></li>
+                    {% endif %}
+                    <li><a href="{% url 'cart' %}"><i class="fas fa-shopping-cart fa-1x"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="wrapper" class="collapse">
+        <div class="container-fluid">
+            <!-- Sidebar -->
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav">
+                    <li>
+                        <a href="#"><i class="fas fa-home fa-1x"></i> Home</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fas fa-user fa-1x"></i> Profile</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fas fa-receipt fa-1x"></i> Orders</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'cart' %}"><i class="fas fa-shopping-cart fa-1x"></i> Cart</a>
+                    </li>
+                    {% if users %}
+                    <li>
+                        <a href="#"><i class="fas fa-power-off fa-1x"></i> Logout</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    {% block body %}{% endblock body %}
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+        <script src="{%static 'js/datatables.min.js'%}"> </script>
+</body>
+
+</html>

@@ -5,6 +5,17 @@ from django.conf import settings
 from django.core.mail import send_mail
 
 
+
+
+
+@receiver(pre_delete, sender=Users, dispatch_uid='soft_delete_product')
+def delete_product(sender, instance, **kwargs):
+    cart_data = Cart.objects.filter(user=instance)
+    for obj in cart_data:
+        obj.delete()
+
+
+
 @receiver(post_save, sender=Users)
 def notify_user(sender, instance, created, **kwargs):
     if created:

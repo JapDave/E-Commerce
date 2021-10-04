@@ -35,6 +35,9 @@ class Users(models.Model):
         return self.user_name
 
     def delete(self, hard=False, **kwargs):
+        cls = self.__class__
+        signals.pre_delete.send(sender=cls, instance=self)
+
         if hard:
             super(Users, self).delete()
         else:
@@ -44,7 +47,8 @@ class Users(models.Model):
 class Cart(models.Model):
     _id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(Users, verbose_name=("user"), on_delete=models.CASCADE)
-    product_items = models.ArrayReferenceField(Products,null=True)
+    product_items = models.ForeignKey(Products, verbose_name=("Product-item"), on_delete=models.CASCADE)
+    qty = models.PositiveIntegerField(("product_qty"),default='1')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(blank=True, null=True, default=None)
@@ -52,8 +56,31 @@ class Cart(models.Model):
 
     class Meta:
            verbose_name_plural = "Cart"
-
+        
  
+    def delete(self, hard=False, **kwargs):
+        if hard:
+            super(Cart, self).delete()
+        else:
+            self.deleted_at = now()
+            self.save()
+
+
+class Order(models.Model):
+    _id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(Users, verbose_name=("user"), on_delete=models.CASCADE)
+    product = models.ForeignKey(Products, verbose_name=("product"), on_delete=models.CASCADE)
+    qty = models.PositiveIntegerField(("qty"))
+    total = models.PositiveIntegerField(("Total-Amount"))
+    Address = models.TextField(("Address"))
+    CHOICES = [('0','pending'),('1','approved'),('2','dispatched'),('3','delievered'),('4','cancelled')]
+    status = models.CharField(("status"),choices=CHOICES, max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True, default=None)
+    objects = ParanoidModelManager()
+
+
     def delete(self, hard=False, **kwargs):
         if hard:
             super(Cart, self).delete()

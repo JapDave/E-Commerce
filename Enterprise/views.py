@@ -138,7 +138,6 @@ class Profile(View):
             form.save()
             return redirect(reverse('enterprise_profile'))
         else:
-            print(form.errors)
             return render(request,'enterprise/profile.html',{'form':form})
         
 

@@ -35,7 +35,7 @@
                         <li><a href="{% url 'login' %}">Login</a></li>
                          <li><a href="{% url 'registeration' %}">Registration</a></li>
                     {% endif %}
-                    <li><a href="{% url 'cart' %}"><i class="fas fa-shopping-cart fa-1x"></i></a></li>
+                    <li><a href="{% url 'cart' %}"><i class="fas fa-shopping-cart fa-1x"></i><sup class="m-1">{{cart_count}}</sup></a></li>
                 </ul>
             </div>
         </div>
@@ -50,7 +50,7 @@
                         <a href="{% url 'index' %}"><i class="fas fa-home fa-1x"></i> Home</a>
                     </li>
                     <li>
-                        <a href="#"><i class="fas fa-user fa-1x"></i> Profile</a>
+                        <a href="{% url 'user_profile' %}"><i class="fas fa-user fa-1x"></i> Profile</a>
                     </li>
                     <li>
                         <a href="#"><i class="fas fa-receipt fa-1x"></i> Orders</a>
@@ -79,7 +79,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-        <script src="{%static 'js/datatables.min.js'%}"> </script>
+    <script src="{%static 'js/datatables.min.js'%}"> </script>
 </body>
 
 </html>

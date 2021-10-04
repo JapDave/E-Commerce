@@ -1,3 +1,7 @@
+li {
+    list-style: none;
+}
+
 .navigation button{
     background-color: #41769003;
     border: none;
@@ -148,17 +152,19 @@
 }
 
 .cart-btn,
-.cart-item button{
+.checkout-box button{
     background-color: #ffc10778;
     border-radius: 5px;
     padding: 5px;
+    width: 77%;
     color: black;
+    align-self: center;
     cursor: pointer;
     border: none;
 }
 
 .cart-btn:hover,
-.cart-item button:hover{
+.checkout-box button:hover{
     text-decoration: none;
     color: black;
 }
@@ -195,13 +201,18 @@
 
 .cart-item{
     display: flex;
-    width: 44%;
     box-shadow: 0px 1px 4px 1px rgb(0 0 0 / 32%);
     border-radius: 9px;
-    margin: auto;
-    height: 36vh;
+    margin-left: 2%;
+    height: fit-content;
     padding-top: 10px;
     justify-content: center;
+}
+
+.item-title{
+    margin-left: 11px;
+    font-weight: 500;
+    font-family: system-ui;
 }
 .cart-item img{
     width: 191px;
@@ -213,7 +224,7 @@
 .cart-item a,
 .cart-item a:hover{
     text-decoration: none;
-    margin: 16px;
+    margin-left: 24px;
     color: rgb(247 75 75);
 }
 
@@ -222,6 +233,30 @@
     background: white;
     padding: 2px;
 }
+
+.items{
+    width: 40%;
+}
+
+.checkout-box{
+    margin-top: 5%;
+    box-shadow: 0px 1px 4px 1px rgb(0 0 0 / 32%);
+    border-radius: 9px;
+    padding: 19px;
+    top: 6%;
+    position: absolute;
+    right: 9%;
+}
+
+.checkout-box h5{
+    text-align: center;
+    color: dimgrey;
+}
+
+.checkout-box p {
+    font-weight: 700;
+    color: #504747;
+ }
 
 .product-image img{
     width: 290px;

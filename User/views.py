@@ -108,14 +108,40 @@ class Logout(View):
             del request.session['users_key']
             return redirect(reverse('index'))
 
+
+class Profile(View):
+    def get(self,request):
+        if request.session.get('users_key'):
+            user_data = Users.objects.get(_id=request.session.get('users_key'))
+            form = RegisterForm(instance=user_data)
+            return render(request,'user/profile.html',{'form':form,'users':user_data})
+        else:
+            return redirect(reverse('login'))
+
+    def post(self,request):
+        user_data = Users.objects.get(_id=request.session.get('users_key'))
+        form=RegisterForm(request.POST,request.FILES,instance=user_data) 
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('user_profile'))
+        else:
+            return render(request,'user/profile.html',{'form':form,'users':user_data})
+        
+
 class Index(View):
     def get(self,request):
         category_data = Categories.objects.all()
         if request.session.get('users_key'):
             user_data = Users.objects.get(_id=request.session.get('users_key'))
+            cart_data = Cart.objects.filter(user=user_data)
+            count = 0
+            for item in cart_data:
+                count+=1
+
             rendered_data = {
                 'categories':category_data,
-                'users':user_data
+                'users':user_data,
+                'cart_count':count
             }
         else:
             rendered_data = {
@@ -131,8 +157,14 @@ class AllProducts(View):
         rendered_data = {}
         if request.session.get('users_key'):
             user_data = Users.objects.get(_id = request.session.get('users_key'))
+            cart_data = Cart.objects.filter(user=user_data)
+            count = 0
+            for item in cart_data:
+                count+=1
             rendered_data["users"] = user_data 
+            rendered_data["cart_count"] = count
         product_data = Products.objects.filter(product_categories=id)
+
         if product_data:
             page = request.GET.get('page',1)
             paginator = Paginator(product_data,10)
@@ -149,7 +181,12 @@ class AllProducts(View):
         rendered_data = {}
         if request.session.get('users_key'):
             user_data = Users.objects.get(_id = request.session.get('users_key'))
+            cart_data = Cart.objects.filter(user=user_data)
+            count = 0
+            for item in cart_data:
+                count+=1
             rendered_data["users"] = user_data 
+            rendered_data["cart_count"] = count
 
         if request.POST.get('search_product'):
             searched_product = request.POST.get('search_product')
@@ -188,7 +225,12 @@ class ProductDetail(View):
         rendered_data = {}
         if request.session.get('users_key'):
             user_data = Users.objects.get(_id = request.session.get('users_key'))
+            cart_data = Cart.objects.filter(user=user_data)
+            count = 0
+            for item in cart_data:
+                count+=1
             rendered_data["users"] = user_data 
+            rendered_data["cart_count"] = count
         product_data = Products.objects.get(_id=id)
         rendered_data["product"]=product_data
         return render(request,'user/product_detail.html',rendered_data)
@@ -199,29 +241,27 @@ class AddItem(View):
         if request.session.get('users_key'):
             user_data = Users.objects.get(_id = request.session.get('users_key'))
             product = Products.objects.get(_id=id)
-            cart_data = Cart.objects.get(user=user_data)
-            if product in cart_data.product_items.all():
-                messages.error(request,'Product Already present in the cart')
-                return redirect(reverse('cart'))
+            cart_data = Cart.objects.filter(user=user_data)
+            
+            for item in cart_data:
+                if product == item.product_items:
+                    messages.error(request,'Product Already present in the cart')
+                    return redirect(reverse('cart'))
             else:
-                cart_data.product_items.add(product)
+                cart_data = Cart(user=user_data,product_items=product)
                 cart_data.save()
                 messages.success(request,'Product Added to cart')
                 return redirect(reverse('cart'))
-
         else:
             return redirect(reverse('login'))
 
 class RemoveItem(View):
     def get(self,request,id):
         if request.session.get('users_key'):
-            user_data = Users.objects.get(_id = request.session.get('users_key'))
             product = Products.objects.get(_id=id)
-            cart_data = Cart.objects.get(user=user_data)
-            cart_data.product_items.remove(product)
-            cart_data.save()
+            cart_data = Cart.objects.get(product_items=product)
+            cart_data.delete()
             return redirect(reverse('cart'))
-             
         else:
             return redirect(reverse('login'))
 
@@ -229,31 +269,45 @@ class CartList(View):
     def get(self,request):
         if request.session.get('users_key'):
             user_data = Users.objects.get(_id = request.session.get('users_key'))
-            cart_data = Cart.objects.get(user=request.session.get('users_key'))
-            cart_item = [item for item in cart_data.product_items.all()]
+            cart_data = Cart.objects.filter(user=user_data)
+            cart_data = Cart.objects.filter(user=user_data)
+            count = 0
+
+            for item in cart_data:
+                count+=1
+            sub_total = 0
+            item_count = 0
+
+            for item in cart_data:
+                item_count += item.qty
+                sub_total += item.qty * item.product_items.Price 
+
             page = request.GET.get('page',1)
-            paginator = Paginator(cart_item,5)
+            paginator = Paginator(cart_data,5)
             cart_obj = paginator.page(page)
             rendered_data = {
                 'cart_item':cart_obj,
-                'users':user_data
+                'users':user_data,
+                'sub_total':sub_total,
+                'item_count':item_count,
+                'cart_count':count
             }
             return render(request,'user/cart.html',rendered_data)
-            
         else:
             return redirect(reverse('login'))
 
     def post(self,request):
         product_id = request.POST['product_id']
         qty = request.POST['selected_qty']
-
         product_data = Products.objects.get(_id=product_id)
+
         if int(qty) <= product_data.product_qty:
-            pass
+            user_data = Users.objects.get(_id = request.session.get('users_key'))
+            cart_data = Cart.objects.get(user=user_data,product_items=product_data)
+            cart_data.qty = int(qty)
+            cart_data.save()
+            return redirect(reverse('cart'))
+
         else:
             messages.error(request,'Sorry that much quantity not available.')
             return redirect(reverse('cart'))
-
-
-        return HttpResponse('Done')
-

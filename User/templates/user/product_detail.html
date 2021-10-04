@@ -2,6 +2,22 @@
 {% block title %}{{product.product_name}}{% endblock title %}
 {% load tagger %}
 
+{% block head %}
+<script>
+    function displayRadioValue() {
+        var ele = document.getElementsByName('address');
+          
+        for(i = 0; i < ele.length; i++) {
+            if(ele[i].checked)
+            document.getElementById("user_address").innerHTML
+                    = " Deliver to-"+ele[i].value;
+        }
+    }
+</script>
+{% endblock head %}
+
+
+
 {% block body %}
 <section class="container-fluid">
     <div class="row container">
@@ -35,11 +51,13 @@
                 </form>
                 <a href="{% url 'add_to_cart' product|private:'_id' %}"><i class="fas fa-shopping-cart fa-1x"></i> Add
                     to cart</a><br>
-                <button onclick="this.form.submit()" class="buy-btn"><i class="fas fa-shopping-bag fa-1x"></i> Buy Now</button>
-                <button data-toggle="modal" data-target="#address-modal" class="text-primary"> Deliver to- {{users.user_address1}}</button>
+                <button onclick="this.form.submit()" class="buy-btn"><i class="fas fa-shopping-bag fa-1x"></i> Buy
+                    Now</button>
+                <button data-toggle="modal" data-target="#address-modal" class="text-primary" id="user_address"> Deliver to-
+                    {{users.user_address1}}</button>
                 <div class="modal fade" id="address-modal" tabindex="-1" role="dialog"
                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">    
+                    <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLongTitle">Choose Address </h5>
@@ -48,9 +66,37 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <p>{{users.user_address1}}</p>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <input type="radio" name="address" value="{{users.user_address1}}">
+                                                {{users.user_address1}}
+                                            </td>
+                                        </tr>
+                                        {% if users.user_address2 %}
+                                        <tr>
+                                            <td>
+                                                <input type="radio" name="address" value="{{users.user_address2}}">
+                                                {{users.user_address2}}
+                                            </td>
+                                        </tr>
+                                        {% else %}
+                                        <tr>
+                                            <td>
+                                                <a href="#">+add
+                                                    address</a>
+                                            </td>
+                                        </tr>
+                                        {% endif %}
+                                        <tr>
+                                            <td>
+                                                <button type="button" class="buy-btn" data-dismiss="modal" aria-label="Close" onclick="displayRadioValue()">
+                                                    Submit
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table> 
                             </div>
-            
                         </div>
                     </div>
                 </div>

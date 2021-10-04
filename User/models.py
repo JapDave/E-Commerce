@@ -3,7 +3,8 @@ from django.core.validators import RegexValidator, FileExtensionValidator
 from django.utils.timezone import now
 from django.db.models import signals
 import uuid
-
+from djongo import models
+from Enterprise.models import Products
 
 class ParanoidModelManager(models.Manager):
     def get_queryset(self):
@@ -35,7 +36,27 @@ class Users(models.Model):
 
     def delete(self, hard=False, **kwargs):
         if hard:
-            super(User, self).delete()
+            super(Users, self).delete()
+        else:
+            self.deleted_at = now()
+            self.save()
+
+class Cart(models.Model):
+    _id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(Users, verbose_name=("user"), on_delete=models.CASCADE)
+    product_items = models.ArrayReferenceField(Products,null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True, default=None)
+    objects = ParanoidModelManager()
+
+    class Meta:
+           verbose_name_plural = "Cart"
+
+ 
+    def delete(self, hard=False, **kwargs):
+        if hard:
+            super(Cart, self).delete()
         else:
             self.deleted_at = now()
             self.save()

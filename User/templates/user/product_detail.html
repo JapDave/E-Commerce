@@ -1,0 +1,61 @@
+{% extends 'user/user_base.html' %}
+{% block title %}{{product.product_name}}{% endblock title %}
+{% load tagger %}
+
+{% block body %}
+<section class="container-fluid">
+    <div class="row container">
+        <div class="col-sm-6 product-image">
+            <img src="{{product.product_img.url}}">
+        </div>
+
+        <div class="col-sm-6 product-detail">
+            <h5>{{product.product_name}}</h5>
+            <h6><small class="text-primary">Brand: </small> {{product.product_enterprsie}}</h6>
+            <hr>
+            <p>Price:</p>
+            <p class="text-danger">&#8377 {{product.Price}}</p>
+            <hr>
+            <h4>About this item:</h4>
+            <p>{{product.Description}}</p>
+
+            <div class="user-detail">
+                <form method="POST">
+                    <label>Quantity: </label>
+                    <select name="selected_qty">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                    </select>
+                </form>
+                <a href="{% url 'add_to_cart' product|private:'_id' %}"><i class="fas fa-shopping-cart fa-1x"></i> Add
+                    to cart</a><br>
+                <button onclick="this.form.submit()" class="buy-btn"><i class="fas fa-shopping-bag fa-1x"></i> Buy Now</button>
+                <button data-toggle="modal" data-target="#address-modal" class="text-primary"> Deliver to- {{users.user_address1}}</button>
+                <div class="modal fade" id="address-modal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">    
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Choose Address </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>{{users.user_address1}}</p>
+                            </div>
+            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock body %}

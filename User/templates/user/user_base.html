@@ -28,7 +28,7 @@
             </div>
             <div class="navigationitem">
                 <ul class="nav navbar-right">
-                    <li><a href="{% url 'index' %}">Home</a></li>
+                   <li><a href="{% url 'index' %}">Home</a></li>
                     {% if users %}
                          <li><a href="{% url 'logout' %}">Logout</a></li>
                         {% else %}
@@ -47,7 +47,7 @@
             <div id="sidebar-wrapper">
                 <ul class="sidebar-nav">
                     <li>
-                        <a href="#"><i class="fas fa-home fa-1x"></i> Home</a>
+                        <a href="{% url 'index' %}"><i class="fas fa-home fa-1x"></i> Home</a>
                     </li>
                     <li>
                         <a href="#"><i class="fas fa-user fa-1x"></i> Profile</a>
@@ -60,7 +60,7 @@
                     </li>
                     {% if users %}
                     <li>
-                        <a href="#"><i class="fas fa-power-off fa-1x"></i> Logout</a>
+                        <a href="{% url 'logout' %}"><i class="fas fa-power-off fa-1x"></i> Logout</a>
                     </li>
                     {% endif %}
                 </ul>

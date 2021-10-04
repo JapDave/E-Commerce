@@ -24,7 +24,7 @@
     </div>
 </section>
 
-<section class="main container">
+<section class="container">
 {% if messages %}
     <div>
         {% for message in messages %}
@@ -34,30 +34,51 @@
         </div>
         {% endfor %}
     </div>
-    {% endif %}
+{% endif %}
     <table cellpadding="25px">
     <div class="row  container-fluid m-auto">
     <tr>
+  
         {% for product in products %}
             <td>
             <div class="col-sm product card  mb-3 ">
-                <a href="#"><img class=" card-image-center mt-2 rounded" src="{{product.product_img.url}}" width="200px" height="150px"/></a>
+                <a href="{% url 'product_detail' product|private:'_id' %}"><img class=" card-image-center mt-2 rounded" src="{{product.product_img.url}}" width="200px" height="150px"/></a>
                 <h6 class="card-title text-center mt-1">{{product.product_enterprsie}}'s</h6>
                 <p class="text-center">{{product.product_name}}</p>
                 <h5 class="text-center">&#8377 {{product.Price}}</h5>
-                <a href="{% url 'cart' %}" class="text-center cart-btn mb-2"><i class="fas fa-shopping-cart fa-1x"></i> Add to cart </a>
+                <a href="{% url 'add_to_cart' product|private:'_id' %}" class="text-center cart-btn mb-2"><i class="fas fa-shopping-cart fa-1x"></i> Add to cart </a>
             </div>
             </td>
             {% if forloop.counter|divisibleby:4 %}
                 <tr></tr>
             {% endif %} 
         {% endfor %}
+   
     </tr>    
     </div>
     </table>
 </section>
 
-
-
+{% if products.has_other_pages %}
+  <ul class="paginations">
+    {% if products.has_previous %}
+      <li><a href="?page={{ products.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in products.paginator.page_range %}
+      {% if products.number == i %}
+        <li class="active"><span>{{ i }} <span class=""></span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if products.has_next %}
+      <li><a href="?page={{ products.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
 
 {% endblock body %}

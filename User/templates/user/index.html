@@ -1,8 +1,37 @@
 {% extends 'user/user_base.html' %}
 {% block title %}Home{% endblock title %}
+{% load static %}
 {% load tagger %}
 {% block body %}
-<section class="main container">
+<section class="brand-poster">
+    <div id="carouselExample" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img
+              src="{%static 'images/poster1.jpeg' %}"
+              class="d-block"
+              alt="..."
+            />
+          </div>
+          <div class="carousel-item">
+            <img
+              src="{% static 'images/poster2.jpeg' %}"
+              class="d-block"
+              alt="..."
+            />
+          </div>
+          <div class="carousel-item">
+            <img
+              src="{% static 'images/poster1.jpeg' %}"
+              class="d-block"
+              alt="..."
+            />
+          </div>
+        </div>
+      </div>
+</section>    
+
+<section class="main container mt-4">
     <table>
     <div class="row container-fluid m-auto">
     <tr>

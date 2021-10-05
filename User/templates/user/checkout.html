@@ -1,0 +1,71 @@
+{% extends 'user/user_base.html' %}
+{% load static %}
+{% load tagger %}
+{% block title %}Checkout{% endblock title %}
+
+{% block head %}
+<script>
+    $(document).ready(function () {
+        $('#checkouttable').DataTable({
+            "lengthChange": false,
+				"searching": false,
+				"paging": false,
+				"info": false
+
+        });
+    });
+</script>
+{% endblock head %}
+
+{% block body %}
+<section class="container checkout-menu">
+	<h5 class="text-muted m-4">Checkout</h5>
+	<table class="table table-striped table-bordered w-75 m-3" id="checkouttable">
+		<thead class="checkout-title">
+			<tr>
+				<th>Sr.no</th>
+				<th>Product</th>
+				<th>Qty</th>
+				<th>Price</th>
+				<th>Total</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% if products %}
+					<tr>
+						<td>1</td>
+						<td>{{products.product_name}}</td>
+						<td>{{qty}}</td>
+						<td>&#8377  {{products.Price}}</td>
+						<td>&#8377  {% widthratio qty 1 products.Price %}</td>
+					</tr>
+				{% else %}
+					{% for item in cart_item %}
+						<tr>
+							<td>{{forloop.counter}}</td>
+							<td>{{item.product_items.product_name}}</td>
+							<td>{{item.qty}}</td>
+							<td>&#8377  {{item.product_items.Price}}</td>
+							<td>&#8377  {% widthratio item.qty 1 item.product_items.Price %}</td>
+						</tr>
+					{% endfor %}
+			{% endif %}	
+					<tr>
+						<td colspan="5"><p class="sub_total">Total:&nbsp   &#8377 {{total}}/~</p></td>
+					</tr>
+		</tbody>
+	</table>
+
+<div class="checkout-box">
+        <h5>Payment Method</h5>
+		{% if products %}
+			<a href="{% url 'place_order' items %}?product={{products|private:'_id'}}&qty={{qty}}&address={{address}}">Place Order </a>
+			{% else %}
+			<a href="{% url 'place_order' items='cart' %}">Place Order </a>
+		{% endif %}
+        
+    </div>   
+
+</section>
+
+{% endblock body %}

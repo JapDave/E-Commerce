@@ -3,12 +3,18 @@
 {% load tagger %}
 
 {% block body %}
+<nav aria-label="breadcrumbs" class="nav-page">
+  <ol class="breadcrumbs">
+    <li class="breadcrumb-items"><a href="{% url 'index' %}" class="text-dark">Home</a></li>
+    <li class="breadcrumb-items"><a href="{% url 'cart' %}" class="text-dark">Cart</a></li>
+  </ol>
+</nav>
 
 <section class="container-fluid">
     {% if messages %}
         <div>
             {% for message in messages %}
-            <div class="alert {% if message.level == 25 %}alert-primary {% else %}alert-danger {% endif %}">
+            <div class="alert {% if message.level == 25 %}alert-success {% else %}alert-danger {% endif %} m-2">
                 <a class="close" href="#" data-dismiss="alert">×</a>
                 {{ message }}
             </div>
@@ -19,12 +25,12 @@
     {% for item in cart_item %}
             <div class="cart-item mt-4">
                 <div>
-                    <a href="{% url 'product_detail' item.product_items|private:'_id' %}"><img src="{{item.product_items.product_img.url}}" height="200px" class="rounded"/></a>
+                    <a href="{% url 'product_detail' item.product_items|private:'_id' %}"><img src="{{item.product_items.product_img.url}}" height="200px" class="rounded-cirlce"/></a>
                 </div>
                 <div>
                     <h5>{{item.product_items.product_enterprsie}}'s</h5>
                     <h6>{{item.product_items.product_name}}</h6>
-                    <p>{{item.product_items.Description}}</p>
+                    <p class="text-muted">{{item.product_items.Description}}</p>
                     <div>
                         <form method="POST" >
                         {%csrf_token%}
@@ -38,7 +44,7 @@
                                 <option {% if item.qty == 6 %}selected{% endif %}  value=6>Qty: 6</option>
                                 <option {% if item.qty == 7 %}selected{% endif %}  value=7>Qty: 7</option>
                             </select>
-                            <p class="text-primary mt-3">&#8377 {{item.product_items.Price}}/~   <a href="{% url 'remove_from_cart' item.product_items|private:'_id' %}"><i class="fas fa-trash fa-1x"></i></a> </p>
+                            <p class="price">&#8377 {{item.product_items.Price}}/~   <a href="{% url 'remove_from_cart' item.product_items|private:'_id' %}"><i class="fas fa-trash fa-1x"></i></a> </p>
                            
                         </form>    
                     </div>
@@ -51,7 +57,7 @@
         <h5>Summary</h5>
         <p>Total-items: {{item_count}}</p>
         <p>Sub-Total: &#8377 {{sub_total}}/~</p>
-        <button><i class="fas fa-shopping-bag fa-1x"></i> Checkout </button>
+        <a href="{% url 'checkout' slug='cart' %}"><i class="fas fa-shopping-bag fa-1x"></i> Checkout </a>
     </div>   
 </section>
 <section>

@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.views import View
 from .models import *
+from User.models import Cart
 from .forms import ProductForm,EnterpriseForm
 from django.conf import settings
 from django.core.mail import send_mail
@@ -181,6 +182,8 @@ class ProductsList(View):
             for product in selected_item:
                 deleted_product = Products.objects.get(_id=product)
                 deleted_product.delete()
+                cart_data = Cart(product_items=deleted_product)
+                cart_data.delete()
             return redirect(reverse('product_list'))
         
 

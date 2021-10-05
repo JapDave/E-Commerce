@@ -114,7 +114,12 @@ class Profile(View):
         if request.session.get('users_key'):
             user_data = Users.objects.get(_id=request.session.get('users_key'))
             form = RegisterForm(instance=user_data)
-            return render(request,'user/profile.html',{'form':form,'users':user_data})
+            cart_data = Cart.objects.filter(user=user_data)
+            count = 0
+            for item in cart_data:
+                count+=1
+
+            return render(request,'user/profile.html',{'form':form,'users':user_data,'cart_count':count})
         else:
             return redirect(reverse('login'))
 
@@ -231,9 +236,67 @@ class ProductDetail(View):
                 count+=1
             rendered_data["users"] = user_data 
             rendered_data["cart_count"] = count
+            product_data = Products.objects.get(_id=id)
+            rendered_data["product"]=product_data
+            return render(request,'user/product_detail.html',rendered_data)
+        else:
+            return redirect(reverse('login'))
+
+
+    def post(self,request,id):
+        user_data = Users.objects.get(_id = request.session.get('users_key'))
         product_data = Products.objects.get(_id=id)
-        rendered_data["product"]=product_data
-        return render(request,'user/product_detail.html',rendered_data)
+        
+        if request.POST.get('add_address'):
+            user_address = request.POST['user_address2']
+            user_data.user_address2 = user_address
+            user_data.save()
+            return redirect(reverse('product_detail', kwargs={'id':id}))
+
+        elif request.POST.get('buy_btn'):
+            qty = request.POST['selected_qty']
+            if request.POST.get('address'):
+                address = request.POST.get('address')
+            else:
+                address = user_data.user_address1
+            
+            rendered_data = {
+                'users':user_data,
+                'products': product_data,
+                'qty' : int(qty),
+                'total' : int(qty) * product_data.Price,
+                'address': address
+            }
+
+            if int(qty) <= product_data.product_qty:
+               return render(request,'user/checkout.html',rendered_data)
+            
+            else:
+                messages.error(request,'Sorry that much quantity not available.')
+                return redirect(reverse('product_detail', kwargs={'id':id}))
+
+
+
+
+class Checkout(View):
+    def get(self,request,slug):
+        rendered_data = {}
+        if request.session.get('users_key'):
+            user_data = Users.objects.get(_id = request.session.get('users_key'))
+            rendered_data["users"] = user_data
+            if slug == 'cart':
+                cart_data = Cart.objects.filter(user=user_data)
+                rendered_data["cart_item"] = cart_data
+                sub_total = 0
+                for item in cart_data:
+                    sub_total += item.qty * item.product_items.Price 
+                rendered_data["total"] = sub_total
+
+            return render(request,'user/checkout.html',rendered_data)
+        else:
+            return redirect(reverse('login'))
+
+
 
 
 class AddItem(View):
@@ -311,3 +374,16 @@ class CartList(View):
         else:
             messages.error(request,'Sorry that much quantity not available.')
             return redirect(reverse('cart'))
+
+
+class PlaceOrder(View):
+    def get(self,request,items):
+        if request.session.get('users_key'):
+            user_data = Users.objects.get(_id = request.session.get('users_key'))
+            if items == 'cart':
+                pass
+            else:
+                print(items)
+            return HttpResponse(items)
+        else:
+            return redirect(reverse('login'))

@@ -382,8 +382,8 @@ class PlaceOrder(View):
             user_data = Users.objects.get(_id = request.session.get('users_key'))
             if items == 'cart':
                 pass
-            else:
-                print(items)
+            elif items == 'product':
+                print(request.GET.get('product'),request.GET.get('qty'),request.GET.get('address'))
             return HttpResponse(items)
         else:
             return redirect(reverse('login'))

@@ -59,7 +59,7 @@
 <div class="checkout-box">
         <h5>Payment Method</h5>
 		{% if products %}
-			<a href="{% url 'place_order' items %}?product={{products|private:'_id'}}&qty={{qty}}&address={{address}}">Place Order </a>
+			<a href="{% url 'place_order' items='product' %}?product={{products|private:'_id'}}&qty={{qty}}&address={{address}}">Place Order </a>
 			{% else %}
 			<a href="{% url 'place_order' items='cart' %}">Place Order </a>
 		{% endif %}

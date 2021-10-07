@@ -4,17 +4,11 @@
 
 
 {% block body %}
-<nav aria-label="breadcrumbs" class="nav-page">
-  <ol class="breadcrumbs">
-    <li class="breadcrumb-items"><a href="{% url 'index' %}" class="text-dark">Home</a></li>
-    <li class="breadcrumb-items"><a href="#" class="text-dark">Product</a></li>
-  </ol>
-
+<nav  class="nav-page">
   <div class="search-bar">
         <form method="POST">
             {% csrf_token %}
             <div>
-              {% comment %} <i class="fas fa-search fa-1x search-icon"></i> {% endcomment %}
               <input type="search" name="search_product" placeholder=" &#xF002; Search Product" value="{{searched_product}}" style="font-family:Arial, FontAwesome">
             </div>  
         </form>

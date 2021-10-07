@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django import forms
 from .models import *
-from django.contrib.auth.apps import AuthConfig
 from django.utils.html import format_html
 
 

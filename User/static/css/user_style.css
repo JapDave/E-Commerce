@@ -1,13 +1,6 @@
 li {
     list-style: none;
 }
-.breadcrumb-items+.breadcrumb-items::before {
-    display: inline-block;
-    padding-right: .5rem;
-    padding-left: .5rem;
-    color: #6c757d;
-    content: ">";
-}
 
 .nav-page{
     display: flex;
@@ -15,17 +8,6 @@ li {
     background-color: #6c757d38;
     justify-content: space-between;
 }
-
-.breadcrumbs{
-    display: flex;
-    flex-wrap: wrap;
-    padding: .75rem 1rem;
-    margin-bottom: 1rem;
-    list-style: none;
-    border-radius: .25rem;
-    color: black;
-}
-
 
 /* Header  start */ 
 
@@ -233,12 +215,17 @@ li {
     justify-content: center;
 }
 .paginations li.active {
-    background-color: #007bffa8;
+    background-color: #41484e91;
+    border-radius: 25px;
     color: white;
 }
 
 .paginations li {
     padding: 5px 13px;
+}
+
+.paginations li a {
+    color: black;                                                                                                       
 }
 
 .cart-item{
@@ -290,7 +277,7 @@ li {
     padding: 19px;
     top: 29%;
     position: absolute;
-    right: 9%;
+    right: 4%;
 }
 
 .checkout-box h5{
@@ -348,8 +335,8 @@ li {
 
 .buy-btn{
     border: none;
-    font-family: system-ui;
     margin-bottom: 6px;
+    padding: 5px;
     width: 100%;
     background-color: #4a5054d6;
     border-radius: 5px;
@@ -357,7 +344,7 @@ li {
     cursor: pointer;
 } 
 
-.user-detail button{
+button{
     border: none;
     cursor: pointer;
 }
@@ -378,4 +365,43 @@ li {
     float: right;
     color: #0a2e33;
     margin-right: 7%;
+}
+
+.payment{
+    margin-top: 2px;
+    color: #173552;
+    padding: 6px;
+}
+
+#place-order{
+    visibility: hidden ;
+    font-family: system-ui;
+    font-weight: 400;
+    text-align: center;
+}
+
+.success-box{
+    background-color: #faebd7ad;
+    margin: auto;
+    padding: 3%;
+    width: 50%;
+    margin-top: 2%;
+}
+
+.success-box p{
+    text-align: center;
+    text-transform: capitalize;
+    font-family: cursive;
+    font-weight: 600;
+}
+
+.success-box h5{
+    text-align: center;
+    text-transform: capitalize;
+    color: #000000b8;
+}
+
+.success-box h3{
+    text-align: center;
+    font-family: cursive;
 }

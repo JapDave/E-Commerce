@@ -5,15 +5,28 @@
 
 {% block head %}
 <script>
-    $(document).ready(function () {
-        $('#checkouttable').DataTable({
-            "lengthChange": false,
-				"searching": false,
-				"paging": false,
-				"info": false
+	$(document).ready(function () {
+		$('#checkouttable').DataTable({
+			"lengthChange": false,
+			"searching": false,
+			"paging": false,
+			"info": false
 
-        });
-    });
+		});
+	});
+
+	function displayRadioValue() {
+		var ele = document.getElementsByName('payment_method');
+
+
+		for (i = 0; i < ele.length; i++) {
+			if (ele[i].checked)
+				document.getElementById("user_payment").innerHTML
+					= "Payment Method- <br>" + ele[i].value;
+		}
+		document.getElementById('place-order').style.visibility = "visible";
+	}
+
 </script>
 {% endblock head %}
 
@@ -32,39 +45,84 @@
 		</thead>
 		<tbody>
 			{% if products %}
-					<tr>
-						<td>1</td>
-						<td>{{products.product_name}}</td>
-						<td>{{qty}}</td>
-						<td>&#8377  {{products.Price}}</td>
-						<td>&#8377  {% widthratio qty 1 products.Price %}</td>
-					</tr>
-				{% else %}
-					{% for item in cart_item %}
-						<tr>
-							<td>{{forloop.counter}}</td>
-							<td>{{item.product_items.product_name}}</td>
-							<td>{{item.qty}}</td>
-							<td>&#8377  {{item.product_items.Price}}</td>
-							<td>&#8377  {% widthratio item.qty 1 item.product_items.Price %}</td>
-						</tr>
-					{% endfor %}
-			{% endif %}	
-					<tr>
-						<td colspan="5"><p class="sub_total">Total:&nbsp   &#8377 {{total}}/~</p></td>
-					</tr>
+			<tr>
+				<td>1</td>
+				<td>{{products.product_name}}</td>
+				<td>{{qty}}</td>
+				<td>&#8377 {{products.Price}}</td>
+				<td>&#8377 {% widthratio qty 1 products.Price %}</td>
+			</tr>
+			{% else %}
+			{% for item in cart_item %}
+			<tr>
+				<td>{{forloop.counter}}</td>
+				<td>{{item.product_items.product_name}}</td>
+				<td>{{item.qty}}</td>
+				<td>&#8377 {{item.product_items.Price}}</td>
+				<td>&#8377 {% widthratio item.qty 1 item.product_items.Price %}</td>
+			</tr>
+			{% endfor %}
+			{% endif %}
+			<tr>
+				<td colspan="5">
+					<p class="sub_total">Total:&nbsp &#8377 {{total}}/~</p>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 
-<div class="checkout-box">
-        <h5>Payment Method</h5>
-		{% if products %}
-			<a href="{% url 'place_order' items='product' %}?product={{products|private:'_id'}}&qty={{qty}}&address={{address}}">Place Order </a>
+	<div class="checkout-box">
+		<h5>Payment Summary</h5>
+		<p class="text-secondary" id="user_address"><i class="fas fa-map-marker-alt"></i> Deliver to- <br>
+			{{address}}
+		</p>
+		<button data-toggle="modal" data-target="#payment-modal" class="payment mb-2" id="user_payment">Click for <br>  Payment Method</button>
+		<div class="modal fade" id="payment-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+			aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLongTitle">Choose Payment Method </h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<table>
+							<tr>
+								<td>
+									<input type="radio" name="payment_method" value='Cash On Delivery'> Cash On Delivery
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<input type="radio" name="payment_method" value='Online Mode'> Online Mode
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<button type="button" class="buy-btn" data-dismiss="modal" aria-label="Close"
+										onclick="displayRadioValue()">
+										Submit
+									</button>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="place-order">
+			{% if products %}
+			<a
+				href="{% url 'place_order' slug='product' %}?product={{products|private:'_id'}}&qty={{qty}}&address={{address}}">Place
+				Order </a>
 			{% else %}
-			<a href="{% url 'place_order' items='cart' %}">Place Order </a>
-		{% endif %}
-        
-    </div>   
+			<a href="{% url 'place_order' slug='cart' %}?address={{address}}">Place Order </a>
+			{% endif %}
+		</div>
+	</div>
 
 </section>
 

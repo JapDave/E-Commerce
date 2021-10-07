@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.views import View
 from .models import *
-from User.models import Cart
+from User.models import Cart, Order
 from .forms import ProductForm,EnterpriseForm
 from django.conf import settings
 from django.core.mail import send_mail
@@ -32,7 +32,6 @@ class CategoryFilter(View):
 
 def is_authenticate(request):
     if request.session.get('enterprise_key'):
-        
          return True
     return False
         
@@ -166,7 +165,7 @@ class ProductsList(View):
             products_data  = Products.objects.filter(product_enterprsie = request.session.get('enterprise_key'))
             rendered_data = {
                 'products': products_data,
-                'total_products':len(products_data)                
+                # 'total_products':len(products_data)                
             }
             return render(request,'enterprise/list_products.html',rendered_data)
         else:
@@ -244,3 +243,14 @@ class DeleteProduct(View):
         product_data = Products.objects.get(_id=id)
         product_data.delete()
         return redirect(reverse('product_list'))
+
+
+class OrderRequest(View):
+    def get(self,request):
+        if is_authenticate(request):
+            order_data = Order.objects.filter(product__product_enterprsie = request.session.get('enterprise_key'))
+            return render(request,'enterprise/list_orders.html',{'products':order_data})
+
+
+    def post(self,request):
+        pass

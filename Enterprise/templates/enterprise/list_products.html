@@ -36,13 +36,6 @@
             <a href="{% url 'product_add' %}" class="add-btn">Add Product+</a>
         </div>
         <div class="container ">
-            <!-- <div class="search-bar">
-                <form method="POST">
-                    {% csrf_token %}
-                    <i class="fas fa-search"></i>
-                    <input type="text"  placeholder="Search.." name="search_text" id="search"> 
-                </form>
-            </div> -->
             <div class="list-products">
                 <form method="POST" name="actions" name="actions">
                     {% csrf_token %}

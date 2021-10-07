@@ -10,7 +10,7 @@
 		for (i = 0; i < ele.length; i++) {
 			if (ele[i].checked)
 				document.getElementById("user_address").innerHTML
-					= " Deliver to-" + ele[i].value;
+					= " <i class='fas fa-map-marker-alt'></i> Deliver to-" + ele[i].value;
 		}
 	}
 </script>
@@ -92,7 +92,8 @@
 										{% else %}
 										<tr>
 											<td>
-												<button type="button" data-dismiss="modal" aria-label="Close" data-toggle="modal" data-target="#add-address-modal" href="#add-address-modal">
+												<button type="button" data-dismiss="modal" aria-label="Close" data-toggle="modal"
+													data-target="#add-address-modal" href="#add-address-modal">
 													+ add address
 												</button>
 											</td>
@@ -111,31 +112,37 @@
 							</div>
 						</div>
 					</div>
-					<input type="submit" value="&#xf290; Buy Now" name="buy_btn" class="buy-btn" style="font-family:system-ui, FontAwesome">
+					<input type="submit" value="&#xf290; Buy Now" name="buy_btn" class="buy-btn"
+						style="font-family:system-ui, FontAwesome">
 				</form>
 				<div class="modal fade" id="add-address-modal" tabindex="-1" role="dialog"
-						aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
-						<div class="modal-dialog modal-dialog-centered" role="document">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title" id="exampleModalLongTitle">Add Address</h5>
-									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>
-								</div>
-								<div class="modal-body">
-									<form method = "POST">
-										{% csrf_token %}
-										<table cellpadding="10px">
-											<tr><td><label>Address:</label></td>
-											<td><textarea name="user_address2" cols="30" rows="5"></textarea></td></tr>
-											<tr><td colspan="5"><input type="submit" value="submit" name="add_address" class="add-address-btn"></td></tr>
-									   </table>
-									</form>
-								</div>
+					aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLongTitle">Add Address</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<form method="POST">
+									{% csrf_token %}
+									<table cellpadding="10px">
+										<tr>
+											<td><label>Address:</label></td>
+											<td><textarea name="user_address2" cols="30" rows="5"></textarea></td>
+										</tr>
+										<tr>
+											<td colspan="5"><input type="submit" value="submit" name="add_address"
+													class="add-address-btn"></td>
+										</tr>
+									</table>
+								</form>
 							</div>
 						</div>
 					</div>
+				</div>
 				<!-- <button onclick="this.form.submit();" class="buy-btn"><i class="fas fa-shopping-bag fa-1x"></i> Buy Now</button>  -->
 				<a href="{% url 'add_to_cart' product|private:'_id' %}"><i class="fas fa-shopping-cart fa-1x"></i> Add
 					to cart</a><br>

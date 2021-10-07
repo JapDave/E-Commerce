@@ -72,7 +72,7 @@ class Order(models.Model):
     product = models.ForeignKey(Products, verbose_name=("product"), on_delete=models.CASCADE)
     qty = models.PositiveIntegerField(("qty"))
     total = models.PositiveIntegerField(("Total-Amount"))
-    Address = models.TextField(("Address"))
+    address = models.TextField(("Address"))
     CHOICES = [('0','pending'),('1','approved'),('2','dispatched'),('3','delievered'),('4','cancelled')]
     status = models.CharField(("status"),choices=CHOICES, max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -83,7 +83,7 @@ class Order(models.Model):
 
     def delete(self, hard=False, **kwargs):
         if hard:
-            super(Cart, self).delete()
+            super(Order, self).delete()
         else:
             self.deleted_at = now()
             self.save()

@@ -29,4 +29,43 @@ def notify_user(sender, instance, created, **kwargs):
             email_from = settings.EMAIL_HOST_USER
             recepient  = [instance.user_email,]
             send_mail(subject, message, email_from, recepient)
-    
+
+
+@receiver(post_save, sender=Order)
+def notify_user(sender, instance, created, **kwargs):
+    if created:
+        subject = 'Order Placed'
+        message = f''' Thank-you for placing order,your pakage will be delievered soon.
+        Order Details are as follow-
+        Order-id - {str(instance._id)}
+        Product- {instance.product.product_name}
+        qty - {instance.qty}
+        paid Amount - {instance.total}
+        Address - {instance.address}
+        
+        For any inquiry feel free to contact.
+        Thank you
+        Keep Shopping 
+        '''
+        email_from = settings.EMAIL_HOST_USER
+        recepient  = [instance.user.user_email,]
+        send_mail(subject, message, email_from, recepient)
+
+        subject = 'Order Recieved'
+        message = f''' An Order for an product for your enterprise is been recieved please check for status.
+        Order Details are as follow- 
+        product- {instance.product.product_name}
+        qty - {instance.qty}
+      
+        
+        Customer Details are as follow-
+        Name - {instance.user.user_name}
+        contact - {instance.user.user_contact}
+        Address - {instance.address}
+
+        For any inquiry feel free to contact.
+        Thank you
+        '''
+        email_from = settings.EMAIL_HOST_USER
+        recepient  = [instance.product.product_enterprsie. enterprise_email,]
+        send_mail(subject, message, email_from, recepient)

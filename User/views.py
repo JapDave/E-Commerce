@@ -1,3 +1,4 @@
+from typing import List
 from django.views.decorators.cache import cache_control,never_cache
 from django.http.response import HttpResponse
 from django.shortcuts import render,redirect
@@ -11,6 +12,7 @@ from Enterprise.models import Categories,Enterprise,Products
 from .forms import RegisterForm
 import random
 from django.core.paginator import Paginator
+from django.db.models import  Count
 
 class ForgotPassword(View):
 	def get(self,request):
@@ -113,7 +115,7 @@ class Profile(View):
 		if request.session.get('users_key'):
 			user_data = Users.objects.get(_id=request.session.get('users_key'))
 			form = RegisterForm(instance=user_data)
-			cart_data = Cart.objects.filter(user=user_data)
+			cart_data = Cart.objects.filter(user=user_data,product_items__isnull=False)
 			count = 0
 			for item in cart_data:
 				count+=1
@@ -137,10 +139,11 @@ class Index(View):
 		category_data = Categories.objects.all()
 		if request.session.get('users_key'):
 			user_data = Users.objects.get(_id=request.session.get('users_key'))
-			cart_data = Cart.objects.filter(user=user_data)
+			cart_data = Cart.objects.filter(user=user_data,product_items__isnull=False)
 			count = 0
+
 			for item in cart_data:
-				count+=1
+				 count+=1
 
 			rendered_data = {
 				'categories':category_data,
@@ -161,7 +164,7 @@ class AllProducts(View):
 		rendered_data = {}
 		if request.session.get('users_key'):
 			user_data = Users.objects.get(_id = request.session.get('users_key'))
-			cart_data = Cart.objects.filter(user=user_data)
+			cart_data = Cart.objects.filter(user=user_data,product_items__isnull=False)
 			count = 0
 			for item in cart_data:
 				count+=1
@@ -230,7 +233,7 @@ class ProductDetail(View):
 		rendered_data = {}
 		if request.session.get('users_key'):
 			user_data = Users.objects.get(_id = request.session.get('users_key'))
-			cart_data = Cart.objects.filter(user=user_data)
+			cart_data = Cart.objects.filter(user=user_data,product_items__isnull=False)
 			count = 0
 			for item in cart_data:
 				count+=1
@@ -242,7 +245,6 @@ class ProductDetail(View):
 		else:
 			return redirect(reverse('login'))
 
-	
 	def post(self,request,id):
 		user_data = Users.objects.get(_id = request.session.get('users_key'))
 		product_data = Products.objects.get(_id=id)
@@ -281,7 +283,7 @@ class AddItem(View):
 		if request.session.get('users_key'):
 			user_data = Users.objects.get(_id = request.session.get('users_key'))
 			product = Products.objects.get(_id=id)
-			cart_data = Cart.objects.filter(user=user_data)
+			cart_data = Cart.objects.filter(user=user_data,product_items__isnull=False)
 			
 			for item in cart_data:
 				if product == item.product_items:
@@ -307,15 +309,15 @@ class RemoveItem(View):
 
 class CartList(View):
 
-
 	def get(self,request):
 		if request.session.get('users_key'):
 			user_data = Users.objects.get(_id = request.session.get('users_key'))
-			cart_data = Cart.objects.filter(user=user_data)
+			cart_data = Cart.objects.filter(user=user_data,product_items__isnull=False)
 			count = 0
 
 			for item in cart_data:
 				count+=1
+
 			sub_total = 0
 			item_count = 0
 
@@ -381,46 +383,105 @@ class CartList(View):
 
 			return render(request,'user/checkout.html',rendered_data)
 
-
-
-
 class PlaceOrder(View):
 
 	def get(self,request,slug):
 		if request.session.get('users_key'):
 			user_data = Users.objects.get(_id = request.session.get('users_key'))
+			address = request.GET.get('address')
+			payment_method = request.GET.get('payment_method')
+			order_no = random.randint(111111,999999)
+
 			if slug == 'cart':
-				address = request.GET.get('address')
 				cart_data = Cart.objects.filter(user=user_data)
+				total=0
 				for item in cart_data:
-					total = item.qty * item.product_items.Price
-		
-					order_obj = Order(user=user_data,
+					total += item.qty * item.product_items.Price
+					
+					order_obj = Order(order_no=order_no,
+									user=user_data,
 									product=item.product_items,
 									qty=item.qty,
 									total=total,
 									address=address,
-									status='0')
+									payment_method=payment_method,
+									status='0'
+									)
 					order_obj.save()
-					item.delete()
-
-
+				
+					cart_data.delete()
+							
 			elif slug == 'product':
 				product_id = request.GET.get('product')
 				qty = request.GET.get('qty')
-				address  = request.GET.get('address')
 				product_data = Products.objects.get(_id=product_id)
 				total = int(qty) * product_data.Price
-
-				order_obj = Order(user=user_data,
+				
+				order_obj = Order(order_no=order_no,
+								user=user_data,
 								product=product_data,
 								qty=qty,
 								total=total,
 								address=address,
-								status='0')
+								payment_method=payment_method,
+								status='0'
+								)
+				
 				order_obj.save()
 							
 			return render(request,'user/order_success.html',{'users':user_data})
 		else:
 			return redirect(reverse('login'))
 
+	
+class OrderHistory(View):
+	
+	def get(self,request):
+		if request.session.get('users_key'):
+			user_data = Users.objects.get(_id = request.session.get('users_key'))
+			orders = Order.objects.values('order_no','address','payment_method','ordered_date').annotate(order_count=Count('_id')).filter(user=user_data)
+			order_list=[]
+	
+			for order in orders:
+				item=list(order.items())
+				order_list.append(item)
+		
+			page = request.GET.get('page',1)
+			paginator = Paginator(order_list,5)
+			order_obj =  paginator.page(page)
+			cart_data = Cart.objects.filter(user=user_data)
+			count = 0
+			
+			for item in cart_data:
+				count+=1
+
+			rendered_data = {
+				'users':user_data,
+				'orders':order_obj,
+				'cart_count':count
+			}
+			
+			return render(request,'user/order_history.html',rendered_data)
+		else:
+			return redirect(reverse('login'))
+
+
+class OrderDetail(View):
+	def get(self,request,orderno):
+		if request.session.get('users_key'):
+			user_data = Users.objects.get(_id = request.session.get('users_key'))
+			cart_data = Cart.objects.filter(user=user_data)
+			count = 0
+		
+			for item in cart_data:
+				count+=1
+
+			order_data = Order.objects.filter(user=user_data,order_no=orderno)
+			rendered_data={
+				'users':user_data,
+				'cart_count':count,
+				'orders':order_data
+			}			
+			return render(request,'user/order_detail.html',rendered_data)
+		else:
+			return redirect(reverse('login'))

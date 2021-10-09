@@ -19,18 +19,19 @@ def delete_product(sender, instance, **kwargs):
 
 
 
-@receiver(post_save, sender=Enterprise)
-def notify_user(sender, instance, created, **kwargs):
-    if created:
-            subject = 'New Account Registered'
-            message = f''' Thank-you for registering into our site.
-            Your Login link : http://127.0.0.1:8000/enterprise/ .
-            username : {instance.enterprise_name}.
-            password: {instance.enterprise_password}.'''
+# @receiver(post_save, sender=Enterprise)
+# def notify_user(sender, instance, created, **kwargs):
+#     if created:
+#             subject = 'New Account Registered'
+#             message = f''' Thank-you for registering into our site.
+#             Your Login link : http://127.0.0.1:8000/enterprise/ .
+#             username : {instance.enterprise_name}.
+#             password: {instance.enterprise_password}.'''
 
-            email_from = settings.EMAIL_HOST_USER
-            recepient  = [instance.enterprise_email,]
-            send_mail(subject, message, email_from, recepient)
+#             email_from = settings.EMAIL_HOST_USER
+#             recepient  = [instance.enterprise_email,]
+#             send_mail(subject, message, email_from, recepient)
+              
     
 
 

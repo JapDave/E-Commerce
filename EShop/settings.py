@@ -43,9 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_filters',
-
-   
-    
+    'djcelery_email',
 ]
 
 MIDDLEWARE = [
@@ -162,7 +160,7 @@ MEDIA_ROOT = BASE_DIR /'uploads/'
 MEDIA_URL = '/uploads/'
 
 MAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
+# EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.mailtrap.io'
 EMAIL_HOST_USER = '5d7b30b79a1cd5'

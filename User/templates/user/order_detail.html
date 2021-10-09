@@ -1,0 +1,67 @@
+{% extends 'user/user_base.html' %}
+{% block title %}Order Detail{% endblock title %}
+{% block body %}
+
+<section class="container-fluid">
+	{% if messages %}
+	<div>
+		{% for message in messages %}
+		<div class="alert {% if message.level == 25 %}alert-success {% else %}alert-danger {% endif %} m-2">
+			<a class="close" href="#" data-dismiss="alert">×</a>
+			{{ message }}
+		</div>
+		{% endfor %}
+	</div>
+	{% endif %}
+
+{% if orders %}
+   {% for order in orders %}
+			<div class="order-card-detail">
+            <div>
+               <img src="{{order.product.product_img.url}}" width="150px" height='150px' class="rounded">
+            </div>
+				<div>
+					<table cellpadding="3px">
+                  <tr>
+                     <th>Product Name :</th>
+                     <td>{{order.product.product_name}}</td>
+                  </tr>
+                  <tr>
+                     <th>Product Category :</th>
+                     <td>{{order.product.product_categories}}</td>
+                  </tr>
+                  <tr>
+                     <th>Product Qty :</th>
+                     <td>{{order.qty}}</td>
+                  </tr>
+                  <tr>
+                     <th>Payment Total :</th>
+                     <td>&#8377 {{order.total}}/~</td>
+                  </tr>
+                  <tr>
+                     <th>Payment Method :</th>
+                     <td>{{order.payment_method}}</td>
+                  </tr>
+                  <tr>
+                     <th>Status :</th>
+                     {% if order.status == '0' %}<td class="text-danger">Pending</td>{% endif %}
+                     {% if order.status == '1' %}<td class="text-info">Approved</td>{% endif %}
+                     {% if order.status == '2' %}<td class="text-info">Dispatched</td>{% endif %}
+                     {% if order.status == '3' %}<td class="text-success">Delivered</td>{% endif %}
+                     {% if order.status == '4' %}<td class="text-danger">Cancelled</td>{% endif %}
+                  </tr>
+					</table>
+				</div>
+			</div>
+		{% endfor %}
+   
+	{% else %}
+		<div class="alert alert-secondary m-2 ">
+			<a class="close" href="#" data-dismiss="alert">×</a>
+			<p>No Orders Placed Yet.</p>
+		</div>
+{% endif %}	
+</section>
+
+
+{% endblock body %}

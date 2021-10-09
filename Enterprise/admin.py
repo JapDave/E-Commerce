@@ -25,11 +25,13 @@ class CategoriesAdmin(admin.ModelAdmin):
     fields = ('category_name','category_image')
     form = CategoriesForm
     search_fields = ('category_name',)
+    list_per_page = 10
 
 
 class EnterpriseAdmin(admin.ModelAdmin):
     form = EnterpriseForm
     search_fields = ('enterprise_name',)
+    list_per_page = 10
 
 class ProductAdmin(admin.ModelAdmin):
     form = ProductsForm

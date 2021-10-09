@@ -1,0 +1,76 @@
+{% extends 'enterprise/enterprise_base.html' %}
+
+{% block title %}Order-Detail{% endblock title %}
+{% block body %}
+<section class="container-fluid">
+   <div class="user-info">
+      <h5 class="order-title">Customer Information</h5>
+      <table class="order-table" cellpadding="5px">
+         <tr>
+            <th>Customer Name :</th>
+            <td>{{order.user.user_name}}</td>
+         </tr>
+         <tr>
+            <th>Customer Address :</th>
+            <td>{{order.address}}</td>
+         </tr>
+         <tr>
+            <th>Customer Email :</th>
+            <td>{{order.user.user_email}}</td>
+         </tr>
+         <tr>
+            <th>Cutomer Contact :</th>
+            <td>{{order.user.user_contact}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="user-info">
+      <h5 class="order-title">Order Information</h5>
+      <table class="order-table" cellpadding="15px">
+         <tr>
+            <th>Product Name :</th>
+            <td>{{order.product.product_name}}</td>
+         </tr>
+         <tr>
+            <th>Product Category :</th>
+            <td>{{order.product.product_categories}}</td>
+         </tr>
+         <tr>
+            <th>Product Qty :</th>
+            <td>{{order.qty}}</td>
+         </tr>
+         <tr>
+            <th>Payment Total :</th>
+            <td>&#8377 {{order.total}}/~</td>
+         </tr>
+         <tr>
+            <th>Payment Method :</th>
+            <td>{{order.payment_method}}</td>
+         </tr>
+         <tr>
+            <th>Status :</th>
+            {% if order.status == '0' %}<td>Pending</td>{% endif %}
+            {% if order.status == '1' %}<td>Approved</td>{% endif %}
+            {% if order.status == '2' %}<td>Dispatched</td>{% endif %}
+            {% if order.status == '3' %}<td>Delivered</td>{% endif %}
+            {% if order.status == '4' %}<td>Cancelled</td>{% endif %}
+         </tr>
+         <tr>
+            <th>Change Order Status: </th>
+            <td>
+               <form method="post">
+                  {% csrf_token %}
+                  <select name="order_status" class="order-status" onchange="this.form.submit()">
+                     <option value="0" {% if order.status == '0' %}selected{% endif %}>Pending</option>
+                     <option value="1" {% if order.status == '1' %}selected{% endif %}>Approved</option>
+                     <option value="2" {% if order.status == '2' %}selected{% endif %}>Dispatched</option>
+                     <option value="3" {% if order.status == '3' %}selected{% endif %}>Delivered</option>
+                     <option value="3" {% if order.status == '4' %}selected{% endif %}>Cancelled</option>
+                  </select>
+               </form>
+            </td>
+         </tr>
+      </table>
+   </div>
+</section>
+{% endblock body %}

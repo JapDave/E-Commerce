@@ -62,16 +62,15 @@ table tr{
 }
 
 .list-products{
-    width: 60%;
-    margin-top: 2%;
+    width: 80%;
+    margin: auto;   
 }
 
-.list-products a,
-.list-products h6{
-    color: #417690;
-    font-family: serif;
+.list-products a{
+    color: #005e8c;
+    font-family: cursive;
     text-transform: capitalize;
-    font-weight: bold;
+    font-weight: 500;
 }
 
 .list-products a:hover{
@@ -138,4 +137,36 @@ table tr{
 .formerror{
     color: #ce3434;
     margin-left: 12px;
+}
+
+.user-info{
+    margin: 5%;
+    margin-top: 2%;
+    border-radius: 23px;
+    padding: 2%;
+    background-color: #eaeaea;
+    width: 33%;
+}
+
+.order-status{
+    border: none;
+    border-radius: 5px;
+    font-family: system-ui;
+    color: white;
+    background-color: brown;
+    padding: 8px;
+}
+
+
+.order-title{
+    font-family: cursive;
+    font-weight: 500;
+    color: brown;
+
+}
+
+.order-table th{
+    font-family: system-ui;
+    font-weight: 500;
+    color: #3f464c;
 }

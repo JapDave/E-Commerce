@@ -119,7 +119,7 @@ class Logout(View):
     def get(self,request):
         if is_authenticate(request):
             del request.session['enterprise_key']
-            return redirect(reverse('enterprise_login'))
+        return redirect(reverse('enterprise_login'))
 
 class Profile(View):
     def get(self,request):
@@ -252,5 +252,19 @@ class OrderRequest(View):
             return render(request,'enterprise/list_orders.html',{'products':order_data})
 
 
-    def post(self,request):
-        pass
+class OrderDetail(View):
+    def get(self,request,id):
+        if is_authenticate(request):
+            order_data = Order.objects.get(_id=id)
+            return render(request,'enterprise/order_detail.html',{'order':order_data})
+    
+    def post(self,request,id):
+        order_data = Order.objects.get(_id=id)
+        status = request.POST['order_status']
+        order_data.status = status
+        order_data.save()
+        product_data = Products.objects.get(_id=order_data.product._id)
+        product_data.product_qty -= order_data.qty
+        product_data.save()
+        return render(request,'enterprise/order_detail.html',{'order':order_data})
+

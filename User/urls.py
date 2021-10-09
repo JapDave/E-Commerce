@@ -19,6 +19,8 @@ path('profile/',Profile.as_view(),name='user_profile'),
 path('products/<id>',AllProducts.as_view(),name='all_products'),
 path('product/<id>',ProductDetail.as_view(),name='product_detail'),
 path('placeorder/<slug>',PlaceOrder.as_view(),name='place_order'),
+path('orderhistory',OrderHistory.as_view(),name='order_history'),
+path('orderdetail <orderno>',OrderDetail.as_view(),name='user_order_detail'),
 #User Product Over
 
 #User Cart Start

@@ -4,7 +4,7 @@ from django.utils.timezone import now
 from django.db.models import signals
 import uuid
 from djongo import models
-from Enterprise.models import Products
+from Enterprise.models import Products,Enterprise
 
 class ParanoidModelManager(models.Manager):
     def get_queryset(self):
@@ -48,7 +48,7 @@ class Cart(models.Model):
     _id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(Users, verbose_name=("user"), on_delete=models.CASCADE)
     product_items = models.ForeignKey(Products, verbose_name=("Product-item"), on_delete=models.CASCADE)
-    qty = models.PositiveIntegerField(("product_qty"),default='1')
+    qty = models.PositiveIntegerField(("product_qty"),default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(blank=True, null=True, default=None)
@@ -68,13 +68,16 @@ class Cart(models.Model):
 
 class Order(models.Model):
     _id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    order_no = models.PositiveIntegerField(("Order-No"))
     user = models.ForeignKey(Users, verbose_name=("user"), on_delete=models.CASCADE)
     product = models.ForeignKey(Products, verbose_name=("product"), on_delete=models.CASCADE)
-    qty = models.PositiveIntegerField(("qty"))
+    qty=models.PositiveIntegerField(("Product-qty"),default=1)
     total = models.PositiveIntegerField(("Total-Amount"))
     address = models.TextField(("Address"))
-    CHOICES = [('0','pending'),('1','approved'),('2','dispatched'),('3','delievered'),('4','cancelled')]
+    payment_method = models.CharField(("Payment-Method"), max_length=50)
+    CHOICES = [('0','Pending'),('1','Approved'),('2','Dispatched'),('3','Delievered'),('4','Cancelled')]
     status = models.CharField(("status"),choices=CHOICES, max_length=50)
+    ordered_date = models.DateField(("Ordered-Date"), auto_now=True, auto_now_add=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(blank=True, null=True, default=None)

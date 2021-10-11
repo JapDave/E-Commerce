@@ -46,7 +46,7 @@
         {% for product in products %}
             <td>
             <div class="col-sm product card  mb-3 ">
-                <a href="{% url 'product_detail' product|private:'_id' %}"><img class=" card-image-center mt-2 rounded" src="{{product.product_img.url}}" width="200px" height="150px"/></a>
+                <a href="{% url 'product_detail' product|private:'_id' %}"><img class=" card-image-center mt-2 rounded" src="{{product.product_img.url}}" width="200px" height="200px"/></a>
                 <h6 class="card-title text-center mt-1">{{product.product_enterprsie}}'s</h6>
                 <p class="text-center">{{product.product_name}}</p>
                 <h5 class="text-center price">&#8377 {{product.Price}}</h5>

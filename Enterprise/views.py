@@ -9,7 +9,7 @@ from .forms import ProductForm,EnterpriseForm
 from django.conf import settings
 from django.core.mail import send_mail
 import random
-# from .filters import ProductFilter
+from .tasks import mail_user_updateorder
 
 
 class CategoryFilter(View):
@@ -164,8 +164,7 @@ class ProductsList(View):
             
             products_data  = Products.objects.filter(product_enterprsie = request.session.get('enterprise_key'))
             rendered_data = {
-                'products': products_data,
-                # 'total_products':len(products_data)                
+                'products': products_data,         
             }
             return render(request,'enterprise/list_products.html',rendered_data)
         else:
@@ -240,9 +239,13 @@ class UpdateProduct(View):
 
 class DeleteProduct(View):
     def get(self,request,id):
-        product_data = Products.objects.get(_id=id)
-        product_data.delete()
-        return redirect(reverse('product_list'))
+        if is_authenticate(request):
+            product_data = Products.objects.get(_id=id)
+            product_data.delete()
+            return redirect(reverse('product_list'))
+        else:
+            return redirect(reverse('enterprise_login'))
+
 
 
 class OrderRequest(View):
@@ -250,6 +253,8 @@ class OrderRequest(View):
         if is_authenticate(request):
             order_data = Order.objects.filter(product__product_enterprsie = request.session.get('enterprise_key'))
             return render(request,'enterprise/list_orders.html',{'products':order_data})
+        else:
+            return redirect(reverse('enterprise_login'))
 
 
 class OrderDetail(View):
@@ -257,12 +262,24 @@ class OrderDetail(View):
         if is_authenticate(request):
             order_data = Order.objects.get(_id=id)
             return render(request,'enterprise/order_detail.html',{'order':order_data})
-    
+        else:
+            return redirect(reverse('enterprise_login'))
+
+
     def post(self,request,id):
         order_data = Order.objects.get(_id=id)
         status = request.POST['order_status']
         order_data.status = status
         order_data.save()
+        if order_data.status == '1':
+            mail_user_updateorder.delay(status,order_data.user.user_email,order_data.product._id)
+        elif order_data.status == '2':
+            mail_user_updateorder.delay(status,order_data.user.user_email,order_data.product._id)
+        elif order_data.status =='3':
+            mail_user_updateorder.delay(status,order_data.user.user_email,order_data.product._id)
+        elif order_data.status == '4':
+            mail_user_updateorder.delay(status,order_data.user.user_email,order_data.product._id)
+
         product_data = Products.objects.get(_id=order_data.product._id)
         product_data.product_qty -= order_data.qty
         product_data.save()

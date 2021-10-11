@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_filters',
-    'djcelery_email',
 ]
 
 MIDDLEWARE = [
@@ -166,6 +165,18 @@ EMAIL_HOST = 'smtp.mailtrap.io'
 EMAIL_HOST_USER = '5d7b30b79a1cd5'
 EMAIL_HOST_PASSWORD = 'f6084ca87993e3'
 EMAIL_PORT = '2525'
+
+
+BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Kolkata'
+
+
 
 USE_DJANGO_JQUERY = True
 

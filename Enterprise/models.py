@@ -75,7 +75,7 @@ class Products(models.Model):
     product_enterprsie = models.ForeignKey(Enterprise,on_delete=models.CASCADE,null=True,blank=True,verbose_name=("Product-Enterprise") )
     product_categories = models.ForeignKey(Categories,on_delete=models.CASCADE, verbose_name=("Product-Categories"))
     product_name = models.CharField(("Product-Name"), max_length=50, null=False, blank=False)
-    product_img = models.ImageField(("Product-image"), upload_to='Product', height_field=None, width_field=None,validators=[FileExtensionValidator(['jpg','jpeg','png'])] ,max_length=None)
+    product_img = models.ImageField(("Product-image"), upload_to='Product', height_field=None, width_field=None,validators=[FileExtensionValidator(['jpg','jpeg','png','webp'])] ,max_length=None)
     Price = models.PositiveIntegerField(("price"))
     Description = models.TextField(("Description"))
     product_qty = models.PositiveIntegerField(("Product-quantity"))

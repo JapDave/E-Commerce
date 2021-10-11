@@ -1,5 +1,4 @@
-from typing import List
-from django.views.decorators.cache import cache_control,never_cache
+from .tasks import mail_sender_enterprise, mail_sender_user
 from django.http.response import HttpResponse
 from django.shortcuts import render,redirect
 from django.urls import reverse
@@ -140,15 +139,11 @@ class Index(View):
 		if request.session.get('users_key'):
 			user_data = Users.objects.get(_id=request.session.get('users_key'))
 			cart_data = Cart.objects.filter(user=user_data,product_items__isnull=False)
-			count = 0
-
-			for item in cart_data:
-				 count+=1
 
 			rendered_data = {
 				'categories':category_data,
 				'users':user_data,
-				'cart_count':count
+				'cart_count':cart_data.count()
 			}
 		else:
 			rendered_data = {
@@ -156,8 +151,6 @@ class Index(View):
 				}
 		return render(request,'user/index.html',rendered_data)
 
-	def post(self,request):
-		pass
 
 class AllProducts(View):
 	def get(self,request,id):
@@ -234,11 +227,9 @@ class ProductDetail(View):
 		if request.session.get('users_key'):
 			user_data = Users.objects.get(_id = request.session.get('users_key'))
 			cart_data = Cart.objects.filter(user=user_data,product_items__isnull=False)
-			count = 0
-			for item in cart_data:
-				count+=1
+
 			rendered_data["users"] = user_data 
-			rendered_data["cart_count"] = count
+			rendered_data["cart_count"] = cart_data.count()
 			product_data = Products.objects.get(_id=id)
 			rendered_data["product"]=product_data
 			return render(request,'user/product_detail.html',rendered_data)
@@ -300,8 +291,7 @@ class AddItem(View):
 class RemoveItem(View):
 	def get(self,request,id):
 		if request.session.get('users_key'):
-			product = Products.objects.get(_id=id)
-			cart_data = Cart.objects.get(product_items=product)
+			cart_data = Cart.objects.get(product_items___id=id)
 			cart_data.delete()
 			return redirect(reverse('cart'))
 		else:
@@ -313,11 +303,7 @@ class CartList(View):
 		if request.session.get('users_key'):
 			user_data = Users.objects.get(_id = request.session.get('users_key'))
 			cart_data = Cart.objects.filter(user=user_data,product_items__isnull=False)
-			count = 0
-
-			for item in cart_data:
-				count+=1
-
+			
 			sub_total = 0
 			item_count = 0
 
@@ -333,7 +319,7 @@ class CartList(View):
 				'users':user_data,
 				'sub_total':sub_total,
 				'item_count':item_count,
-				'cart_count':count
+				'cart_count':cart_data.count()
 			}
 			return render(request,'user/cart.html',rendered_data)
 		else:
@@ -375,7 +361,7 @@ class CartList(View):
 				sub_total += item.qty * item.product_items.Price 
 
 			rendered_data = {
-				'users':user_data,
+				'users':True,
 				'cart_item':cart_data,
 				'address':address,
 				'total':sub_total
@@ -408,8 +394,9 @@ class PlaceOrder(View):
 									status='0'
 									)
 					order_obj.save()
-				
-					cart_data.delete()
+					mail_sender_enterprise.delay(order_obj._id)
+				cart_data.delete()
+		
 							
 			elif slug == 'product':
 				product_id = request.GET.get('product')
@@ -426,10 +413,12 @@ class PlaceOrder(View):
 								payment_method=payment_method,
 								status='0'
 								)
-				
 				order_obj.save()
-							
-			return render(request,'user/order_success.html',{'users':user_data})
+				mail_sender_enterprise.delay(order_obj._id)
+				
+
+			mail_sender_user.delay(order_no,user_data.user_email)				
+			return render(request,'user/order_success.html',{'users':True})
 		else:
 			return redirect(reverse('login'))
 
@@ -438,8 +427,8 @@ class OrderHistory(View):
 	
 	def get(self,request):
 		if request.session.get('users_key'):
-			user_data = Users.objects.get(_id = request.session.get('users_key'))
-			orders = Order.objects.values('order_no','address','payment_method','ordered_date').annotate(order_count=Count('_id')).filter(user=user_data)
+			# user_data = Users.objects.get(_id = request.session.get('users_key'))
+			orders = Order.objects.values('order_no','address','payment_method','ordered_date').annotate(order_count=Count('_id')).filter(user___id=request.session.get('users_key'))
 			order_list=[]
 	
 			for order in orders:
@@ -449,16 +438,12 @@ class OrderHistory(View):
 			page = request.GET.get('page',1)
 			paginator = Paginator(order_list,5)
 			order_obj =  paginator.page(page)
-			cart_data = Cart.objects.filter(user=user_data)
-			count = 0
-			
-			for item in cart_data:
-				count+=1
-
+			cart_data = Cart.objects.filter(user___id=request.session.get('users_key'))
+	
 			rendered_data = {
-				'users':user_data,
+				'users':True,
 				'orders':order_obj,
-				'cart_count':count
+				'cart_count':cart_data.count()
 			}
 			
 			return render(request,'user/order_history.html',rendered_data)
@@ -469,17 +454,12 @@ class OrderHistory(View):
 class OrderDetail(View):
 	def get(self,request,orderno):
 		if request.session.get('users_key'):
-			user_data = Users.objects.get(_id = request.session.get('users_key'))
-			cart_data = Cart.objects.filter(user=user_data)
-			count = 0
-		
-			for item in cart_data:
-				count+=1
+			cart_data = Cart.objects.filter(user___id=request.session.get('users_key'))
+			order_data = Order.objects.filter(user___id=request.session.get('users_key'),order_no=orderno)
 
-			order_data = Order.objects.filter(user=user_data,order_no=orderno)
 			rendered_data={
-				'users':user_data,
-				'cart_count':count,
+				'users': True,
+				'cart_count':cart_data.count(),
 				'orders':order_data
 			}			
 			return render(request,'user/order_detail.html',rendered_data)

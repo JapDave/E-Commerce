@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.views import View
 from .models import *
+from django.db.models import Q
 from django.conf import settings
 from django.core.mail import send_mail
 from Enterprise.models import Categories,Enterprise,Products
@@ -12,6 +13,7 @@ from .forms import RegisterForm
 import random
 from django.core.paginator import Paginator
 from django.db.models import  Count
+import hashlib
 
 class ForgotPassword(View):
 	def get(self,request):
@@ -59,7 +61,7 @@ class ChangePassword(View):
 		if password == confirm_password:
 			user_id = request.session.get('temp_data')
 			user_data = Users.objects.get(_id=user_id)
-			user_data.enterprise_password = confirm_password
+			user_data.enterprise_password = hashlib.sha256(str.encode(confirm_password)).hexdigest()
 			user_data.save()
 			del request.session['temp_data']
 			del request.session['otp']
@@ -82,16 +84,16 @@ class Login(View):
 		user_password = request.POST['password']
 		try:
 			fetched_data = Users.objects.filter(user_email=user_mail).first()
-			if fetched_data != None and fetched_data.user_password == user_password:
+			if fetched_data != None and hashlib.sha256(str.encode(user_password)).hexdigest() == fetched_data.user_password :
 				request.session['users_key'] = str(fetched_data._id)
-				return redirect(reverse('index')) # redirect to Home page
+				return redirect(reverse('index'))
 			else:
 				raise ValueError() 
 		except ValueError:
 			messages.error(request,'wrong username or password')
-			return redirect(reverse('login')) # Wrong credential showed in file
+			return redirect(reverse('login')) 
 		except Exception as e:
-			return HttpResponse('404')# 404 file
+			return HttpResponse('404')
 
 
 class Registeration(View):
@@ -100,7 +102,16 @@ class Registeration(View):
 		return render(request,'registeration.html',{'form':form})
 
 	def post(self,request):
-		pass
+		form=RegisterForm(request.POST,request.FILES)
+		if form.is_valid:
+			try:
+				form.save()
+				return redirect(reverse('login'))
+			except:
+				return render(request,'registeration.html',{'form':form})
+		else:
+			return render(request,'registeration.html',{'form':form})
+				
 
 class Logout(View):
 	def get(self,request):
@@ -115,23 +126,25 @@ class Profile(View):
 			user_data = Users.objects.get(_id=request.session.get('users_key'))
 			form = RegisterForm(instance=user_data)
 			cart_data = Cart.objects.filter(user=user_data,product_items__isnull=False)
-			count = 0
-			for item in cart_data:
-				count+=1
-
-			return render(request,'user/profile.html',{'form':form,'users':user_data,'cart_count':count})
+		
+			return render(request,'user/profile.html',{'form':form,'users':user_data,'cart_count':cart_data.count()})
 		else:
 			return redirect(reverse('login'))
 
 	def post(self,request):
 		user_data = Users.objects.get(_id=request.session.get('users_key'))
-		form=RegisterForm(request.POST,request.FILES,instance=user_data) 
-		if form.is_valid():
-			form.save()
-			return redirect(reverse('user_profile'))
-		else:
-			return render(request,'user/profile.html',{'form':form,'users':user_data})
-		
+		form = RegisterForm(request.POST,request.FILES,instance=user_data) 
+	
+		if request.POST.get('register'):
+			if form.is_valid():
+				form.save()
+				messages.success(request,'Your Profile is updated successfully	')
+				return redirect(reverse('user_profile'))
+			
+			else:
+				messages.success(request,'Your Profile is not updated')
+				return render(request,'user/profile.html',{'form':form,'users':True})
+			
 
 class Index(View):
 	def get(self,request):
@@ -158,16 +171,14 @@ class AllProducts(View):
 		if request.session.get('users_key'):
 			user_data = Users.objects.get(_id = request.session.get('users_key'))
 			cart_data = Cart.objects.filter(user=user_data,product_items__isnull=False)
-			count = 0
-			for item in cart_data:
-				count+=1
+
 			rendered_data["users"] = user_data 
-			rendered_data["cart_count"] = count
+			rendered_data["cart_count"] = cart_data.count()
 		product_data = Products.objects.filter(product_categories=id)
 
 		if product_data:
 			page = request.GET.get('page',1)
-			paginator = Paginator(product_data,10)
+			paginator = Paginator(product_data,8)
 			product_obj = paginator.page(page)
 			rendered_data["products"] = product_obj
 
@@ -182,15 +193,12 @@ class AllProducts(View):
 		if request.session.get('users_key'):
 			user_data = Users.objects.get(_id = request.session.get('users_key'))
 			cart_data = Cart.objects.filter(user=user_data)
-			count = 0
-			for item in cart_data:
-				count+=1
 			rendered_data["users"] = user_data 
-			rendered_data["cart_count"] = count
+			rendered_data["cart_count"] = cart_data.count()
 
 		if request.POST.get('search_product'):
 			searched_product = request.POST.get('search_product')
-			product_data = Products.objects.filter(product_categories=id,product_name__contains=searched_product)
+			product_data = Products.objects.filter(Q(product_name__contains=searched_product) | Q(  product_enterprsie__enterprise_name__contains=searched_product),product_categories=id)
 			page = request.GET.get('page',1)
 			paginator = Paginator(product_data,10)
 			product_obj = paginator.page(page)

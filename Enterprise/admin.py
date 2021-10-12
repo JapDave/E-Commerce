@@ -32,6 +32,7 @@ class EnterpriseAdmin(admin.ModelAdmin):
     form = EnterpriseForm
     search_fields = ('enterprise_name',)
     list_per_page = 10
+    
 
 class ProductAdmin(admin.ModelAdmin):
     form = ProductsForm
@@ -50,12 +51,6 @@ class ProductAdmin(admin.ModelAdmin):
     @admin.display(description='Image')
     def get_image(self, obj):
         return format_html('<img src="{}" width=80px height=75px/>'.format(obj.product_img.url))
-
-
-
-
-    # class Media:
-    #     js = ('js/chained_list.js',)
 
 
      

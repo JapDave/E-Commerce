@@ -78,8 +78,6 @@ li {
     margin-right: -250px;
 }
 
-
-
 .sidebar-nav {
     position: absolute;
     top: 0;
@@ -149,19 +147,65 @@ li {
 
 /* Index Content */
 
-.category{
-    box-shadow: 0px 0px 6px 0px rgb(0 0 0 / 26%);
-    margin: 5%;
+.main{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
 }
 
-.category p{
-    font-family: fangsong;
-    font-size: larger;
-    font-weight: 500;
-}
-.product{
+.category{
     box-shadow: 0px 0px 6px 0px rgb(0 0 0 / 26%);
-    margin: 5%;
+    margin: 1%;
+    cursor: pointer;
+    width: 30%;
+    position: relative;
+}
+
+.category-title{
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    width: 100%;
+    background-color: rgb(195 210 227 / 75%);
+    height: 100%;
+    position: absolute;
+    visibility: hidden;
+}
+
+.category-title h5{
+    font-family: sans-serif;
+    font-size: x-large;
+    color: #0f2a15;
+    padding: 22%;
+    text-align: center;
+}
+
+.product-main{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.product-card{
+    display: grid;
+    box-shadow: 0px 0px 6px 0px rgb(0 0 0 / 26%);
+    margin: 2%;
+    padding: 1%;
+    width: 21%;
+}
+
+.product-img{
+    margin-left: 16px;
+    width: 181px;
+    height: 198px;
+
+}
+
+.product-title{
+    font-family: system-ui;
+    font-size: 19px;
+    font-weight: 400;
+    text-transform: capitalize;
+    color: #403333;
 }
 
 .price{
@@ -173,8 +217,8 @@ li {
 .checkout-box a{
     background-color: #dadada;
     border-radius: 5px;
-    padding: 9px;
-    width: 77%;
+    padding: 10px;
+    width: 100%;
     color: black;
     align-self: center;
     cursor: pointer;

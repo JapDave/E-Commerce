@@ -12,14 +12,16 @@
          "searching": true,
          "columnDefs": [
          { "searchable": false, "targets": 0 }
-         ]
+         ],
+         "order":[[ 9,"asc" ]],
+         "columnDefs" : [{"targets":9, "type":"date-eu"}],
 
       });
    });
 </script>
 {% endblock head %}
 
-{% block title %} Prodcuts {% endblock title %}
+{% block title %} Prodcuts List {% endblock title %}
 
 {% block body %}
 
@@ -50,6 +52,7 @@
                   <th>Qty</th>
                   <th>Total</th>
                   <th>Payment Mode</th>
+                  <th>Ordered Date</th>
                   <th>Actions</th>
                </tr>
             </thead>
@@ -79,7 +82,10 @@
                   </td>
                   <td>
                      {{product.payment_method}}
-                     </td>
+                  </td>
+                  <td>
+                     {{product.created_at}}
+                  </td>
                   <td>
                      <a href="{% url 'order_detail' product|private:'_id'%}" class="detail-btn">Details</a>
                   </td>

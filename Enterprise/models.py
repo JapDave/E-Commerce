@@ -3,7 +3,6 @@ from django.core.validators import RegexValidator, FileExtensionValidator
 from django.utils.timezone import now
 from django.db.models import signals
 # from djongo import models
-
 import uuid
 
 class ParanoidModelManager(models.Manager):
@@ -40,7 +39,7 @@ class Categories(models.Model):
 class Enterprise(models.Model):
     _id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     enterprise_name = models.CharField(("Enterprise-Name"), max_length=50, null=False, blank=False)
-    enterprise_password = models.CharField(("Password"), max_length=50, null=False, blank=False)
+    enterprise_password = models.CharField(("Password"), max_length=64, null=False, blank=False)
     enterprise_email = models.EmailField(("E-mail"),null=False, blank=False)
     enterprise_photo = models.ImageField(("Profile-photo"), upload_to='Enterprise/profile_photo', height_field=None, width_field=None, max_length=None)
     phoneNumberRegex = RegexValidator(regex = r"^\+?1?\d{10}$")
@@ -69,6 +68,8 @@ class Enterprise(models.Model):
             self.deleted_at = now()
             self.save()
    
+   
+
     
 class Products(models.Model):
     _id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

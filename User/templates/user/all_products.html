@@ -4,24 +4,27 @@
 
 
 {% block body %}
-<nav  class="nav-page">
+<nav class="nav-page">
   <div class="search-bar">
-        <form method="POST">
-            {% csrf_token %}
-            <div>
-              <input type="search" name="search_product" placeholder=" &#xF002; Search Product" value="{{searched_product}}" style="font-family:Arial, FontAwesome">
-            </div>  
-        </form>
+    <form method="POST">
+      {% csrf_token %}
       <div>
-          <form method="POST">
-              {% csrf_token %}
-              <select name="filter_by" onchange="this.form.submit()" style="font-family:Arial, FontAwesome">
-                  <option value="featured"{% if filtered_product == 'featured' %}selected{% endif %}> &#xf0dc; featured</option>
-                  <option value="ascending"{% if filtered_product == 'ascending' %}selected{% endif %}> &#xf0dc; Low to High Price</option>
-                  <option value="descending"{% if filtered_product == 'descending' %}selected{% endif %}> &#xf0dc; High to Low Price</option>
-              </select>
-          </form>
+        <input type="search" name="search_product" placeholder=" &#xF002; Search Product" value="{{searched_product}}"
+          style="font-family:Arial, FontAwesome">
       </div>
+    </form>
+    <div>
+      <form method="POST">
+        {% csrf_token %}
+        <select name="filter_by" onchange="this.form.submit()" style="font-family:Arial, FontAwesome">
+          <option value="featured" {% if filtered_product == 'featured' %}selected{% endif %}> &#xf0dc; featured</option>
+          <option value="ascending" {% if filtered_product == 'ascending' %}selected{% endif %}> &#xf0dc; Low to High
+            Price</option>
+          <option value="descending" {% if filtered_product == 'descending' %}selected{% endif %}> &#xf0dc; High to Low
+            Price</option>
+        </select>
+      </form>
+    </div>
   </div>
 
 </nav>
@@ -29,60 +32,57 @@
 
 
 <section class="container">
-{% if messages %}
-    <div>
-        {% for message in messages %}
-        <div class="alert alert-danger">
-            <a class="close" href="#" data-dismiss="alert">×</a>
-            {{ message }}
+  {% if messages %}
+  <div>
+    {% for message in messages %}
+    <div class="alert alert-danger">
+      <a class="close" href="#" data-dismiss="alert">×</a>
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="product-main container m-auto">
+    {% for product in products %}
+
+      <div class="product-card mb-3 ">
+        <div>
+          <a href="{% url 'product_detail' product|private:'_id' %}" ><img
+              src="{{product.product_img.url}}" class="product-img" /></a>
         </div>
-        {% endfor %}
-    </div>
-{% endif %}
-    <table cellpadding="25px">
-    <div class="row  container-fluid m-auto">
-    <tr>
-  
-        {% for product in products %}
-            <td>
-            <div class="col-sm product card  mb-3 ">
-                <a href="{% url 'product_detail' product|private:'_id' %}"><img class=" card-image-center mt-2 rounded" src="{{product.product_img.url}}" width="200px" height="200px"/></a>
-                <h6 class="card-title text-center mt-1">{{product.product_enterprsie}}'s</h6>
-                <p class="text-center">{{product.product_name}}</p>
-                <h5 class="text-center price">&#8377 {{product.Price}}</h5>
-                <a href="{% url 'add_to_cart' product|private:'_id' %}" class="text-center cart-btn mb-2"><i class="fas fa-shopping-cart fa-1x"></i> Add to cart </a>
-            </div>
-            </td>
-            {% if forloop.counter|divisibleby:4 %}
-                <tr></tr>
-            {% endif %} 
-        {% endfor %}
-   
-    </tr>    
-    </div>
-    </table>
+        <div>
+          <h6 class="text-center mt-1">{{product.product_enterprsie}}'s</h6>
+          <h5 class="text-center product-title">{{product.product_name}}</h5>
+          <h5 class="text-center price">&#8377 {{product.Price}}</h5>
+        </div>
+        <a href="{% url 'add_to_cart' product|private:'_id' %}" class="text-center cart-btn "><i
+          class="fas fa-shopping-cart fa-1x"></i> Add to cart </a>
+      </div>
+    {% endfor %}
+  </div>
 </section>
 
 {% if products.has_other_pages %}
-  <ul class="paginations">
-    {% if products.has_previous %}
-      <li><a href="?page={{ products.previous_page_number }}">&laquo;</a></li>
-    {% else %}
-      <li class="disabled"><span>&laquo;</span></li>
-    {% endif %}
-    {% for i in products.paginator.page_range %}
-      {% if products.number == i %}
-        <li class="active"><span>{{ i }} <span class=""></span></span></li>
-      {% else %}
-        <li><a href="?page={{ i }}">{{ i }}</a></li>
-      {% endif %}
-    {% endfor %}
-    {% if products.has_next %}
-      <li><a href="?page={{ products.next_page_number }}">&raquo;</a></li>
-    {% else %}
-      <li class="disabled"><span>&raquo;</span></li>
-    {% endif %}
-  </ul>
+<ul class="paginations">
+  {% if products.has_previous %}
+  <li><a href="?page={{ products.previous_page_number }}">&laquo;</a></li>
+  {% else %}
+  <li class="disabled"><span>&laquo;</span></li>
+  {% endif %}
+  {% for i in products.paginator.page_range %}
+  {% if products.number == i %}
+  <li class="active"><span>{{ i }} <span class=""></span></span></li>
+  {% else %}
+  <li><a href="?page={{ i }}">{{ i }}</a></li>
+  {% endif %}
+  {% endfor %}
+  {% if products.has_next %}
+  <li><a href="?page={{ products.next_page_number }}">&raquo;</a></li>
+  {% else %}
+  <li class="disabled"><span>&raquo;</span></li>
+  {% endif %}
+</ul>
 {% endif %}
 
 {% endblock body %}

@@ -21,9 +21,6 @@ class OrderAdmin(admin.ModelAdmin):
     def get_image(self,obj):
         return format_html('<img src="{}" width=70px height=65px/>'.format(obj.product.product_img.url))
 
-
-
-    
     @admin.display(description='Enterprise Name')
     def get_enterprise(self,obj):
         return obj.product.product_enterprsie.enterprise_name

@@ -2,6 +2,18 @@
 {% block title %}Home{% endblock title %}
 {% load static %}
 {% load tagger %}
+
+{% block head %} 
+  <script>
+    function displaytitle(counter){
+      document.getElementById('title-'+counter).style.visibility = "visible";
+    }
+    function hidetitle(counter){
+      document.getElementById('title-'+counter).style.visibility = "hidden";
+    }
+  </script>
+{% endblock head %}
+
 {% block body %}
 <section class="brand-poster">
     <div id="carouselExample" class="carousel slide" data-ride="carousel">
@@ -31,23 +43,17 @@
       </div>
 </section>    
 
-<section class="main container mt-4">
-    <table>
-    <div class="row container-fluid m-auto">
-    <tr>
+<section class="container-fluid mt-4">
+    <div class="main container-fluid">
         {% for category in categories %}
-            <td>
-            <div class="col-sm card category team_item mb-3">
-                <a href="{% url 'all_products' category|private:'_id' %}"><img class="card-img-top mt-2 rounded" src="{{category.category_image.url}}" width="200px" height="200px"/></a>
-                <p class="card-title text-center mt-1">{{category.category_name}}</p>
-            </div>
-            </td>
-            {% if forloop.counter|divisibleby:3 %}
-                <tr></tr>
-            {% endif %} 
+        
+          <div class="category mb-3" onmouseover="displaytitle('{{forloop.counter}}')" onmouseleave="hidetitle('{{forloop.counter}}')">
+            <img class="card-img-top rounded" src="{{category.category_image.url}}" width="100px" height="200px" />
+            <a href="{% url 'all_products' category|private:'_id' %}"> <div class='category-title' id='title-{{forloop.counter}}'><h5>{{category.category_name}}</h5></div>
+            </a> 
+          </div>
+       
         {% endfor %}
-    </tr>    
     </div>
-    </table>
 </section>
 {% endblock body %}

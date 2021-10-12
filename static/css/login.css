@@ -116,7 +116,8 @@ ul li {
     padding-top: 100px;
 }
 
-.login-container p{
+.login-container p,
+.form-title{
     border: 1px solid #76a6bd;
     color: white;
     padding: 11px;
@@ -128,4 +129,15 @@ ul li {
 }
 .wrapper.login-container {
     margin-top: 140px;
+}
+
+.register-container {
+    max-width: 400px;
+    z-index: 100;
+    margin: 0 auto;
+    padding-top: 100px;
+}
+.formerror{
+    color: #ce3434;
+    margin-left: 12px;
 }

@@ -3,11 +3,24 @@
 {% block title %}Enterprise|Profile{% endblock title %}
 
 {% block body %}
-
+{% if messages %}
+    <div>
+        {% for message in messages %}
+        <div class="alert alert-warning">
+            <a class="close" href="#" data-dismiss="alert">×</a>
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
 <div class="container profile">
     <hr>
 	<div class="row">
       <div class="col-md-3">
+        <div class="formerror">  
+          {{form.enterprise_photo.errors.as_text}}
+         </div>
         <div class="text-center">
             <img src="/uploads/{{form.enterprise_photo.value}}" alt="" class="rounded-circle" width="200px" height="200px" >
         </div>

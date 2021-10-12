@@ -10,7 +10,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 import random
 from .tasks import mail_user_updateorder
-
+import hashlib
 
 class CategoryFilter(View):
       pass
@@ -82,7 +82,7 @@ class ChangePassword(View):
         if password == confirm_password:
             enterprise_id = request.session.get('temp_data')
             enterprise_data = Enterprise.objects.get(_id=enterprise_id)
-            enterprise_data.enterprise_password = confirm_password
+            enterprise_data.enterprise_password = hashlib.sha256(str.encode(confirm_password)).hexdigest()
             enterprise_data.save()
             del request.session['temp_data']
             del request.session['otp']
@@ -104,17 +104,17 @@ class Login(View):
         user_password = request.POST['password']
         try:
             fetched_data = Enterprise.objects.filter(enterprise_email=user_mail).first()
-            if fetched_data != None and fetched_data.enterprise_password == user_password:
+            if fetched_data != None and hashlib.sha256(str.encode(user_password)).hexdigest() == user_password:
                 request.session['enterprise_key'] = str(fetched_data._id)
-                return redirect(reverse('enterprise_index')) # redirect to Home page
+                return redirect(reverse('enterprise_index')) 
             else:
                 raise ValueError() 
         except ValueError:
             messages.error(request,'wrong username or password')
-            return redirect(reverse('enterprise_login')) # Wrong credential showed in file
+            return redirect(reverse('enterprise_login'))
         except Exception as e:
-            return HttpResponse('404')# 404 file
-
+            return HttpResponse('404')
+            
 class Logout(View):
     def get(self,request):
         if is_authenticate(request):
@@ -133,7 +133,6 @@ class Profile(View):
     def post(self,request):
         enterprise_data = Enterprise.objects.filter(_id = request.session.get('enterprise_key')).first()
         form=EnterpriseForm(request.POST,request.FILES,instance=enterprise_data) 
-        print(form['enterprise_photo'].value)
         if form.is_valid():
             form.save()
             return redirect(reverse('enterprise_profile'))
@@ -231,7 +230,7 @@ class UpdateProduct(View):
                     form.save()
                     return redirect(reverse('product_list'))
                 else:
-                    render(request,'enterprise/add_product.html',form=form)
+                    render(request,'enterprise/add_product.html',{'form':form})
             
             elif request.POST.get('delete'):
                 product_data.delete()
@@ -245,8 +244,6 @@ class DeleteProduct(View):
             return redirect(reverse('product_list'))
         else:
             return redirect(reverse('enterprise_login'))
-
-
 
 class OrderRequest(View):
     def get(self,request):

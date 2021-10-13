@@ -145,7 +145,7 @@ table tr{
     border-radius: 23px;
     padding: 2%;
     background-color: #eaeaea;
-    width: 33%;
+    width: fit-content;
 }
 
 .order-status{

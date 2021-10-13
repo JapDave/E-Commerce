@@ -322,6 +322,7 @@ li {
     top: 29%;
     position: absolute;
     right: 4%;
+    width: 19%;
 }
 
 .checkout-box h5{
@@ -478,7 +479,7 @@ button{
     border-radius: 5px;
     margin-top: 1%;
     background-color: #e2e2e2;
-    width: 38%;
+    width: 33%;
     display: flex;
     justify-content: space-between;
     align-items: center;

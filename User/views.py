@@ -22,9 +22,10 @@ class ForgotPassword(View):
 	
 	def post(self,request):
 		user_email = request.POST['email']
-		
+		print(user_email)
 		try:
-			user_data = Users.objects.get(enterprise_email=user_email)
+			user_data = Users.objects.get(user_email=user_email)
+			print(user_data)
 			request.session['temp_data'] = str(user_data._id)
 			generated_otp = random.randint(1111,9999)
 			request.session['otp']=generated_otp
@@ -33,11 +34,11 @@ class ForgotPassword(View):
 			email_from = settings.EMAIL_HOST_USER
 			recepient  = [user_email,]
 			send_mail(subject, message, email_from, recepient)
-			return redirect(reverse('otp_verification'))
+			return redirect(reverse('user_otp_verification'))
 
 		except:
 			messages.error(request,'Email id not found try again.')
-			return redirect(reverse('forgot_password'))
+			return redirect(reverse('user_forgot_password'))
 
 class OtpVerification(View):
 	def get(self,request):
@@ -46,10 +47,10 @@ class OtpVerification(View):
 	def post(self,request):
 		user_otp = request.POST['otp']
 		if user_otp == str(request.session.get('otp')):
-			return redirect(reverse('change_password'))
+			return redirect(reverse('user_change_password'))
 		else:
 			messages.error(request,'Wrong otp try again.')
-			return redirect(reverse('otp_verification'))
+			return redirect(reverse('user_otp_verification'))
 
 
 class ChangePassword(View):
@@ -62,14 +63,14 @@ class ChangePassword(View):
 		if password == confirm_password:
 			user_id = request.session.get('temp_data')
 			user_data = Users.objects.get(_id=user_id)
-			user_data.enterprise_password = hashlib.sha256(str.encode(confirm_password)).hexdigest()
+			user_data.user_password = hashlib.sha256(str.encode(confirm_password)).hexdigest()
 			user_data.save()
 			del request.session['temp_data']
 			del request.session['otp']
-			return redirect(reverse('enterprise_login'))
+			return redirect(reverse('login'))
 		else:
 			messages.error(request,'Password does not match.')
-			return redirect(reverse('change_password'))
+			return redirect(reverse('user_change_password'))
 
 
 class Login(View):
@@ -179,10 +180,9 @@ class AllProducts(View):
 	def get(self,request,id):
 		rendered_data = {}
 		if request.session.get('users_key'):
-			user_data = Users.objects.get(_id = request.session.get('users_key'))
-			cart_data = Cart.objects.filter(user=user_data,product_items__isnull=False)
-
-			rendered_data["users"] = user_data 
+			# user_data = Users.objects.get(_id = request.session.get('users_key'))
+			cart_data = Cart.objects.filter(user___id=request.session.get('users_key'),product_items__isnull=False)
+			rendered_data["users"] = True
 			rendered_data["cart_count"] = cart_data.count()
 		product_data = Products.objects.filter(product_categories=id)
 
@@ -242,50 +242,65 @@ class ProductDetail(View):
 
 	def get(self,request,id):
 		rendered_data = {}
-		if request.session.get('users_key'):
-			user_data = Users.objects.get(_id = request.session.get('users_key'))
-			cart_data = Cart.objects.filter(user=user_data,product_items__isnull=False)
-
-			rendered_data["users"] = user_data 
-			rendered_data["cart_count"] = cart_data.count()
-			product_data = Products.objects.get(_id=id)
-			rendered_data["product"]=product_data
-			return render(request,'user/product_detail.html',rendered_data)
-		else:
-			return redirect(reverse('login'))
-
-	def post(self,request,id):
-		user_data = Users.objects.get(_id = request.session.get('users_key'))
 		product_data = Products.objects.get(_id=id)
 		
-		if request.POST.get('add_address'):
-			user_address = request.POST['user_address2']
-			user_data.user_address2 = user_address
-			user_data.save()
-			return redirect(reverse('product_detail', kwargs={'id':id}))
-
-		elif request.POST.get('buy_btn'):
-			qty = request.POST['selected_qty']
-			if request.POST.get('address'):
-				address = request.POST.get('address')
-			else:
-				address = user_data.user_address1
-			
+		if request.session.get('users_key'):
+			# user_data = Users.objects.get(_id = request.session.get('users_key'))
+			cart_data = Cart.objects.filter(user___id=request.session.get('users_key'),product_items__isnull=False)
+			address_data = Address.objects.filter(user___id=request.session.get('users_key'))
+			address_form = AddressForm()
 			rendered_data = {
-				'users':user_data,
-				'products': product_data,
-				'qty' : int(qty),
-				'total' : int(qty) * product_data.Price,
-				'address': address
+				'users':True,
+				'cart_count':cart_data.count(),
+				'product':product_data,
+				'address':address_data,
+				'addressform':address_form
 			}
+			return render(request,'user/product_detail.html',rendered_data)
+		else:
+			rendered_data["product"]=product_data
+			return render(request,'user/product_detail.html',rendered_data)
 
-			if int(qty) <= product_data.product_qty: 
-				return render(request,'user/checkout.html',rendered_data)
+	def post(self,request,id):
+		if request.session.get('users_key'):
+			user_data = Users.objects.get(_id = request.session.get('users_key'))
+			product_data = Products.objects.get(_id=id)
 			
-			else:
-				messages.error(request,'Sorry that much quantity not available.')
-				return redirect(reverse('product_detail', kwargs={'id':id}))
+			if request.POST.get('add_address'):
+				address_form = AddressForm(request.POST)
+				address_form.data._mutable = True
+				address_form.data['user'] = user_data
+				address_form.data._mutable = False
+				if address_form.is_valid:
+					address_form.save()	
+					messages.success(request,'address was added.')
+					return redirect(reverse('product_detail', kwargs={'id':id}))
+				else:
+					print(address_form.errors)
+					messages.error(request,'sorry address was not added.')
+					return redirect(reverse('product_detail', kwargs={'id':id}))
+			
 
+			elif request.POST.get('buy_btn'):
+				qty = request.POST['selected_qty']
+				address = request.POST.get('address')
+				
+				rendered_data = {
+					'users':user_data,
+					'products': product_data,
+					'qty' : int(qty),
+					'total' : int(qty) * product_data.Price,
+					'address': address
+				}
+
+				if int(qty) <= product_data.product_qty: 
+					return render(request,'user/checkout.html',rendered_data)
+				
+				else:
+					messages.error(request,'Sorry that much quantity not available.')
+					return redirect(reverse('product_detail', kwargs={'id':id}))
+		else:
+			return redirect(reverse('login'))
 
 class AddItem(View):
 	def get(self,request,id):
@@ -309,7 +324,7 @@ class AddItem(View):
 class RemoveItem(View):
 	def get(self,request,id):
 		if request.session.get('users_key'):
-			cart_data = Cart.objects.get(product_items___id=id)
+			cart_data = Cart.objects.get(user___id=request.session.get('users_key'),product_items___id=id)
 			cart_data.delete()
 			return redirect(reverse('cart'))
 		else:
@@ -322,7 +337,7 @@ class CartList(View):
 			# user_data = Users.objects.get(_id = request.session.get('users_key'))
 			cart_data = Cart.objects.filter(user___id=request.session.get('users_key'),product_items__isnull=False)
 			address_data = Address.objects.filter(user___id=request.session.get('users_key'))
-		
+			address_form = AddressForm()
 			
 			sub_total = 0
 			item_count = 0
@@ -340,7 +355,8 @@ class CartList(View):
 				'sub_total':sub_total,
 				'item_count':item_count,
 				'cart_count':cart_data.count(),
-				'address':address_data
+				'address':address_data,
+				'addressform':address_form
 			}
 			return render(request,'user/cart.html',rendered_data)
 		else:
@@ -365,17 +381,24 @@ class CartList(View):
 				return redirect(reverse('cart'))
 
 		if request.POST.get('add_address'):
-			user_address = request.POST['user_address2']
-			user_data.user_address2 = user_address
-			user_data.save()
-			return redirect(reverse('cart'))
+			address_form = AddressForm(request.POST)
+			address_form.data._mutable = True
+			address_form.data['user'] = user_data
+			address_form.data._mutable = False
+			if address_form.is_valid:
+				address_form.save()	
+				messages.success(request,'address was added.')
+				return redirect(reverse('cart'))
+			else:
+				print(address_form.errors)
+				messages.error(request,'sorry address was not added.')
+				return(redirect(reverse('cart')))
+		
 		
 		elif request.POST.get('checkout_btn'):
-			if request.POST.get('address'):
-				address = request.POST.get('address')
-			else:
-				address = user_data.user_address1
-			
+	
+			address = request.POST.get('address')
+		
 			cart_data = Cart.objects.filter(user=user_data)
 			sub_total = 0
 			for item in cart_data:

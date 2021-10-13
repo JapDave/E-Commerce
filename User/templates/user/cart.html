@@ -6,7 +6,7 @@
 <script>
 	function displayRadioValue() {
 		var ele = document.getElementsByName('address');
-	
+
 
 		for (i = 0; i < ele.length; i++) {
 			if (ele[i].checked)
@@ -30,8 +30,8 @@
 		{% endfor %}
 	</div>
 	{% endif %}
-{% if cart_item %}
-	<div class="items">	
+	{% if cart_item %}
+	<div class="items">
 		{% for item in cart_item %}
 		<div class="cart-item mt-4">
 			<div>
@@ -72,100 +72,117 @@
 		<button data-toggle="modal" data-target="#address-modal" class="price mb-2" id="user_address"><i
 				class="fas fa-map-marker-alt"></i> Deliver to-<br>
 			{% for add in address %}
-				{% if forloop.counter <= 1 %}
-					{{add.postal_address}}
+				{% if forloop.counter <= 1 %} 
+				{{add.postal_address|slice:':15'}} {% if add.postal_address|length > 15 %}...{% endif %}
 				{% endif %}
-			
-			{% endfor %}	
-	</button>
-		<form method="POST">
-			{% csrf_token %}
-			<div class="modal fade" id="address-modal" tabindex="-1" role="dialog"
-				aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLongTitle">Choose Address </h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
+			 {% endfor %}
+			  </button>
+				<form method="POST">
+					{% csrf_token %}
+					<div class="modal fade" id="address-modal" tabindex="-1" role="dialog"
+						aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLongTitle">Choose Address </h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<table>
+										{% for add in address %}
+										<tr>
+											<td>
+												{% if forloop.counter <= 1 %}<input type="radio" name="address" value="{{add}} "checked>
+													{% else %}
+													<input type="radio" name="address" value="{{add}}">
+												{% endif %}
+												
+												{{add}}
+											</td>
+										</tr>
+										{% endfor %}
+										<tr>
+											<td>
+												<button type="button" data-dismiss="modal" aria-label="Close" data-toggle="modal"
+													data-target="#add-address-modal" href="#add-address-modal">
+													+ add address
+												</button>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<button type="button" class="buy-btn" data-dismiss="modal" aria-label="Close"
+													onclick="displayRadioValue()">
+													Submit
+												</button>
+											</td>
+										</tr>
+
+
+									</table>
+								</div>
+							</div>
 						</div>
-						<div class="modal-body">
-							<table>
-								<tr>
-									<td>
-										<input type="radio" name="address" value="{{users.user_address1}}">
-										{{users.user_address1}}
-									</td>
-								</tr>
-								{% if users.user_address2 %}
-								<tr>
-									<td>
-										<input type="radio" name="address" value="{{users.user_address2}}">
-										{{users.user_address2}}
-									</td>
-								</tr>
-								{% else %}
-								<tr>
-									<td>
-										<button type="button" data-dismiss="modal" aria-label="Close" data-toggle="modal"
-											data-target="#add-address-modal" href="#add-address-modal">
-											+ add address
-										</button>
-									</td>
-								</tr>
-								{% endif %}
-								<tr>
-									<td>
-										<button type="button" class="buy-btn" data-dismiss="modal" aria-label="Close"
-											onclick="displayRadioValue()">
-											Submit
-										</button>
-									</td>
-								</tr>
-							</table>
+					</div>
+					<input type="submit" value="&#xf290; Checkout" name="checkout_btn" class="buy-btn"
+						style="font-family:system-ui, FontAwesome">
+				</form>
+				<div class="modal fade" id="add-address-modal" tabindex="-1" role="dialog"
+					aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLongTitle">Add Address</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<form method="POST">
+									{% csrf_token %}
+									<table cellpadding="10px">
+										</tr>
+											{{addressform.user}}
+										<tr>
+										<tr>
+											<td><label>country:</label></td>
+											<td>{{addressform.country}}</td>
+										</tr>
+										<tr>
+											<td><label>State: </label></td>
+											<td>{{addressform.state}}</td>
+										</tr>
+										<tr>
+											<td><label>City: </label></td>
+											<td>{{addressform.city}}</td>
+										</tr>
+										<tr>
+											<td><label>Pincode: </label></td>
+											<td>{{addressform.pin_code}}</td>
+										</tr>
+										<tr>
+											<td><label>Postal-Detail: </label></td>
+											<td>{{addressform.postal_address}}</td>
+										</tr>
+										<tr>
+											<td colspan="5"><input type="submit" value="submit" name="add_address"
+													class="add-address-btn"></td>
+										</tr>
+									</table>
+								</form>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<input type="submit" value="&#xf290; Checkout" name="checkout_btn" class="buy-btn"
-				style="font-family:system-ui, FontAwesome">
-		</form>
-		<div class="modal fade" id="add-address-modal" tabindex="-1" role="dialog"
-			aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLongTitle">Add Address</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<form method="POST">
-							{% csrf_token %}
-							<table cellpadding="10px">
-								<tr>
-									<td><label>Address:</label></td>
-									<td><textarea name="user_address2" cols="30" rows="5"></textarea></td>
-								</tr>
-								<tr>
-									<td colspan="5"><input type="submit" value="submit" name="add_address"
-											class="add-address-btn"></td>
-								</tr>
-							</table>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
 	</div>
 	{% else %}
-		<div class="alert alert-secondary m-2 ">
-			<a class="close" href="#" data-dismiss="alert">×</a>
-			<p>No items in cart </p>
-		</div>
-{% endif %}	
+	<div class="alert alert-secondary m-2 ">
+		<a class="close" href="#" data-dismiss="alert">×</a>
+		<p>No items in cart </p>
+	</div>
+	{% endif %}
 </section>
 
 

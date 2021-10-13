@@ -71,7 +71,8 @@ class Address(models.Model):
             self.deleted_at = now()
             self.save()
 
-
+    def __str__(self):
+        return self.postal_address +', '+self.city +', '+ self.state +', '+ self.country
 
 class Cart(models.Model):
     _id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

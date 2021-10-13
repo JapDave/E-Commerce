@@ -26,6 +26,8 @@ class OrderAdmin(admin.ModelAdmin):
     form = OrderForm
     list_per_page = 10
     list_display = ('get_user','get_image','get_enterprise','get_product_name','qty','status','created_at')
+    ordering = ('-created_at',)
+
 
     @admin.display(description='User Name')
     def get_user(self,obj):

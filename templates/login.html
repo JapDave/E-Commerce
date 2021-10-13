@@ -35,7 +35,12 @@
 							<button type="submit" class="form-button button-l margin-b ">Login</button>  
 						</div>
 					    <div class="text-c">
-						<a href="{% url 'forgot_password' %}"><small>Forgot your password?</small></a>
+						 {% if header == 'User' %}
+						 	<a href="{% url 'user_forgot_password' %}"><small>Forgot your password?</small></a>
+							 {% else %}
+							<a href="{% url 'forgot_password' %}"><small>Forgot your password?</small></a>
+						 {% endif %}
+						
 						</div>
 					</form>
 

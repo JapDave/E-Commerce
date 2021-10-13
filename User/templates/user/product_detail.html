@@ -10,7 +10,7 @@
 		for (i = 0; i < ele.length; i++) {
 			if (ele[i].checked)
 				document.getElementById("user_address").innerHTML
-					= " <i class='fas fa-map-marker-alt'></i> Deliver to-" + ele[i].value;
+					= " <i class='fas fa-map-marker-alt'></i> Deliver to-" + ele[i].value.slice(0,15)+'...';
 		}
 	}
 </script>
@@ -49,7 +49,12 @@
 			<div class="user-detail">
 				<button data-toggle="modal" data-target="#address-modal" class="price mb-2" id="user_address"><i
 						class="fas fa-map-marker-alt"></i> Deliver to-
-					{{users.user_address1}}</button>
+					{% for add in address %}
+					{% if forloop.counter <= 1 %} 
+						{{add.postal_address|slice:':15'}} {% if add.postal_address|length > 15 %}...{% endif %}
+					{% endif %}
+			 {% endfor %}
+			 </button>
 				<form method="POST">
 					{% csrf_token %}
 					<label class="ml-5">Qty:</label>
@@ -76,20 +81,17 @@
 								</div>
 								<div class="modal-body">
 									<table>
+									{% for add in address %}
 										<tr>
 											<td>
-												<input type="radio" name="address" value="{{users.user_address1}}">
-												{{users.user_address1}}
+												{% if forloop.counter <= 1 %}<input type="radio" name="address" value="{{add}} "checked>
+													{% else %}
+													<input type="radio" name="address" value="{{add}}">
+												{% endif %}
+												{{add}}
 											</td>
 										</tr>
-										{% if users.user_address2 %}
-										<tr>
-											<td>
-												<input type="radio" name="address" value="{{users.user_address2}}">
-												{{users.user_address2}}
-											</td>
-										</tr>
-										{% else %}
+										{% endfor %}
 										<tr>
 											<td>
 												<button type="button" data-dismiss="modal" aria-label="Close" data-toggle="modal"
@@ -98,7 +100,6 @@
 												</button>
 											</td>
 										</tr>
-										{% endif %}
 										<tr>
 											<td>
 												<button type="button" class="buy-btn" data-dismiss="modal" aria-label="Close"
@@ -129,9 +130,28 @@
 								<form method="POST">
 									{% csrf_token %}
 									<table cellpadding="10px">
+											</tr>
+											{{addressform.user}}
 										<tr>
-											<td><label>Address:</label></td>
-											<td><textarea name="user_address2" cols="30" rows="5"></textarea></td>
+										<tr>
+											<td><label>country:</label></td>
+											<td>{{addressform.country}}</td>
+										</tr>
+										<tr>
+											<td><label>State: </label></td>
+											<td>{{addressform.state}}</td>
+										</tr>
+										<tr>
+											<td><label>City: </label></td>
+											<td>{{addressform.city}}</td>
+										</tr>
+										<tr>
+											<td><label>Pincode: </label></td>
+											<td>{{addressform.pin_code}}</td>
+										</tr>
+										<tr>
+											<td><label>Postal-Detail: </label></td>
+											<td>{{addressform.postal_address}}</td>
 										</tr>
 										<tr>
 											<td colspan="5"><input type="submit" value="submit" name="add_address"

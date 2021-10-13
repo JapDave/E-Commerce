@@ -1,4 +1,5 @@
 from django import forms
+from django.forms.widgets import PasswordInput
 from .models import Users,Order,Address
 
 
@@ -16,9 +17,8 @@ class RegisterForm(forms.ModelForm):
         exclude = ['deleted_at',]
         CHOICES = [('M','Male'),('F','Female')]
         widgets = {'user_gender':forms.RadioSelect(choices=CHOICES)}
-        
 
-
+       
 class OrderForm(forms.ModelForm):
 
     class Meta:

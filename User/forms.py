@@ -1,14 +1,23 @@
 from django import forms
-from .models import Users,Order
+from .models import Users,Order,Address
+
+
+class AddressForm(forms.ModelForm):
+
+    class Meta:
+        model = Address
+        exclude = ['deleted_at']
+        widgets = {'user': forms.HiddenInput()}
 
 class RegisterForm(forms.ModelForm):
     
     class Meta:
         model = Users
-        fields = ("__all__")
-        exclude = ['user_address2','deleted_at',]
+        exclude = ['deleted_at',]
         CHOICES = [('M','Male'),('F','Female')]
         widgets = {'user_gender':forms.RadioSelect(choices=CHOICES)}
+        
+
 
 class OrderForm(forms.ModelForm):
 

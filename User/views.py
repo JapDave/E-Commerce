@@ -1,15 +1,16 @@
+from django.forms.models import BaseInlineFormSet, inlineformset_factory 
 from .tasks import mail_sender_enterprise, mail_sender_user
 from django.http.response import HttpResponse
 from django.shortcuts import render,redirect
 from django.urls import reverse
 from django.contrib import messages
 from django.views import View
-from .models import *
+from .models import Users,Order,Cart,Address
 from django.db.models import Q
 from django.conf import settings
 from django.core.mail import send_mail
 from Enterprise.models import Categories,Enterprise,Products
-from .forms import RegisterForm
+from .forms import AddressForm, RegisterForm
 import random
 from django.core.paginator import Paginator
 from django.db.models import  Count
@@ -98,19 +99,27 @@ class Login(View):
 
 class Registeration(View):
 	def get(self,request):
-		form = RegisterForm()
-		return render(request,'registeration.html',{'form':form})
+		user_form = RegisterForm()
+		address_form = AddressForm()
+		return render(request,'registeration.html',{'userform':user_form,'addressform':address_form})
 
 	def post(self,request):
-		form=RegisterForm(request.POST,request.FILES)
-		if form.is_valid:
+		user_form = RegisterForm(request.POST,request.FILES)
+		address_form = AddressForm(request.POST,request.FILES)
+		if user_form.is_valid and address_form.is_valid:
 			try:
-				form.save()
+				user_obj = user_form.save(commit=False)
+				if user_obj:
+					address_form.data._mutable = True
+					address_form.data['user'] = user_obj
+					address_form.data._mutable = False
+					user_form.save()
+					address_form.save()
 				return redirect(reverse('login'))
-			except:
-				return render(request,'registeration.html',{'form':form})
+			except Exception as e:
+				return render(request,'registeration.html',{'userform':user_form,'addressform':address_form})
 		else:
-			return render(request,'registeration.html',{'form':form})
+			return render(request,'registeration.html',{'userform':user_form,'addressform':address_form})
 				
 
 class Logout(View):
@@ -124,6 +133,7 @@ class Profile(View):
 	def get(self,request):
 		if request.session.get('users_key'):
 			user_data = Users.objects.get(_id=request.session.get('users_key'))
+			# userformset = inlineformset_factory(Users,Address)
 			form = RegisterForm(instance=user_data)
 			cart_data = Cart.objects.filter(user=user_data,product_items__isnull=False)
 		
@@ -309,8 +319,10 @@ class CartList(View):
 
 	def get(self,request):
 		if request.session.get('users_key'):
-			user_data = Users.objects.get(_id = request.session.get('users_key'))
-			cart_data = Cart.objects.filter(user=user_data,product_items__isnull=False)
+			# user_data = Users.objects.get(_id = request.session.get('users_key'))
+			cart_data = Cart.objects.filter(user___id=request.session.get('users_key'),product_items__isnull=False)
+			address_data = Address.objects.filter(user___id=request.session.get('users_key'))
+		
 			
 			sub_total = 0
 			item_count = 0
@@ -324,10 +336,11 @@ class CartList(View):
 			cart_obj = paginator.page(page)
 			rendered_data = {
 				'cart_item':cart_obj,
-				'users':user_data,
+				'users':True,
 				'sub_total':sub_total,
 				'item_count':item_count,
-				'cart_count':cart_data.count()
+				'cart_count':cart_data.count(),
+				'address':address_data
 			}
 			return render(request,'user/cart.html',rendered_data)
 		else:

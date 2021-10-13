@@ -1,12 +1,26 @@
 from django.contrib import admin
-from .models import *
+from .models import Users,Cart,Order,Address
 from .forms import OrderForm, RegisterForm
 from django.utils.html import format_html
+
+
+class AddressAdmin(admin.StackedInline):
+    model = Address
+    exclude= ['deleted_at']
+
+    def get_extra(self, request, obj=None, **kwargs):
+        extra = 1
+        # if obj:
+        #     print(obj)
+        #     return extra - obj.count()
+        return extra
 
 
 class UserAdmin(admin.ModelAdmin):
     admin.site.site_header = 'Shop Admin'
     form = RegisterForm
+    inlines = [AddressAdmin,]
+
 
 class OrderAdmin(admin.ModelAdmin):
     form = OrderForm

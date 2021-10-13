@@ -14,59 +14,95 @@ User|Registeration
 	<div class="register-container  ">
 		<p class="text-c form-title">Registration</p>
 		<div class="container-content">
-			<form class="margin-t" method="POST">
+			<form class="margin-t" enctype="multipart/form-data" method="POST">
 				{% csrf_token %}
-
-				<div class="form-group">
-					<label for="">Name: </label>
-					{{form.user_name}}
-				</div>
-				<div class="form-group">
-					<label for="">Password: </label>
-					{{form.user_password}}
-				</div>
-				<div class="form-group">
-					<div class="formerror">  
-						{{form.user_email.errors.as_text}}
-					  </div>
-					<label for="">Email: </label>
-					{{form.user_email}}
-				</div>
-				<div class="form-group">
-					<div class="formerror">  
-						{{form.user_photo.errors.as_text}}
-					  </div>
-					<label for="">Profile: </label>
-					{{form.user_photo}}
-				</div>
-				<div class="form-group">
-					<label for="">Age: </label>
-					{{form.user_age}}
-				</div>
-				<div class="form-group">
-					<label for="">Gender: </label>
-					{{form.user_gender}}
-				</div>
-				<div class="form-group">  
-					<div class="formerror">  
-               {{form.user_contact.errors.as_text}}
-              </div>
-					<label for="">Contact-No: </label>
-					{{form.user_contact}}
-				</div>
-				<div class="form-group">
-					<label for="">Address:</label>
-					{{form.user_address1}}
-				</div>
-
-				<div class="text-c">
-					<button type="submit" class="form-button button-l margin-b ">Register</button>
-				</div>
-				<div class="text-c">
-					<a href="{% url 'login' %}"><small>Already have an account?</small></a>
-				</div>
+				<table cellpadding='5px'>
+					<tr>
+						<td><label for="">Name: </label></td>
+						<td>{{userform.user_name}}</td>
+					</tr>
+					<tr>
+						<td><label for="">Password: </label></td>
+						<td>{{userform.user_password}}</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="">Email: </label>
+						</td>
+						<td>
+						{% if userform.user_email.errors %}
+							<p class="formerror">{{userform.user_email.errors.as_text}}<p>
+						{% endif %}
+						{{userform.user_email}}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="">Profile: </label>
+						</td>
+						<td>
+							{% if userform.user_photo.errors %}
+								<p class="formerror">{{userform.user_photo.errors.as_text}}<p>
+							{% endif %}
+							{{userform.user_photo}}
+						</td>
+					</tr>
+					<tr>
+						<td><label for="">Age: </label></td>
+						<td>{{userform.user_age}}</td>
+					</tr>
+					<tr>
+						<td><label for="">Gender: </label></td>
+						<td>{{userform.user_gender}}</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="">Contact-No: </label>
+						</td>
+						<td>
+							{% if userform.user_contact.errors %}
+								<p class="formerror">{{userform.user_contact.errors.as_text}}<p>
+							{% endif %}
+							{{userform.user_contact}}
+						</td>
+					</tr>
+						{{addressform.user}}
+					<tr>
+						<td><label for="">Country: </label></td>
+						<td>{{addressform.country}}</td>
+					</tr>
+					<tr>
+						<td><label for="">State: </label></td>
+						<td>{{addressform.state}}</td>
+					</tr>
+					<tr>
+						<td><label for="">City: </label></td>
+						<td>{{addressform.city}}</td>
+					</tr>
+					<tr>
+						<td><label for="">Pincode: </label></td>
+						<td>{{addressform.pin_code}}</td>
+					</tr>
+					<tr>
+						<td><label for="">Postal-Detail: </label></td>
+						<td>{{addressform.postal_address}}</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<div class="text-c">
+								<button type="submit" class="form-button button-l margin-b ">Register</button> 
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<div class="text-c">
+								<a href="{% url 'login' %}"><small>Already have an account?</small></a>
+							</div>
+						</td>
+					</tr>
+				</table>
 			</form>
-
 		</div>
 	</div>
 </section>

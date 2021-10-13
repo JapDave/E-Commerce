@@ -11,6 +11,8 @@ class ParanoidModelManager(models.Manager):
         return super(ParanoidModelManager, self).get_queryset().filter(deleted_at__isnull=True)
 
 
+
+
 class Users(models.Model):
     _id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user_name = models.CharField(("UserName"), max_length=50,null=False,blank=False)
@@ -21,8 +23,8 @@ class Users(models.Model):
     user_gender = models.CharField(("Gender"), max_length=50,blank=False)
     phoneNumberRegex = RegexValidator(regex = r"^\+?1?\d{10}$")
     user_contact = models.CharField(validators = [phoneNumberRegex], max_length = 10, unique = True)
-    user_address1 = models.TextField(("Address1"))
-    user_address2 = models.TextField(("Address2"),blank=True,default="")
+    # user_address1 = models.TextField(("Address1"))
+    # user_address2 = models.TextField(("Address2"),blank=True,default="")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(blank=True, null=True, default=None)
@@ -44,6 +46,31 @@ class Users(models.Model):
         else:
             self.deleted_at = now()
             self.save()
+
+
+class Address(models.Model):
+    _id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(Users, verbose_name=("User"), on_delete=models.CASCADE)
+    country = models.CharField(("Country"), max_length=50)
+    state = models.CharField(("State"), max_length=50)
+    city = models.CharField(("City"), max_length=50)
+    pin_code =  models.PositiveIntegerField(("Pincode"))
+    postal_address = models.TextField(("Postal Address"))
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True, default=None)
+    objects = ParanoidModelManager()
+
+    class Meta:
+           verbose_name_plural = "Address"
+
+    def delete(self, hard=False, **kwargs):
+        if hard:
+            super(Cart, self).delete()
+        else:
+            self.deleted_at = now()
+            self.save()
+
 
 
 class Cart(models.Model):

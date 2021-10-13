@@ -71,7 +71,13 @@
 		<p>Sub-Total: &#8377 {{sub_total}}/~</p>
 		<button data-toggle="modal" data-target="#address-modal" class="price mb-2" id="user_address"><i
 				class="fas fa-map-marker-alt"></i> Deliver to-<br>
-			{{users.user_address1}}</button>
+			{% for add in address %}
+				{% if forloop.counter <= 1 %}
+					{{add.postal_address}}
+				{% endif %}
+			
+			{% endfor %}	
+	</button>
 		<form method="POST">
 			{% csrf_token %}
 			<div class="modal fade" id="address-modal" tabindex="-1" role="dialog"

@@ -104,7 +104,7 @@ class Login(View):
         user_password = request.POST['password']
         try:
             fetched_data = Enterprise.objects.filter(enterprise_email=user_mail).first()
-            if fetched_data != None and hashlib.sha256(str.encode(user_password)).hexdigest() == user_password:
+            if fetched_data != None and hashlib.sha256(str.encode(user_password)).hexdigest() == fetched_data.enterprise_password:
                 request.session['enterprise_key'] = str(fetched_data._id)
                 return redirect(reverse('enterprise_index')) 
             else:

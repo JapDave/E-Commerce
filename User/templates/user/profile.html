@@ -5,87 +5,87 @@
 {% block body %}
 
 {% if messages %}
-    <div>
-        {% for message in messages %}
-        <div class="alert alert-warning">
-            <a class="close" href="#" data-dismiss="alert">×</a>
-            {{ message }}
-        </div>
-        {% endfor %}
-    </div>
+<div>
+  {% for message in messages %}
+  <div class="alert alert-warning">
+    <a class="close" href="#" data-dismiss="alert">×</a>
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
 {% endif %}
-    
-<div class="container profile">
-    <hr>
-    <form enctype="multipart/form-data" class="form-horizontal" method="POST">
-      {% csrf_token %}
-    <div class="row">
-        <div class="col-md-4">
-          <div class="text-center">
-              <img src="/uploads/{{form.user_photo.value}}" alt="" class="rounded-circle" width="200px" height="200px" >
-          </div>
-          <div class="formerror">  
-            {{form.errors.as_text}}
-           </div>
-          <div class="form-group">
-            {{form.user_photo}}
-          </div> 
-        </div>
-    
-        <div class="col-md-8 personal-info">
-          <h3>Personal info</h3>
 
-            <div class="form-group">
-              <label class="col-lg-3 control-label">Name:</label>
-              <div class="col-lg-8">
-                  {{form.user_name}}
-              </div>
-            </div>
-            <div class="form-group">
-                <label class="col-lg-3 control-label">Email:</label>
-                <div class="formerror text-danger">  
-                {{form.user_email.errors.as_text}}
-                </div>
-                <div class="col-lg-8">
-                    {{form.user_email}}
-                </div>
-          </div>
-            <div class="form-group">
-              <label class="col-md-3 control-label">Password:</label>
-              <div class="col-md-8">
-                {{form.user_password}} 
-              </div>
-            </div>
-              <div class="form-group">
-              <label class="col-md-3 control-label">Age:</label>
-              <div class="col-md-8">
-                {{form.user_age}} 
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-md-3 control-label">Gender:</label>
-              <div class="col-md-8">
-                {{form.user_gender}} 
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-md-3 control-label">Contact:</label>
-              <div class="formerror text-danger">  
-                {{form.user_contact.errors.as_text}}
-                </div>
-              <div class="col-md-8">
-              {{form.user_contact}}
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-md-3 control-label"></label>
-              <div class="col-md-8">
-                <input type="submit" class="btn btn-primary" value="Save Changes" name="register">
-              </div>
-            </div>
+<div class="container profile">
+  <hr>
+  <form enctype="multipart/form-data" class="form-horizontal" method="POST">
+    {% csrf_token %}
+    <div class="row">
+
+      <div class="col-md-3">
+        <div class="text-center">
+          <img src="/uploads/{{form.user_photo.value}}" alt="" class="rounded-circle" width="200px" height="200px">
         </div>
+        <div class="formerror">
+          {{form.errors.as_text}}
+        </div>
+        <div class="form-group">
+          {{form.user_photo}}
+        </div>
+      </div>
+
+      <div class="col-md-6 personal-info">
+        <h3>Personal info</h3>
+        <div class="form-group">
+          <label class="col-lg-3 control-label">Name:</label>
+          <div class="col-lg-8">
+            {{form.user_name}}
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-3 control-label">Email:</label>
+          <div class="formerror text-danger">
+            {{form.user_email.errors.as_text}}
+          </div>
+          <div class="col-lg-8">
+            {{form.user_email}}
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Age:</label>
+          <div class="col-md-8">
+            {{form.user_age}}
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Gender:</label>
+          <div class="col-md-8">
+            {{form.user_gender}}
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Contact:</label>
+          <div class="formerror text-danger">
+            {{form.user_contact.errors.as_text}}
+          </div>
+          <div class="col-md-8">
+            {{form.user_contact}}
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label"></label>
+          <div class="col-md-8">
+            <input type="submit" class="btn btn-primary" value="Save Changes" name="register">
+            <a href="{% url 'profile_user_change_password' %}" class="btn btn-primary"> Change Password</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-2 address-card ">
+          <a href="{% url 'user_address' %}" class="text-secondary"><h5><i class="fas fa-map-marker-alt"></i> Your Addresses </h5> </a>
+      </div>
+
     </div>
-</form>
+  </form>
 </div>
 <hr>
 

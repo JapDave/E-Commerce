@@ -11,7 +11,7 @@
 		for (i = 0; i < ele.length; i++) {
 			if (ele[i].checked)
 				document.getElementById("user_address").innerHTML
-					= " <i class='fas fa-map-marker-alt'></i> Deliver to-<br>" + ele[i].value;
+					= " <i class='fas fa-location-arrow fa-1x'> </i> Deliver to-<br>" + ele[i].value;
 		}
 	}
 </script>
@@ -69,8 +69,8 @@
 		<h5>Summary</h5>
 		<p>Total-items: {{item_count}}</p>
 		<p>Sub-Total: &#8377 {{sub_total}}/~</p>
-		<button data-toggle="modal" data-target="#address-modal" class="price mb-2" id="user_address"><i
-				class="fas fa-map-marker-alt"></i> Deliver to-<br>
+		<button data-toggle="modal" data-target="#address-modal" class="price mb-2" id="user_address">
+			<i class="fas fa-location-arrow fa-1x"></i> Deliver to-<br>
 			{% for add in address %}
 				{% if forloop.counter <= 1 %} 
 				{{add.postal_address|slice:':15'}} {% if add.postal_address|length > 15 %}...{% endif %}
@@ -113,14 +113,12 @@
 										</tr>
 										<tr>
 											<td>
-												<button type="button" class="buy-btn" data-dismiss="modal" aria-label="Close"
+												<button type="button" class="buy-btn w-50" data-dismiss="modal" aria-label="Close"
 													onclick="displayRadioValue()">
 													Submit
 												</button>
 											</td>
 										</tr>
-
-
 									</table>
 								</div>
 							</div>

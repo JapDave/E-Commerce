@@ -16,7 +16,7 @@ class EnterpriseForm(forms.ModelForm):
 
     class Meta:
         model = Enterprise
-        exclude = ['deleted_at']
+        exclude = ['enterprise_password','deleted_at']
 
     
       

@@ -11,8 +11,6 @@ class ParanoidModelManager(models.Manager):
         return super(ParanoidModelManager, self).get_queryset().filter(deleted_at__isnull=True)
 
 
-
-
 class Users(models.Model):
     _id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user_name = models.CharField(("UserName"), max_length=50,null=False,blank=False)

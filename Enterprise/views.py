@@ -1,16 +1,17 @@
 from django.http.response import HttpResponse
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
 from django.views import View
 from .models import *
 from User.models import Cart, Order
-from .forms import ProductForm,EnterpriseForm
+from .forms import ProductForm, EnterpriseForm
 from django.conf import settings
 from django.core.mail import send_mail
 import random
 from .tasks import mail_user_updateorder
 import hashlib
+
 
 class CategoryFilter(View):
       pass
@@ -34,111 +35,154 @@ def is_authenticate(request):
     if request.session.get('enterprise_key'):
          return True
     return False
-        
+
 
 class ForgotPassword(View):
-    def get(self,request):
-        return render(request,'email_verification.html')
-    
-    def post(self,request):
+    def get(self, request):
+        return render(request, 'email_verification.html')
+
+    def post(self, request):
         user_email = request.POST['email']
-        
+
         try:
-            enterprise_data = Enterprise.objects.get(enterprise_email=user_email)
+            enterprise_data = Enterprise.objects.get(
+                enterprise_email=user_email)
             request.session['temp_data'] = str(enterprise_data._id)
-            generated_otp = random.randint(1111,9999)
-            request.session['otp']=generated_otp
+            generated_otp = random.randint(1111, 9999)
+            request.session['otp'] = generated_otp
             subject = 'Acount Recovery'
             message = f'''your otp for account recovery is {generated_otp}'''
             email_from = settings.EMAIL_HOST_USER
-            recepient  = [user_email,]
+            recepient = [user_email, ]
             send_mail(subject, message, email_from, recepient)
             return redirect(reverse('otp_verification'))
 
         except:
-            messages.error(request,'Email id not found try again.')
+            messages.error(request, 'Email id not found try again.')
             return redirect(reverse('forgot_password'))
 
-class OtpVerification(View):
-    def get(self,request):
-        return render(request,'otp.html')
 
-    def post(self,request):
+class OtpVerification(View):
+    def get(self, request):
+        return render(request, 'otp.html')
+
+    def post(self, request):
         user_otp = request.POST['otp']
         if user_otp == str(request.session.get('otp')):
             return redirect(reverse('change_password'))
         else:
-            messages.error(request,'Wrong otp try again.')
+            messages.error(request, 'Wrong otp try again.')
             return redirect(reverse('otp_verification'))
 
 
 class ChangePassword(View):
-    def get(self,request):
-        return render(request,'change_password.html')
+    def get(self, request):
+        return render(request, 'change_password.html')
 
-    def post(self,request):
+    def post(self, request):
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
         if password == confirm_password:
             enterprise_id = request.session.get('temp_data')
             enterprise_data = Enterprise.objects.get(_id=enterprise_id)
-            enterprise_data.enterprise_password = hashlib.sha256(str.encode(confirm_password)).hexdigest()
+            enterprise_data.enterprise_password = hashlib.sha256(
+                str.encode(confirm_password)).hexdigest()
             enterprise_data.save()
             del request.session['temp_data']
             del request.session['otp']
             return redirect(reverse('enterprise_login'))
         else:
-            messages.error(request,'Password does not match.')
+            messages.error(request, 'Password does not match.')
             return redirect(reverse('change_password'))
+
 
 class Login(View):
     def get(self, request):
         rendered_data = {
-            'title':'Enterprise-login',
-            'header':'Enterprise'
+            'title': 'Enterprise-login',
+            'header': 'Enterprise'
         }
-        return render(request,'login.html',rendered_data)
+        return render(request, 'login.html', rendered_data)
 
     def post(self, request):
         user_mail = request.POST['usermail']
         user_password = request.POST['password']
         try:
-            fetched_data = Enterprise.objects.filter(enterprise_email=user_mail).first()
+            fetched_data = Enterprise.objects.filter(
+                enterprise_email=user_mail).first()
             if fetched_data != None and hashlib.sha256(str.encode(user_password)).hexdigest() == fetched_data.enterprise_password:
                 request.session['enterprise_key'] = str(fetched_data._id)
-                return redirect(reverse('enterprise_index')) 
+                return redirect(reverse('enterprise_index'))
             else:
-                raise ValueError() 
+                raise ValueError()
         except ValueError:
-            messages.error(request,'wrong username or password')
+            messages.error(request, 'wrong username or password')
             return redirect(reverse('enterprise_login'))
         except Exception as e:
             return HttpResponse('404')
-            
+
+
 class Logout(View):
-    def get(self,request):
+    def get(self, request):
         if is_authenticate(request):
             del request.session['enterprise_key']
         return redirect(reverse('enterprise_login'))
 
+
 class Profile(View):
-    def get(self,request):
+    def get(self, request):
         if is_authenticate(request):
-            enterprise_data = Enterprise.objects.filter(_id = request.session.get('enterprise_key')).first()
+            enterprise_data = Enterprise.objects.filter(
+                _id=request.session.get('enterprise_key')).first()
             form = EnterpriseForm(instance=enterprise_data)
-            return render(request,'enterprise/profile.html',{'form':form})
+            return render(request, 'enterprise/profile.html', {'form': form})
         else:
             return redirect(reverse('enterprise_login'))
 
-    def post(self,request):
-        enterprise_data = Enterprise.objects.filter(_id = request.session.get('enterprise_key')).first()
-        form=EnterpriseForm(request.POST,request.FILES,instance=enterprise_data) 
+    def post(self, request):
+        enterprise_data = Enterprise.objects.filter(
+            _id=request.session.get('enterprise_key')).first()
+        form = EnterpriseForm(request.POST, request.FILES,
+                              instance=enterprise_data)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Your Profile is updated successfully')
             return redirect(reverse('enterprise_profile'))
         else:
-            return render(request,'enterprise/profile.html',{'form':form})
-        
+            messages.success(request, 'Your Profile is not updated')
+            return render(request, 'enterprise/profile.html', {'form': form})
+
+
+class ProfileChangePassword(View):
+	def get(self, request):
+		if request.session.get('enterprise_key'):
+			return render(request, 'profile_change_password.html')
+		else:
+			return redirect(reverse('login'))
+
+	def post(self, request):
+
+		old_password = request.POST['old_password']
+		password = request.POST['new_password']
+		confirm_password = request.POST['confirm_password']
+		if password == confirm_password:
+			try:
+				user_data = Enterprise.objects.get(_id=request.session.get('enterprise_key'))
+				if hashlib.sha256(str.encode(old_password)).hexdigest() == user_data.enterprise_password:
+					user_data.enterprise_password = hashlib.sha256(str.encode(confirm_password)).hexdigest()
+					user_data.save()
+					messages.error(request,'Password Has Successfully Changed')
+					return redirect(reverse('enterprise_profile'))
+				else: 
+					messages.error(request,'Sorry Password not found')
+					return redirect(reverse('profile_enterprise_change_password'))
+			except:
+				messages.error(request,'Sorry Password Not Updated Try Again ')
+				return redirect(reverse('profile_enterprise_change_password'))
+		else:
+			messages.error(request,'Password does not match.')
+			return redirect(reverse('profile_enterprise_change_password'))
+
 
 class Index(View):
     def get(self, request):
@@ -182,7 +226,6 @@ class ProductsList(View):
                 cart_data = Cart(product_items=deleted_product)
                 cart_data.delete()
             return redirect(reverse('product_list'))
-        
 
 class AddProduct(View):
     def get(self,request):

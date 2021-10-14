@@ -1,0 +1,55 @@
+{% extends 'user/user_base.html' %}
+{% block title %} Address|Detail {% endblock title %}
+{% block body %}
+<section class="container-fluid">
+   {% if messages %}
+	<div>
+		{% for message in messages %}
+		<div class="alert {% if message.level == 25 %}alert-success {% else %}alert-danger {% endif %} m-2">
+			<a class="close" href="#" data-dismiss="alert">×</a>
+			{{ message }}
+		</div>
+		{% endfor %}
+	</div>
+	{% endif %}
+
+   <div class="address-form">
+      <h5 class="text-center">Address Detail</h5>
+      <form method="POST">
+         {% csrf_token %}
+         <table cellpadding="10px">
+            {{addressform.user}}
+            <tr>
+               <td>{{addressform.country.label}} : </td>
+               <td>{{addressform.country}}</td>
+            </tr>
+            <tr>
+               <td>{{addressform.state.label}} : </td>
+               <td>{{addressform.state}}</td>
+            </tr>
+            <tr>
+               <td>{{addressform.city.label}} : </td>
+               <td>{{addressform.city}}</td>
+            </tr>
+            <tr>
+               <td>{{addressform.pin_code.label}} : </td>
+               <td>{{addressform.pin_code}}</td>
+            </tr>
+            <tr>
+               <td>{{addressform.postal_address.label}} : </td>
+               <td>{{addressform.postal_address}}</td>
+            </tr>
+            <tr>
+               <td colspan="2">
+                  <input type="submit" value="Save"  class="buy-btn w-75 ml-5">
+               </td>
+            </tr>
+         </table>
+      </form>
+   </div>
+</section>
+
+
+
+
+{% endblock body %}

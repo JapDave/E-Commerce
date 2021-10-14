@@ -13,6 +13,10 @@ path('forgotpassword/',ForgotPassword.as_view(),name='user_forgot_password'),
 path('otpverification/',OtpVerification.as_view(),name='user_otp_verification'),
 path('changepassword/',ChangePassword.as_view(),name='user_change_password'),
 path('profile/',Profile.as_view(),name='user_profile'),
+path('userchangepassword/',ProfileChangePassword.as_view(),name='profile_user_change_password'),
+path('address/',UserAddress.as_view(),name='user_address'),
+path('addressdetail/<id>',AddressDetail.as_view(),name='address_detail'),
+path('deleteaddress/<id>',DeleteAddress.as_view(),name='delete_address'),
 #User Basic Over
 
 #User Product Start
@@ -20,7 +24,7 @@ path('products/<id>',AllProducts.as_view(),name='all_products'),
 path('product/<id>',ProductDetail.as_view(),name='product_detail'),
 path('placeorder/<slug>',PlaceOrder.as_view(),name='place_order'),
 path('orderhistory',OrderHistory.as_view(),name='order_history'),
-path('orderdetail <orderno>',OrderDetail.as_view(),name='user_order_detail'),
+path('orderdetail/<orderno>',OrderDetail.as_view(),name='user_order_detail'),
 #User Product Over
 
 #User Cart Start

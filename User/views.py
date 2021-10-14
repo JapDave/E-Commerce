@@ -1,4 +1,3 @@
-from django.forms.models import BaseInlineFormSet, inlineformset_factory 
 from .tasks import mail_sender_enterprise, mail_sender_user
 from django.http.response import HttpResponse
 from django.shortcuts import render,redirect
@@ -10,7 +9,7 @@ from django.db.models import Q
 from django.conf import settings
 from django.core.mail import send_mail
 from Enterprise.models import Categories,Enterprise,Products
-from .forms import AddressForm, RegisterForm
+from .forms import AddressForm, RegisterForm,ProfileForm
 import random
 from django.core.paginator import Paginator
 from django.db.models import  Count
@@ -39,6 +38,7 @@ class ForgotPassword(View):
 		except:
 			messages.error(request,'Email id not found try again.')
 			return redirect(reverse('user_forgot_password'))
+
 
 class OtpVerification(View):
 	def get(self,request):
@@ -94,8 +94,9 @@ class Login(View):
 		except ValueError:
 			messages.error(request,'wrong username or password')
 			return redirect(reverse('login')) 
-		except Exception as e:
-			return HttpResponse('404')
+		except:
+			messages.error(request,'Login Failed Try Again')
+			return redirect(reverse('login')) 
 
 
 class Registeration(View):
@@ -127,15 +128,14 @@ class Logout(View):
 	def get(self,request):
 		if request.session.get('users_key'):
 			del request.session['users_key']
-			return redirect(reverse('index'))
+		return redirect(reverse('index'))
 
 
 class Profile(View):
 	def get(self,request):
 		if request.session.get('users_key'):
 			user_data = Users.objects.get(_id=request.session.get('users_key'))
-			# userformset = inlineformset_factory(Users,Address)
-			form = RegisterForm(instance=user_data)
+			form = ProfileForm(instance=user_data)
 			cart_data = Cart.objects.filter(user=user_data,product_items__isnull=False)
 		
 			return render(request,'user/profile.html',{'form':form,'users':user_data,'cart_count':cart_data.count()})
@@ -144,7 +144,7 @@ class Profile(View):
 
 	def post(self,request):
 		user_data = Users.objects.get(_id=request.session.get('users_key'))
-		form = RegisterForm(request.POST,request.FILES,instance=user_data) 
+		form = ProfileForm(request.POST,request.FILES,instance=user_data) 
 	
 		if request.POST.get('register'):
 			if form.is_valid():
@@ -157,17 +157,117 @@ class Profile(View):
 				return render(request,'user/profile.html',{'form':form,'users':True})
 			
 
+class ProfileChangePassword(View):
+	def get(self,request):
+		if request.session.get('users_key'):
+			return render(request,'profile_change_password.html')
+		else:
+			return redirect(reverse('login'))
+
+	def post(self,request):
+		old_password = request.POST['old_password']
+		password = request.POST['new_password']
+		confirm_password = request.POST['confirm_password']
+		if password == confirm_password:
+			try:
+				user_data = Users.objects.get(_id=request.session.get('users_key'))
+				if hashlib.sha256(str.encode(old_password)).hexdigest() == user_data.user_password:
+					user_data.user_password = hashlib.sha256(str.encode(confirm_password)).hexdigest()
+					user_data.save()
+					messages.error(request,'Password Has Successfully Changed')
+					return redirect(reverse('user_profile'))
+				else: 
+					messages.error(request,'Sorry Password not found')
+					return redirect(reverse('profile_user_change_password'))
+			except:
+				messages.error(request,'Sorry Password Not Updated Try Again ')
+				return redirect(reverse('profile_user_change_password'))
+		else:
+			messages.error(request,'Password does not match.')
+			return redirect(reverse('profile_user_change_password'))
+
+
+class UserAddress(View):
+	def get(self,request):
+		if request.session.get('users_key'):
+			address_data = Address.objects.filter(user___id = request.session.get('users_key'))
+			cart_data = Cart.objects.filter(user___id = request.session.get('users_key'))
+
+			rendered_data = {
+				'users':True,
+				'cart_count':cart_data.count(),
+				'address':address_data
+			}
+			return render(request,'user/user_address.html',rendered_data)
+		else:
+			return redirect(reverse('login'))
+
+
+class AddressDetail(View):
+	def get(self,request,id):
+		if request.session.get('users_key'):
+			cart_data = Cart.objects.filter(user___id = request.session.get('users_key'))
+		
+			if id == 'newaddress':
+				address_form = AddressForm()
+				
+			else:
+				address_data = Address.objects.get(user___id = request.session.get('users_key'),_id=id)
+				address_form = AddressForm(instance=address_data)
+				
+			rendered_data = {
+				'users':True,
+				'cart_count':cart_data.count(),
+				'addressform':address_form
+			}
+			return render(request,'user/address_detail.html',rendered_data)
+		else:
+			return redirect(reverse('login'))
+
+	def post(self,request,id):
+		if request.session.get('users_key'):
+			if id == 'newaddress':
+				user_data = Users.objects.get(_id=request.session.get('users_key'))
+				address_form = AddressForm(request.POST)
+				address_form.data._mutable = True
+				address_form.data['user'] = user_data
+				address_form.data._mutable = False
+			else:
+				address_data = Address.objects.get(user___id = request.session.get('users_key'),_id=id)
+				address_form = AddressForm(request.POST,instance=address_data)
+			try:
+				if address_form.is_valid:
+					address_form.save()
+					return redirect(reverse('user_address'))
+				else:
+					messages.error(request,"Sorry Address Could'nt Get Updated Try Again ")
+					return redirect(reverse('address_detail', kwargs={'id':id}))
+			except:
+					messages.error(request,"Sorry Address Could'nt Get Updated Try Again ")
+					return redirect(reverse('address_detail', kwargs={'id':id})	)
+		else:
+			return redirect(reverse('login'))
+
+class DeleteAddress(View):
+	def get(self,request,id):
+		if request.session.get('users_key'):
+			address_data = Address.objects.get(user___id = request.session.get('users_key'),_id=id)
+			address_data.delete()
+			return redirect(reverse('user_address'))
+		else:
+			return redirect(reverse('login'))
+
+		
 class Index(View):
 	def get(self,request):
 		category_data = Categories.objects.all()
 		if request.session.get('users_key'):
-			user_data = Users.objects.get(_id=request.session.get('users_key'))
-			cart_data = Cart.objects.filter(user=user_data,product_items__isnull=False)
-
+			cart_data = Cart.objects.filter(user___id=request.session.get('users_key')).count()
+			request.session['cart_count'] = cart_data
 			rendered_data = {
 				'categories':category_data,
-				'users':user_data,
-				'cart_count':cart_data.count()
+				'users':True,
+				'cart_count':request.session['cart_count']
 			}
 		else:
 			rendered_data = {
@@ -180,10 +280,9 @@ class AllProducts(View):
 	def get(self,request,id):
 		rendered_data = {}
 		if request.session.get('users_key'):
-			# user_data = Users.objects.get(_id = request.session.get('users_key'))
-			cart_data = Cart.objects.filter(user___id=request.session.get('users_key'),product_items__isnull=False)
+			# cart_data = Cart.objects.filter(user___id=request.session.get('users_key'))
 			rendered_data["users"] = True
-			rendered_data["cart_count"] = cart_data.count()
+			rendered_data["cart_count"] = request.session['cart_count']
 		product_data = Products.objects.filter(product_categories=id)
 
 		if product_data:
@@ -191,34 +290,33 @@ class AllProducts(View):
 			paginator = Paginator(product_data,8)
 			product_obj = paginator.page(page)
 			rendered_data["products"] = product_obj
-
 			return render(request,'user/all_products.html',rendered_data)     
+
 		else:
 			messages.error(request,'OOps No Product Found.')
 			return render(request,'user/all_products.html',rendered_data)       
 	   
-
 	def post(self,request,id):
 		rendered_data = {}
 		if request.session.get('users_key'):
-			user_data = Users.objects.get(_id = request.session.get('users_key'))
-			cart_data = Cart.objects.filter(user=user_data)
-			rendered_data["users"] = user_data 
-			rendered_data["cart_count"] = cart_data.count()
+			# user_data = Users.objects.get(_id = request.session.get('users_key'))
+			# cart_data = Cart.objects.filter(user=user_data)
+			rendered_data["users"] = True 
+			rendered_data["cart_count"] = request.session['cart_count']
 
 		if request.POST.get('search_product'):
 			searched_product = request.POST.get('search_product')
 			product_data = Products.objects.filter(Q(product_name__contains=searched_product) | Q(  product_enterprsie__enterprise_name__contains=searched_product),product_categories=id)
-			page = request.GET.get('page',1)
-			paginator = Paginator(product_data,10)
-			product_obj = paginator.page(page)
-			rendered_data["products"] = product_obj
 			if product_data:
+				page = request.GET.get('page',1)
+				paginator = Paginator(product_data,10)
+				product_obj = paginator.page(page)
 				rendered_data["products"] = product_obj
 				rendered_data["searched_product"] = searched_product
 			else:
 				messages.error(request,'OOps No Product Found')
-				return render(request,'user/all_products.html',rendered_data)
+				return redirect(reverse('all_products', kwargs={'id':id}))
+
 		elif request.POST.get('filter_by'):
 			sort_by = request.POST.get('filter_by')
 			if sort_by == 'ascending':
@@ -234,12 +332,11 @@ class AllProducts(View):
 			rendered_data["filtered_product"] = sort_by
 		else:
 			messages.error(request,'OOps No Product Found')
-			return render(request,'user/all_products.html',rendered_data)
+			return redirect(reverse('all_products', kwargs={'id':id}))
 		return render(request,'user/all_products.html',rendered_data)
 
 
 class ProductDetail(View):
-
 	def get(self,request,id):
 		rendered_data = {}
 		product_data = Products.objects.get(_id=id)
@@ -302,6 +399,7 @@ class ProductDetail(View):
 		else:
 			return redirect(reverse('login'))
 
+
 class AddItem(View):
 	def get(self,request,id):
 		if request.session.get('users_key'):
@@ -321,6 +419,7 @@ class AddItem(View):
 		else:
 			return redirect(reverse('login'))
 
+
 class RemoveItem(View):
 	def get(self,request,id):
 		if request.session.get('users_key'):
@@ -329,6 +428,7 @@ class RemoveItem(View):
 			return redirect(reverse('cart'))
 		else:
 			return redirect(reverse('login'))
+
 
 class CartList(View):
 
@@ -412,6 +512,7 @@ class CartList(View):
 			}
 
 			return render(request,'user/checkout.html',rendered_data)
+
 
 class PlaceOrder(View):
 

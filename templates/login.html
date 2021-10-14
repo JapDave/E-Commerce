@@ -36,7 +36,8 @@
 						</div>
 					    <div class="text-c">
 						 {% if header == 'User' %}
-						 	<a href="{% url 'user_forgot_password' %}"><small>Forgot your password?</small></a>
+						 	<a href="{% url 'user_forgot_password' %}"><small>Forgot Your Password?</small></a><br>
+						 	<a href="{% url 'registeration' %}"><small>Do Not Have An Account? </small></a>
 							 {% else %}
 							<a href="{% url 'forgot_password' %}"><small>Forgot your password?</small></a>
 						 {% endif %}

@@ -49,12 +49,6 @@
               </div>
          </div>
           <div class="form-group">
-            <label class="col-md-3 control-label">Password:</label>
-            <div class="col-md-8">
-              {{form.enterprise_password}} 
-            </div>
-          </div>
-          <div class="form-group">
             <label class="col-md-3 control-label">Contact:</label>
              <div class="formerror">  
                {{form.enterprise_contact.errors.as_text}}
@@ -73,6 +67,7 @@
             <label class="col-md-3 control-label"></label>
             <div class="col-md-8">
               <input type="submit" class="btn btn-primary" value="Save Changes">
+              <a href="{% url 'profile_enterprise_change_password' %}" class="btn btn-primary"> Change Password</a>
             </div>
           </div>
         </form>

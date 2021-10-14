@@ -15,35 +15,36 @@
 	{% endif %}
 
 {% if orders %}
+   <div class="row">
    {% for order in orders %}
-			<div class="order-card-detail">
+			<div class="col-lg-3 order-card-detail">
             <div>
-               <img src="{{order.product.product_img.url}}" width="150px" height='150px' class="rounded">
+               <img src="{{order.product.product_img.url}}" width="200px" height='200px' class="rounded mb-3">
             </div>
 				<div>
-					<table cellpadding="3px">
+					<table cellpadding="5px">
                   <tr>
-                     <th>Product Name :</th>
+                     <th>Product Name </th>
                      <td>{{order.product.product_name}}</td>
                   </tr>
                   <tr>
-                     <th>Product Category :</th>
+                     <th>Product Category </th>
                      <td>{{order.product.product_categories}}</td>
                   </tr>
                   <tr>
-                     <th>Product Qty :</th>
+                     <th>Product Qty </th>
                      <td>{{order.qty}}</td>
                   </tr>
                   <tr>
-                     <th>Payment Total :</th>
+                     <th>Payment Total </th>
                      <td>&#8377 {{order.total}}/~</td>
                   </tr>
                   <tr>
-                     <th>Payment Method :</th>
+                     <th>Payment Method </th>
                      <td>{{order.payment_method}}</td>
                   </tr>
                   <tr>
-                     <th>Status :</th>
+                     <th>Status </th>
                      {% if order.status == '0' %}<td class="text-danger">Pending</td>{% endif %}
                      {% if order.status == '1' %}<td class="text-info">Approved</td>{% endif %}
                      {% if order.status == '2' %}<td class="text-info">Dispatched</td>{% endif %}
@@ -54,7 +55,7 @@
 				</div>
 			</div>
 		{% endfor %}
-   
+   </div>
 	{% else %}
 		<div class="alert alert-secondary m-2 ">
 			<a class="close" href="#" data-dismiss="alert">×</a>

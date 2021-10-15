@@ -34,8 +34,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'User',
-    'Enterprise',
+    'user',
+    'enterprise',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -173,8 +173,10 @@ MAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.mailtrap.io'
-EMAIL_HOST_USER = '5d7b30b79a1cd5'
-EMAIL_HOST_PASSWORD = 'f6084ca87993e3'
+EMAIL_HOST_USER = '026d7a5a700d84'
+EMAIL_HOST_PASSWORD = 'cad62dfe8f0de1'
+# EMAIL_HOST_USER = '5d7b30b79a1cd5'
+# EMAIL_HOST_PASSWORD = 'f6084ca87993e3'
 EMAIL_PORT = '2525'
 
 

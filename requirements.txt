@@ -1,6 +1,7 @@
 amqp==5.0.6
 anyjson==0.3.3
 asgiref==3.4.1
+bcrypt==3.2.0
 billiard==3.6.4.0
 celery==5.1.2
 cffi==1.14.6

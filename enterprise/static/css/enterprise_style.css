@@ -5,6 +5,7 @@
 .navigation a,
 .navigation p{
     color:wheat;
+    font-size: medium;
 }
 
 .navigation a:hover{
@@ -12,15 +13,14 @@
     text-decoration: none;
 }
 
-#main{
-    width: 44%; 
+.main{
     margin-top: 10%;
     color: #417690;
     font-weight: bold;
     font-size: 14px;
 }
 
-#main h5{
+.main h5{
     background-color: #79aec8;
     color: white;
     padding: 5px;
@@ -31,7 +31,8 @@ table tr{
     border-bottom: 1px solid #00000026;
 }
 
-#main a{
+.main a,
+.main a:hover{
     color: #23688afa;
     font-weight: lighter;
 }
@@ -108,7 +109,7 @@ table tr{
     font-weight: 500;
     padding: 8px;
     cursor: pointer;
-    width: 52%;
+    /* width: 52%; */
     border: none;
 }
 

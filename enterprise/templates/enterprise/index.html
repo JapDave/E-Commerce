@@ -10,22 +10,20 @@
 
 {% block body %}
 
-<section class="container ml-3">
-    <div id="main">
+<section class="container-fluid">
+    <div class="main col-md-5">
         <table cellpadding="10px">
-            <h5 class="pl-2 ">{{enterprise_name}}</h5>
+            <h5 class="pl-2">{{enterprise_name}}</h5>
                 <tr>
-                    <td style="width:100%"><a href="{% url 'product_list'%}">Products</a></td>
+                    <td style="width:100%;"><a href="{% url 'product_list'%}">Products</a></td>
                     <td><a href="{% url 'product_add' %}">Add</a></td>
                 </tr>
                 <tr>
-                    <td style="width:100%"><a href="{% url 'order_requests' %}">Orders</a></td>
+                    <td style="width:80%;"><a href="{% url 'order_requests' %}">Orders</a></td>
                 </tr>
         </table>
     </div>
 </section>
-
-
 
 
 {% endblock body %}

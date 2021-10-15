@@ -316,7 +316,7 @@ class AllProducts(View):
 				rendered_data["searched_product"] = searched_product
 			else:
 				messages.error(request,'OOps No Product Found')
-				return redirect(reverse('all_products', kwargs={'id':id}))
+				return render(request,'user/all_products.html',rendered_data)	
 
 		elif request.POST.get('filter_by'):
 			sort_by = request.POST.get('filter_by')

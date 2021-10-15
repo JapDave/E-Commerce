@@ -103,6 +103,7 @@ WSGI_APPLICATION = 'EShop.wsgi.application'
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
 #         'NAME': BASE_DIR / 'db.sqlite3',
+#mongodb://localhost:27017/E-Shop
 #     }
 # ' }
 
@@ -112,7 +113,7 @@ DATABASES = {
          'NAME': 'E-Shop',
          'ENFORCE_SCHEMA': False,
          'CLIENT': {
-           'host': 'mongodb://localhost:27017/E-Shop',
+           'host': 'mongodb+srv://admin:admin@cluster0.cfwvt.mongodb.net/E-Shop?retryWrites=true&w=majority',
         }
      }
  }

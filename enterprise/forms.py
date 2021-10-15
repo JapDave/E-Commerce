@@ -8,7 +8,11 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Products
         exclude = ['deleted_at']
-        widgets = {'product_enterprsie': forms.HiddenInput()}
+        widgets = {'product_enterprsie': forms.HiddenInput(),
+                   'Description': forms.Textarea(attrs={'rows':4, 'cols':22})
+        
+        }
+        
        
         
        

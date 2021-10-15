@@ -13,8 +13,7 @@ from .tasks import mail_user_updateorder
 import hashlib
 
 
-class CategoryFilter(View):
-      pass
+# class CategoryFilter(View):
 #     def get(self,request):
 #         pass
 
@@ -189,22 +188,21 @@ class Index(View):
         try:
             if is_authenticate(request):
                 enterprise_data = Enterprise.objects.filter(_id = request.session.get('enterprise_key')).first()
-                # categories_data = Categories.objects.all()
+                # request.session['enterprise_name'] = enterprise_data.enterprise_name
                 rendered_data = {
-                    'enterprise_name':enterprise_data.enterprise_name,
-                    # 'categories':categories_data
+                    'enterprise_name': enterprise_data.enterprise_name,
                 }
                 return render(request,'enterprise/index.html',rendered_data)
             else:
                 return redirect(reverse('enterprise_login'))
-        except Exception as e:
-            return HttpResponse(e)
+        except:
+            messages.error(request,"Sorry Could'nt Login Try Again.")
+            return redirect(reverse('enterprise_login'))
 
            
 class ProductsList(View):
     def get(self, request):
         if is_authenticate(request):
-            
             products_data  = Products.objects.filter(product_enterprsie = request.session.get('enterprise_key'))
             rendered_data = {
                 'products': products_data,         
@@ -220,11 +218,10 @@ class ProductsList(View):
             messages.error(request,'please select item and the prefered action to perform.')
             return redirect(reverse('product_list'))
         else:
-            for product in selected_item:
-                deleted_product = Products.objects.get(_id=product)
-                deleted_product.delete()
-                cart_data = Cart(product_items=deleted_product)
-                cart_data.delete()
+            deleted_product = Products.objects.filter(_id__in=selected_item)
+            deleted_product.delete()
+            cart_data = Cart.objects.filter(product_items___id__in = selected_item)
+            cart_data.delete()
             return redirect(reverse('product_list'))
 
 class AddProduct(View):
@@ -250,20 +247,18 @@ class AddProduct(View):
                 return render(request,'enterprise/add_product.html',{'form':form})
                
 class UpdateProduct(View):
+
     def get(self,request,id):
-        if is_authenticate:
-            enterprise_data = Enterprise.objects.filter(_id = request.session.get('enterprise_key')).first()
-            product_data = Products.objects.get(_id = id)
+        product_data = Products.objects.get(_id = id)
+        if is_authenticate(request):   
             form = ProductForm(instance=product_data)
             rendered_data = {
-                'enterprise':enterprise_data.enterprise_name,
                 'form':form
             }
             return render(request,'enterprise/update_product.html',rendered_data)
         else:
             return redirect(reverse('enterprise_login'))
 
-    
     def post(self,request,id):
             product_data = Products.objects.get(_id=id)
             form = ProductForm(request.POST,request.FILES,instance=product_data)
@@ -276,7 +271,7 @@ class UpdateProduct(View):
                     render(request,'enterprise/add_product.html',{'form':form})
             
             elif request.POST.get('delete'):
-                product_data.delete()
+                self.product_data.delete()
                 return redirect(reverse('product_list'))
 
 class DeleteProduct(View):

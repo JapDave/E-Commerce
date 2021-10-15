@@ -1,0 +1,173 @@
+.navigation{
+   background-color: #417690;
+   font-size:smaller;
+}
+.navigation a,
+.navigation p{
+    color:wheat;
+    font-size: medium;
+}
+
+.navigation a:hover{
+    color:rgba(245, 222, 179, 0.651);
+    text-decoration: none;
+}
+
+.main{
+    margin-top: 10%;
+    color: #417690;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.main h5{
+    background-color: #79aec8;
+    color: white;
+    padding: 5px;
+    font-size: large;
+}
+
+table tr{
+    border-bottom: 1px solid #00000026;
+}
+
+.main a,
+.main a:hover{
+    color: #23688afa;
+    font-weight: lighter;
+}
+
+.page-header{
+    font-family: system-ui;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.page-header h6{
+    font-weight: 100;
+}
+
+.add-btn{
+    background-color: #6b6b6b94;
+    border-radius: 11px;
+    font-size: smaller;
+    padding: 4px;
+    font-weight: bold;
+    color: white;
+}
+.add-btn:hover{
+    background-color: #42424286 ;
+    color: white;
+    text-decoration: none;
+}
+
+.list-products{
+    width: 88%;
+    margin: auto;   
+}
+
+.list-products a{
+    color: #005e8c;
+    font-family: cursive;
+    text-transform: capitalize;
+    font-weight: 500;
+}
+
+.list-products a:hover{
+    color: #203e4d;
+    text-decoration: none;
+}
+ 
+.list-products table{
+    border-collapse: collapse;
+    width: 100%;
+}
+.list-products input[type=submit]{
+    font-size: 13px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    box-shadow: 0 -15px 20px -10px rgb(0 0 0 / 15%) inset;
+    cursor: pointer;
+    height: 28px;
+    padding: 4px 8px;
+}
+
+.search-bar input{
+    border: groove;
+    border-radius: 5px;
+}
+
+.add-item{
+    padding: 17px;
+}
+
+.btn-save{
+    background-color: #417690;
+    border-radius: 5px;
+    color: white;
+    font-weight: 500;
+    padding: 8px;
+    cursor: pointer;
+    /* width: 52%; */
+    border: none;
+}
+
+.btn-delete{
+    background-color:#ba2121;
+    border-radius: 5px;
+    color: white;
+    font-weight: 500;
+    padding: 8px;
+    cursor: pointer;
+    width: 18%;
+    border: none;
+}
+
+.add-item label{
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.profile h3{
+    font: status-bar;
+    margin: 2%;
+
+}
+
+.formerror{
+    color: #ce3434;
+    margin-left: 12px;
+}
+
+.user-info{
+    margin: 5%;
+    margin-top: 2%;
+    border-radius: 23px;
+    padding: 2%;
+    background-color: #eaeaea;
+    width: fit-content;
+}
+
+.order-status{
+    border: none;
+    border-radius: 5px;
+    font-family: system-ui;
+    color: white;
+    background-color: brown;
+    padding: 8px;
+}
+
+
+.order-title{
+    font-family: cursive;
+    font-weight: 500;
+    color: brown;
+
+}
+
+.order-table th{
+    font-family: system-ui;
+    font-weight: 500;
+    color: #3f464c;
+}

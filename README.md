@@ -1,5 +1,5 @@
 # E-Commerce
-This E-Commerece Project gives general glimes of commerical shopping site where a user can make purchase of his/her requirements under different categories,can view thier purchase history and order status while they can also add products to their carts for later purchase.
+This E-Commerece Project gives general glimes of commerical shopping site where a user can make purchase of his/her requirements under different categories, can view thier purchase history and order status while they can also add products to their carts for later purchase.
 
 # Requirments (Prerequisites)
 * python version - 3.0 

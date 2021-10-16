@@ -29,12 +29,12 @@ SAFE_DELETE_INTERPRET_UNDELETED_OBJECTS_AS_CREATED = True
 # SECURITY WARNING: keep the secret key used in production secret!
 
 SECRET_KEY=env("SECRET_KEY")
-print(SECRET_KEY)
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['shopfreeapp.herokuapp.com','127.0.0.1']
+ALLOWED_HOSTS = ['shopfreeapp.herokuapp.com']
 
 
 # Application definition
@@ -105,7 +105,7 @@ WSGI_APPLICATION = 'EShop.wsgi.application'
 DATABASES = {
      'default': {
          'ENGINE': 'djongo',
-         'NAME': 'E-Shop',
+         'NAME': env("DATABASE_NAME"),
          'ENFORCE_SCHEMA': False,
          'CLIENT': {
            'host': env("DATABASE_URL"),

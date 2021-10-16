@@ -105,7 +105,7 @@ WSGI_APPLICATION = 'EShop.wsgi.application'
 DATABASES = {
      'default': {
          'ENGINE': 'djongo',
-         'NAME': env('DATABASE_NAME'),
+         'NAME':env('DATABASE_NAME'),
          'ENFORCE_SCHEMA': False,
          'CLIENT': {
            'host':env('DATABASE_URL'),

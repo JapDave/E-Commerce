@@ -193,5 +193,5 @@ CELERY_TIMEZONE = 'Asia/Kolkata'
 USE_DJANGO_JQUERY = True
 
 import dj_database_url 
-prod_db  =  dj_database_url.config('mongodb+srv://admin:admin@cluster0.cfwvt.mongodb.net/E-Shop?retryWrites=trueenv',conn_max_age=500)
+prod_db  =  dj_database_url.config(env('DATABASE_URL'),conn_max_age=500)
 DATABASES['default'].update(prod_db)

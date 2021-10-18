@@ -107,7 +107,7 @@ DATABASES = {
          'NAME':'E-Shop',
          'ENFORCE_SCHEMA': False,
          'CLIENT': {
-           'host':env("DATABASE_URL"),
+           'host': 'mongodb+srv://admin:admin@cluster0.cfwvt.mongodb.net/E-Shop?retryWrites=true&w=majority'  ,
         }
      }
  }

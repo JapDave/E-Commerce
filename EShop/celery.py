@@ -5,7 +5,8 @@ from celery import Celery
 # Set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'EShop.settings')
 
-app = Celery('EShop',broker='redis://localhost:6379',CELERY_RESULT_BACKEND='redis://localhost:6379',CELERY_TASK_TRACK_STARTED=True)
+app = Celery('EShop',broker='redis://Adite:PteYhZWp6QsF7REsmc5Nt2FfaNsBumRy@redis-13237.c264.ap-south-1-1.ec2.cloud.redislabs.com:13237/0',
+CELERY_RESULT_BACKEND='redis://Adite:PteYhZWp6QsF7REsmc5Nt2FfaNsBumRy@redis-13237.c264.ap-south-1-1.ec2.cloud.redislabs.com:13237/0',CELERY_TASK_TRACK_STARTED=True)
 
 # Using a string here means the worker doesn't have to serialize
 # the configuration object to child processes.

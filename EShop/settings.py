@@ -32,7 +32,7 @@ SECRET_KEY=env("SECRET_KEY")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['shopfreeapp.herokuapp.com']
 
@@ -107,7 +107,7 @@ DATABASES = {
          'NAME':'E-Shop',
          'ENFORCE_SCHEMA': False,
          'CLIENT': {
-           'host': 'mongodb+srv://admin:admin@cluster0.cfwvt.mongodb.net/E-Shop?retryWrites=true&w=majority'  ,
+           'host': env("DATABASE_URL"),
         }
      }
  }
@@ -116,7 +116,7 @@ DATABASES = {
 
 
 # Password validation
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators env('DATABASE_URL')
+# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {

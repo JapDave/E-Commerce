@@ -179,9 +179,9 @@ EMAIL_HOST_PASSWORD = 'cad62dfe8f0de1'
 EMAIL_PORT = '2525'
 
 
-BROKER_URL = 'redis://admin:Aditetech123$$@redis-13237.c264.ap-south-1-1.ec2.cloud.redislabs.com:13237/0'
+BROKER_URL = 'redis://admin:Aditetech123$$@redis-13237.c264.ap-south-1-1.ec2.cloud.redislabs.com:13237'
 
-CELERY_RESULT_BACKEND = 'redis://admin:Aditetech123$$@redis-13237.c264.ap-south-1-1.ec2.cloud.redislabs.com:13237/0'
+CELERY_RESULT_BACKEND = 'redis://admin:Aditetech123$$@redis-13237.c264.ap-south-1-1.ec2.cloud.redislabs.com:13237'
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 CELERY_ACCEPT_CONTENT = ['application/json']

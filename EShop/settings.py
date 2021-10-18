@@ -179,8 +179,9 @@ EMAIL_HOST_PASSWORD = 'cad62dfe8f0de1'
 EMAIL_PORT = '2525'
 
 
-BROKER_URL = 'redis://redis-13237.c264.ap-south-1-1.ec2.cloud.redislabs.com:13237'
-CELERY_RESULT_BACKEND = 'redis://redis-13237.c264.ap-south-1-1.ec2.cloud.redislabs.com:13237'
+BROKER_URL = 'redis://adite.tester@gmail.com:Aditetech123$$@redis-13237.c264.ap-south-1-1.ec2.cloud.redislabs.com:13237'
+
+CELERY_RESULT_BACKEND = 'redis://adite.tester@gmail.com:Aditetech123$$@redis-13237.c264.ap-south-1-1.ec2.cloud.redislabs.com:13237'
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 CELERY_ACCEPT_CONTENT = ['application/json']
@@ -189,23 +190,16 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Kolkata'
 
 
-import redis
-
-r = redis.Redis(
-    host='redis-13237.c264.ap-south-1-1.ec2.cloud.redislabs.com',
-    port=13237, 
-    password='PteYhZWp6QsF7REsmc5Nt2FfaNsBumRy')
-
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": '%s:%s' % ('redis-13237.c264.ap-south-1-1.ec2.cloud.redislabs.com','13237'),
-        "OPTIONS": {
-            "DB": 0,
-            "PASSWORD":'PteYhZWp6QsF7REsmc5Nt2FfaNsBumRy',
-        }
-    }
-}
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": '%s:%s' % ('redis-13237.c264.ap-south-1-1.ec2.cloud.redislabs.com','13237'),
+#         "OPTIONS": {
+#             "DB": 0,
+#             "PASSWORD":'PteYhZWp6QsF7REsmc5Nt2FfaNsBumRy',
+#         }
+#     }
+# }
 
 
 USE_DJANGO_JQUERY = True

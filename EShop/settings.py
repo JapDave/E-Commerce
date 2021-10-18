@@ -179,8 +179,8 @@ EMAIL_HOST_PASSWORD = 'cad62dfe8f0de1'
 EMAIL_PORT = '2525'
 
 
-BROKER_URL = 'redis-13237.c264.ap-south-1-1.ec2.cloud.redislabs.com'
-CELERY_RESULT_BACKEND = 'redis-13237.c264.ap-south-1-1.ec2.cloud.redislabs.com'
+BROKER_URL = 'redis-13237.c264.ap-south-1-1.ec2.cloud.redislabs.com:13237'
+CELERY_RESULT_BACKEND = 'redis-13237.c264.ap-south-1-1.ec2.cloud.redislabs.com:13237'
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 CELERY_ACCEPT_CONTENT = ['application/json']
@@ -188,6 +188,13 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Kolkata'
 
+
+import redis
+
+r = redis.Redis(
+    host='redis-13237.c264.ap-south-1-1.ec2.cloud.redislabs.com',
+    port=13237, 
+    password='PteYhZWp6QsF7REsmc5Nt2FfaNsBumRy')
 
 CACHES = {
     "default": {

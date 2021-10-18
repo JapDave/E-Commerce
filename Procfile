@@ -1,2 +1,2 @@
 web: gunicorn EShop.wsgi --log-file -
-worker: python manage.py celery worker --loglevel=info
+worker: celery -A EShop worker -l info

@@ -179,8 +179,8 @@ EMAIL_HOST_PASSWORD = 'cad62dfe8f0de1'
 EMAIL_PORT = '2525'
 
 
-BROKER_URL = 'https://shopfreeapp.herokuapp.com/'
-CELERY_RESULT_BACKEND = 'https://shopfreeapp.herokuapp.com/'
+BROKER_URL = 'redis://shopfreeapp.herokuapp.com/'
+CELERY_RESULT_BACKEND = 'redis://shopfreeapp.herokuapp.com/'
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 CELERY_ACCEPT_CONTENT = ['application/json']

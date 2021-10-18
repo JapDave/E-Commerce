@@ -28,7 +28,13 @@ def mail_sender_enterprise(order_obj_id):
    email_from = settings.EMAIL_HOST_USER
    recepient  = [order_obj.product.product_enterprsie.enterprise_email,]
 
-   send_mail(subject, message, email_from, recepient)
+   if send_mail(subject, message, email_from, recepient):
+      print('yes')
+
+   else:
+         print('no')
+
+   
   
 
 

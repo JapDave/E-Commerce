@@ -32,9 +32,9 @@ SECRET_KEY=env("SECRET_KEY")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['shopfreeapp.herokuapp.com','127.0.0.1']
+ALLOWED_HOSTS = ['shopfreeapp.herokuapp.com']
 
 
 # Application definition
@@ -78,7 +78,6 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
-        #'APP_DIRS': True,
         'OPTIONS': {
             'loaders': (
                   'django.template.loaders.filesystem.Loader',
@@ -108,7 +107,7 @@ DATABASES = {
          'NAME':'E-Shop',
          'ENFORCE_SCHEMA': False,
          'CLIENT': {
-           'host':'mongodb+srv://admin:admin@cluster0.cfwvt.mongodb.net/E-Shop?retryWrites=true&w=majority',
+           'host':env("DATABASE_URL"),
         }
      }
  }
@@ -171,17 +170,15 @@ MEDIA_URL = '/uploads/'
 MAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.mailtrap.io'
-EMAIL_HOST_USER = '026d7a5a700d84'
-EMAIL_HOST_PASSWORD = 'cad62dfe8f0de1'
-# EMAIL_HOST_USER = '5d7b30b79a1cd5'
-# EMAIL_HOST_PASSWORD = 'f6084ca87993e3'
-EMAIL_PORT = '2525'
+EMAIL_HOST = env("EMAIL_HOST")
+EMAIL_HOST_USER =env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = env("EMAIL_PORT")
 
 
-BROKER_URL = 'redis://:PteYhZWp6QsF7REsmc5Nt2FfaNsBumRy@redis-13237.c264.ap-south-1-1.ec2.cloud.redislabs.com:13237/0'
+BROKER_URL = env("REDIS_URL")
 
-CELERY_RESULT_BACKEND = 'redis://:PteYhZWp6QsF7REsmc5Nt2FfaNsBumRy@redis-13237.c264.ap-south-1-1.ec2.cloud.redislabs.com:13237/0'
+CELERY_RESULT_BACKEND = env("REDIS_URL")
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 CELERY_ACCEPT_CONTENT = ['application/json']

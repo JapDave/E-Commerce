@@ -28,14 +28,8 @@ def mail_sender_enterprise(order_obj_id):
    email_from = settings.EMAIL_HOST_USER
    recepient  = [order_obj.product.product_enterprsie.enterprise_email,]
 
-   if send_mail(subject, message, email_from, recepient):
-      print('yes')
+   send_mail(subject, message, email_from, recepient)
 
-   else:
-         print('no')
-
-   
-  
 
 
 @shared_task(name='mail_sender_user')
@@ -58,7 +52,7 @@ def mail_sender_newuser(email):
 
       subject = 'New Account Registered'
       message = f''' Thank-you for registering into our site.
-      Your Login link : http://127.0.0.1:8000/user/login .
+      Your Login link : https://shopfreeapp.herokuapp.com/ .
       '''
       email_from = settings.EMAIL_HOST_USER
       recepient  = [email,]

@@ -8,7 +8,7 @@ def mail_sender_newenterprise(email,password):
      
    subject = 'New Account Registered'
    message = f''' Thank-you for registering into our site.
-   Your Login link : http://127.0.0.1:8000/enterprise/ .
+   Your Login link : https://shopfreeapp.herokuapp.com/enterprise/ .
    username : {email}.
    password: {password}.'''
 

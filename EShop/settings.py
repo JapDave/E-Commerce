@@ -190,17 +190,6 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Kolkata'
 
 
-# CACHES = {
-#     "default": {
-#         "BACKEND": "django_redis.cache.RedisCache",
-#         "LOCATION": '%s:%s' % ('redis-13237.c264.ap-south-1-1.ec2.cloud.redislabs.com','13237'),
-#         "OPTIONS": {
-#             "DB": 0,
-#             "PASSWORD":'PteYhZWp6QsF7REsmc5Nt2FfaNsBumRy',
-#         }
-#     }
-# }
-
 
 USE_DJANGO_JQUERY = True
 

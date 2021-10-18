@@ -179,8 +179,8 @@ EMAIL_HOST_PASSWORD = 'cad62dfe8f0de1'
 EMAIL_PORT = '2525'
 
 
-BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+BROKER_URL = 'redis-13237.c264.ap-south-1-1.ec2.cloud.redislabs.com'
+CELERY_RESULT_BACKEND = 'redis-13237.c264.ap-south-1-1.ec2.cloud.redislabs.com'
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 CELERY_ACCEPT_CONTENT = ['application/json']
@@ -188,6 +188,17 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Kolkata'
 
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": '%s:%s' % ('redis-13237.c264.ap-south-1-1.ec2.cloud.redislabs.com','13237'),
+        "OPTIONS": {
+            "DB": 0,
+            "PASSWORD":'PteYhZWp6QsF7REsmc5Nt2FfaNsBumRy',
+        }
+    }
+}
 
 
 USE_DJANGO_JQUERY = True

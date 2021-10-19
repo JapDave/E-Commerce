@@ -53,10 +53,10 @@ class password_reset_request(View):
                             return HttpResponse('Invalid header found.')
                         return redirect ("/password_reset/done/")
         
-        else:
-            messages.error(request,'Sorry User Not Found')        
-            password_reset_form = PasswordResetForm()
-            return render(request=request, template_name="password_reset.html", context={"form":password_reset_form})
+                else:
+                    messages.error(request,'Sorry User Not Found')        
+                    password_reset_form = PasswordResetForm()
+                    return render(request=request, template_name="password_reset.html", context={"form":password_reset_form})
 
 
 

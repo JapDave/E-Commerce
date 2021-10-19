@@ -88,6 +88,7 @@ Step By Step Installation Guide.
    ```
    python-3.8.10
    ```
+
 * Now by creating an .env file beside settings.py file and declare all the environment variables needed for our site.
 
 * For serving static files in django, we need to install whitenoise as django does not support serving static files in production, by default. 
@@ -95,6 +96,7 @@ Step By Step Installation Guide.
    ```
    pip install whitenoise
    ```
+
 * We also need to add whitenoise to our middlewares into settings.py file for letting django to know about whitenoise.
 
    ```
@@ -109,6 +111,7 @@ Step By Step Installation Guide.
    ```
    django-admin collectstatic
    ```
+
 * Open up settings.py file and make the following changes, preferably at the bottom of the file.
    
    ```
@@ -117,26 +120,31 @@ Step By Step Installation Guide.
    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
    ```
+
 * As project is meant to deploy on heroku we needed heroku cli,which you can download as per your system.
    * For unbntu 16+, run the following from your terminal:
 
       ```
       sudo snap install --classic heroku
       ```
+
    * you can also check out the documentation [heroku cli.](https://devcenter.heroku.com/articles/heroku-cli)
 
 * Login to heroku cli from terminal through your credientials.
 
 * Create an heroku app with unique name.
+
    ```
    heroku create shopfreeapp
    ```
+   
 * By creating app, you can add git remote location and can commit your stage level by -
 
    ```
    git add .
    git commit -m "Initial commit"
    ```
+
 * After commiting you can push project to heroku by-
 
    ```

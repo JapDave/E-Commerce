@@ -30,7 +30,7 @@ Step By Step Installation Guide.
 
 4. Install mongodb for your system.
 
-5. Create Database in mongodb and you can update your database name and url in your settings.py 
+5. Create Database in mongodb and you can update your database name and url in your settings file.
 
 ```
    DATABASES = {

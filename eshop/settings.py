@@ -163,6 +163,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = BASE_DIR /'uploads/'
 MEDIA_URL = '/uploads/'
 
+#---------MAIL BACKEND---------
 MAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST=env("EMAIL_HOST")
@@ -170,7 +171,7 @@ EMAIL_HOST_USER =env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD=env("EMAIL_HOST_PASSWORD")
 EMAIL_PORT=env("EMAIL_PORT")
 
-
+#---------REDIS CONFIG--------
 BROKER_URL=env("REDIS_URL")
 CELERY_RESULT_BACKEND=env("REDIS_URL")
 CELERY_TASK_TRACK_STARTED = True
@@ -181,7 +182,7 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Kolkata'
 
 
-
+#-----DATABSE CONFIG--------
 USE_DJANGO_JQUERY = True
 
 import dj_database_url 

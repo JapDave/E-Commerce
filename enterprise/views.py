@@ -302,7 +302,7 @@ class UpdateProduct(View):
                     render(request,'enterprise/add_product.html',{'form':form})
             
             elif request.POST.get('delete'):
-                self.product_data.delete()
+                product_data.delete()
                 return redirect(reverse('product_list'))
 
 class DeleteProduct(View):

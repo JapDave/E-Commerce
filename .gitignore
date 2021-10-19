@@ -1,3 +1,4 @@
 # Environments
 .env
-
+*.pyc
+*.pyo

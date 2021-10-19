@@ -48,8 +48,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles', 
-    'whitenoise.runserver_nostatic'
+    'whitenoise.runserver_nostatic',
+    'crispy_forms',
 ]
+
+CRISPY_TEMPLATE_PACK = 'uni_form'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -21,7 +21,6 @@ class ForgotPassword(View):
 	
 	def post(self,request):
 		user_email = request.POST['email']
-		print(user_email)
 		try:
 			user_data = Users.objects.get(user_email=user_email)
 			request.session['temp_data'] = str(user_data._id)

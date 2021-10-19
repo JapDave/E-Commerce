@@ -1,6 +1,5 @@
 from django.db.models.aggregates import Sum
 from .tasks import mail_sender_enterprise, mail_sender_user
-from django.http.response import HttpResponse
 from django.shortcuts import render,redirect
 from django.urls import reverse
 from django.contrib import messages
@@ -9,7 +8,7 @@ from .models import Users,Order,Cart,Address
 from django.db.models import Q
 from django.conf import settings
 from django.core.mail import send_mail
-from enterprise.models import Categories,Enterprise,Products
+from enterprise.models import Categories,Products
 from .forms import AddressForm, RegisterForm,ProfileForm
 import random
 from django.core.paginator import Paginator
@@ -136,9 +135,7 @@ class Profile(View):
 	def get(self,request):
 		if request.session.get('users_key'):
 			user_data = Users.objects.get(_id=request.session.get('users_key'))
-			form = ProfileForm(instance=user_data)
-			# cart_data = Cart.objects.filter(user=user_data,product_items__isnull=False)
-		
+			form = ProfileForm(instance=user_data)	
 			return render(request,'user/profile.html',{'form':form,'users':user_data,'cart_count':request.session['cart_count']})
 		else:
 			return redirect(reverse('login'))
@@ -281,7 +278,6 @@ class AllProducts(View):
 	def get(self,request,id):
 		rendered_data = {}
 		if request.session.get('users_key'):
-			# cart_data = Cart.objects.filter(user___id=request.session.get('users_key'))
 			rendered_data["users"] = True
 			rendered_data["cart_count"] = request.session['cart_count']
 		product_data = Products.objects.filter(product_categories=id)
@@ -300,8 +296,6 @@ class AllProducts(View):
 	def post(self,request,id):
 		rendered_data = {}
 		if request.session.get('users_key'):
-			# user_data = Users.objects.get(_id = request.session.get('users_key'))
-			# cart_data = Cart.objects.filter(user=user_data)
 			rendered_data["users"] = True 
 			rendered_data["cart_count"] = request.session['cart_count']
 
@@ -343,8 +337,6 @@ class ProductDetail(View):
 		product_data = Products.objects.get(_id=id)
 		
 		if request.session.get('users_key'):
-			# user_data = Users.objects.get(_id = request.session.get('users_key'))
-			# cart_data = Cart.objects.filter(user___id=request.session.get('users_key'),product_items__isnull=False)
 			address_data = Address.objects.filter(user___id=request.session.get('users_key'))
 			address_form = AddressForm()
 			rendered_data = {
@@ -435,7 +427,6 @@ class CartList(View):
 
 	def get(self,request):
 		if request.session.get('users_key'):
-			# user_data = Users.objects.get(_id = request.session.get('users_key'))
 			cart_data = Cart.objects.filter(user___id=request.session.get('users_key'))
 			address_data = Address.objects.filter(user___id=request.session.get('users_key'))
 			address_form = AddressForm()
@@ -598,7 +589,6 @@ class OrderHistory(View):
 class OrderDetail(View):
 	def get(self,request,orderno):
 		if request.session.get('users_key'):
-			# cart_data = Cart.objects.filter(user___id=request.session.get('users_key'))
 			order_data = Order.objects.filter(user___id=request.session.get('users_key'),order_no=orderno)
 
 			rendered_data={

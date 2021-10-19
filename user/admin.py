@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Users,Cart,Order,Address
+from .models import Users,Order,Address
 from .forms import OrderForm, RegisterForm
 from django.utils.html import format_html
 
@@ -10,9 +10,6 @@ class AddressAdmin(admin.StackedInline):
 
     def get_extra(self, request, obj=None, **kwargs):
         extra = 1
-        # if obj:
-        #     print(obj)
-        #     return extra - obj.count()
         return extra
 
 

@@ -1,5 +1,4 @@
 from django import forms
-from django.forms.widgets import PasswordInput
 from .models import Users,Order,Address
 
 
@@ -12,7 +11,6 @@ class AddressForm(forms.ModelForm):
                    'postal_address': forms.Textarea(attrs={'rows':4, 'cols':21})
         }
      
-
 class RegisterForm(forms.ModelForm):
     
     class Meta:

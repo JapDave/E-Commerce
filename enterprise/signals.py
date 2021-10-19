@@ -1,4 +1,4 @@
-from django.db.models.signals import post_delete, post_save,pre_init,pre_delete
+from django.db.models.signals import post_save,pre_delete
 from django.dispatch import receiver
 from .models import Enterprise,Categories,Products
 from .tasks import mail_sender_newenterprise

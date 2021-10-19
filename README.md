@@ -16,44 +16,52 @@ This E-Commerece Project gives general glimes of commerical shopping site where 
 
 Step By Step Installation Guide.
 
-1. Clone the project
+1. Clone the project.
 
-   ```git clone https://aditetester@bitbucket.org/aditetester/e-commerce.git```
+   ```
+   git clone https://aditetester@bitbucket.org/aditetester/e-commerce.git
+   ```
+   
+2. Make sure you are in E-Commerce folder.
 
-2. Make sure you are in E-Commerce folder
+3. Install all dependencies.
 
-3. Install all dependencies
-
-```
+   ```
    pip install -r requirements.txt
-```
+   ```
 
 4. Install mongodb for your system.
 
-5. Create Database in mongodb and you can update your database name and url in your settings file.
+5. Create database in mongodb and you can update your database name and url in your settings file.
 
-```
+   ```
    DATABASES = {
       'default': {
          'ENGINE': 'djongo',
-         'NAME': 'Database Name' ,
+         'NAME': 'Database Name',
          'HOST':'Your Database Url',        
       }
    }
-```
+   ```
 
-6. After Connecting to the Database you can migrate by following commands.
+6. Create superuser by below command and enter your credential to access superadmin.
+   
+   ```
+   python manage.py createsuperuser
+   ```
+
+7. After connecting to the database you can migrate by following commands.
 
    ```
    python manage.py makemigrations 
    python manage.py migrate
    ```
   
-7. Run Server
+8. Run the development server from the terminal by below code.
 
    ```
    python manage.py runserver
    ```
 
-8. Now you are ready to use this project.
+9. Now you are ready to use this project.
   

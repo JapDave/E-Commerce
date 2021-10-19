@@ -4,7 +4,7 @@ from django.utils.timezone import now
 from django.db.models import signals
 import uuid
 from djongo import models
-from enterprise.models import Products,Enterprise
+from enterprise.models import Products
 
 class ParanoidModelManager(models.Manager):
     def get_queryset(self):
@@ -21,8 +21,6 @@ class Users(models.Model):
     user_gender = models.CharField(("Gender"), max_length=50,blank=False)
     phoneNumberRegex = RegexValidator(regex = r"^\+?1?\d{10}$")
     user_contact = models.CharField(validators = [phoneNumberRegex], max_length = 10, unique = True)
-    # user_address1 = models.TextField(("Address1"))
-    # user_address2 = models.TextField(("Address2"),blank=True,default="")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(blank=True, null=True, default=None)
@@ -102,7 +100,7 @@ class Order(models.Model):
     order_no = models.PositiveIntegerField(("Order-No"))
     user = models.ForeignKey(Users, verbose_name=("user"), on_delete=models.CASCADE)
     product = models.ForeignKey(Products, verbose_name=("product"), on_delete=models.CASCADE)
-    qty=models.PositiveIntegerField(("Product-qty"),default=1)
+    qty = models.PositiveIntegerField(("Product-qty"),default=1)
     total = models.PositiveIntegerField(("Total-Amount"))
     address = models.TextField(("Address"))
     payment_method = models.CharField(("Payment-Method"), max_length=50)

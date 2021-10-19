@@ -1,10 +1,8 @@
-from django.db.models.signals import post_delete, post_save,pre_init,pre_delete
+from django.db.models.signals import post_save,pre_delete
 from django.dispatch import receiver
 from .models import Users,Cart  
 from .tasks import mail_sender_newuser
 import hashlib
-
-
 
 
 @receiver(pre_delete, sender=Users, dispatch_uid='soft_delete_product')

@@ -13,23 +13,6 @@ from .tasks import mail_user_updateorder
 import hashlib
 
 
-# class CategoryFilter(View):
-#     def get(self,request):
-#         pass
-
-#     def post(self,request):
-#         filtered_categories = {}
-#         selected_enterprise = request.POST.get('product_enterprsie')
-#         try:
-#             if selected_enterprise:
-#                 filtered_enterpirse = Enterprise.objects.get(_id=selected_enterprise)
-#                 all_categories = filtered_enterpirse.enterprise_categories.all()
-#                 filtered_categories = {category.category_name:category._id for category in all_categories}
-#         except:
-#             pass
-#         return JsonResponse(data=filtered_categories, safe=False)
-
-
 def is_authenticate(request):
     if request.session.get('enterprise_key'):
          return True
@@ -118,7 +101,8 @@ class Login(View):
             messages.error(request, 'wrong username or password')
             return redirect(reverse('enterprise_login'))
         except Exception as e:
-            return HttpResponse('404')
+            messages.error(request, 'something went wrong try again')
+            return redirect(reverse('enterprise_login'))
 
 
 class Logout(View):
@@ -188,7 +172,6 @@ class Index(View):
         try:
             if is_authenticate(request):
                 enterprise_data = Enterprise.objects.filter(_id = request.session.get('enterprise_key')).first()
-                # request.session['enterprise_name'] = enterprise_data.enterprise_name
                 rendered_data = {
                     'enterprise_name': enterprise_data.enterprise_name,
                 }

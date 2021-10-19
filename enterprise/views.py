@@ -39,7 +39,7 @@ class password_reset_request(View):
                         email_template_name = "password_reset_email.txt"
                         c = {
                         "email":user.email,
-                        'domain':'https://shopfreeapp.herokuapp.com/',
+                        'domain':'shopfreeapp.herokuapp.com',
                         'site_name': 'Website',
                         "uid": urlsafe_base64_encode(force_bytes(user.pk)),
                         "user": user,

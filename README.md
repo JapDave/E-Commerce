@@ -153,8 +153,8 @@ Step By Step Installation Guide.
 
 # Tutotial Video Links
 
-* [Admin-Panel](https://drive.google.com/file/d/1zZzqslSowmopXU5IwGc_NnpuvHrfHUD5/view?usp=sharing)
+* [Admin-Panel](https://www.dropbox.com/s/kn9bpkn4ns7k6mf/admin%20panel%20recording.webm?dl=0)
 
-* [Enterprise-Panel](https://drive.google.com/file/d/1l6g52LHXQIMFxHqNjo5vmUGUkuSuASnu/view?usp=sharing)
+* [Enterprise-Panel](https://www.dropbox.com/s/i7m6a12m78fhb31/enterprise%20panel%20recording.webm?dl=0)
 
-* [Customer-Panel](https://drive.google.com/file/d/1S7MihgLKqDRFD3xyCpS9tcvmAckelp1S/view?usp=sharing)
+* [Customer-Panel](https://www.dropbox.com/s/47j0gmg4x8inw4k/user%20panel%20recording.webm?dl=0)

@@ -150,3 +150,11 @@ Step By Step Installation Guide.
    ```
    git push heroku master
    ```
+
+# Tutotial Video Links
+
+* [Admin-Panel](https://drive.google.com/file/d/1zZzqslSowmopXU5IwGc_NnpuvHrfHUD5/view?usp=sharing)
+
+* [Enterprise-Panel](https://drive.google.com/file/d/1l6g52LHXQIMFxHqNjo5vmUGUkuSuASnu/view?usp=sharing)
+
+* [Customer-Panel](https://drive.google.com/file/d/1S7MihgLKqDRFD3xyCpS9tcvmAckelp1S/view?usp=sharing)

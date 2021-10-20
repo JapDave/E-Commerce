@@ -533,3 +533,26 @@ button{
     background-color: #6c757d94;
 }
 
+.footer{
+  background-color: #6c757d38;;
+}
+
+.footer-icon{
+    display: flex;
+    padding: 1%;
+    gap: 2%;
+    justify-content: flex-end;
+    align-content: space-between;
+
+}
+
+.footer-content{
+    padding: 2%;
+}
+
+.footer a,
+.footer a:hover{
+    color: #000000b0;
+    text-decoration: none;
+
+}

@@ -2,6 +2,14 @@
 
 This E-Commerece Project gives general glimes of commerical shopping site where a user can make purchase of his/her requirements under different categories, can view thier purchase history and order status while they can also add products to their carts for later purchase.
 
+# Tutotial Video Links
+
+* [Admin-Panel](https://www.dropbox.com/s/kn9bpkn4ns7k6mf/admin%20panel%20recording.webm?dl=0)
+
+* [Enterprise-Panel](https://www.dropbox.com/s/i7m6a12m78fhb31/enterprise%20panel%20recording.webm?dl=0)
+
+* [Customer-Panel](https://www.dropbox.com/s/47j0gmg4x8inw4k/user%20panel%20recording.webm?dl=0)
+
 # Requirments (Prerequisites)
 
 * [python version - 3.0](https://www.python.org/downloads/), for as backend core language.
@@ -151,10 +159,3 @@ Step By Step Installation Guide.
    git push heroku master
    ```
 
-# Tutotial Video Links
-
-* [Admin-Panel](https://www.dropbox.com/s/kn9bpkn4ns7k6mf/admin%20panel%20recording.webm?dl=0)
-
-* [Enterprise-Panel](https://www.dropbox.com/s/i7m6a12m78fhb31/enterprise%20panel%20recording.webm?dl=0)
-
-* [Customer-Panel](https://www.dropbox.com/s/47j0gmg4x8inw4k/user%20panel%20recording.webm?dl=0)

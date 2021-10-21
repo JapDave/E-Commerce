@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} {% endblock title %}</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+    <link rel="stylesheet" href="{%static 'css/user_style.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="{%static 'js/datatables.min.js'%}"> </script>
+    {% block head %} {% endblock head %}
+
+</head>
+
+<body>
+    <section class="header">
+        <nav class="navbar navbar-inverse navbar-fixed-top navigation">
+            <div class="container-fluid">
+                <div class="navbar-header d-flex">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#wrapper"
+                        aria-expanded="false" aria-controls="wrapper">
+                        <span><i class="fas fa-bars nav-btn"></i></span>
+                    </button>
+                    <a class="navbar-brand ml-2" href="{% url 'index' %}">E-Shop</a>
+                </div>
+                <div class="navigationitem">
+                    <ul class="nav navbar-right">
+                        <li><a href="{% url 'index' %}">Home</a></li>
+                        {% if users %}
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                        {% else %}
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                        <li><a href="{% url 'registeration' %}">Registration</a></li>
+                        {% endif %}
+                        <li><a href="{% url 'cart' %}"><i class="fas fa-shopping-cart fa-1x"></i><sup
+                                    class="m-1">{{cart_count}}</sup></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div id="wrapper" class="collapse">
+            <div class="container-fluid">
+                <div id="sidebar-wrapper">
+                    <ul class="sidebar-nav">
+                        <li>
+                            <a href="{% url 'index' %}"><i class="fas fa-home fa-1x"></i> Home</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'user_profile' %}"><i class="fas fa-user fa-1x"></i> Profile</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'order_history' %}"><i class="fas fa-receipt fa-1x"></i> Orders</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'cart' %}"><i class="fas fa-shopping-cart fa-1x"></i> Cart</a>
+                        </li>
+                        {% if users %}
+                        <li>
+                            <a href="{% url 'logout' %}"><i class="fas fa-power-off fa-1x"></i> Logout</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% block body %}{% endblock body %}
+
+    <footer class="footer mt-5">
+        <div class="footer-content">
+            <div class="container">
+                <div>
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                            <ul>
+                                <h4 class="text-left">Informations</h4>
+                                <li><a href="#">About us</a></li>
+                                <li><a href="#">Privacy policy</a></li>
+                                <li><a href="#">Terms &amp; condition</a></li>
+                                {% if users %}
+                                      <li><a href="{% url 'user_profile' %}">Profile</a></li>
+                                      {% else %}
+                                        <li><a href="{% url 'login' %}">Login</a></li>
+                                        <li><a href="{% url 'registeration' %}">Registeration</a></li>
+                                {% endif %}
+                              
+                            </ul>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-4 ">
+                            <ul>
+                                <h4 class="text-left">Customer Services</h4>
+                                <li><a href="#">Request Personal Data</a></li>
+                                <li><a href="#">FAQ's</a></li>
+                                <li><a href="#">Contact Us</a></li>
+                                <li><a href="{% url 'order_history' %}">Orders</a></li>
+                                <li><a href="#">Support Center</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                            <ul>
+                                <h4 class="text-left">Contact Us</h4>
+                                <li><i class="icon anm anm-map-marker-al"></i>
+                                    <p>55 Gallaxy Enque,<br>2568 steet, 23568 NY</p>
+                                </li>
+                                <li class="phone"><i class="icon anm anm-phone-s"></i>
+                                    <p>(440) 000 000 0000</p>
+                                </li>
+                                <li class="email"><i class="icon anm anm-envelope-l"></i>
+                                    <p>sales@yousite.com</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="container p-0">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                        <ul class="footer-icon">
+                            <li><a href="#"><i class="fab fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                            <li><a href="#"><i class="fab fa-pinterest"></i></a></li>
+                            <li><a href="#"><i class="fab fa-youtube"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

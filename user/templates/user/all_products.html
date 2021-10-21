@@ -1,88 +1,162 @@
 {% extends 'user/user_base.html' %}
-{% block title %}Products{% endblock title %}
+{% block title %}Home{% endblock title %}
+{% load static %}
 {% load tagger %}
-
-
 {% block body %}
-<nav class="nav-page">
-  <div class="search-bar">
-    <form method="POST">
-      {% csrf_token %}
-      <div>
-        <input type="search" name="search_product" placeholder=" &#xF002; Search Product" value="{{searched_product}}"
-          style="font-family:Arial, FontAwesome">
+
+<!--Body Content-->
+<section>
+   <div id="page-content">
+      <!--Collection Banner-->
+      <div class="collection-header">
+         <div class="collection-hero">
+            <div class="collection-hero__image"><img class="blur-up lazyload"
+                  src="{% static 'assets/images/cat-women2.jpg' %}" alt="Women" title="Women" /></div>
+            <div class="collection-hero__title-wrapper">
+               <h1 class="collection-hero__title page-width"></h1>
+            </div>
+         </div>
       </div>
-    </form>
-    <div>
-      <form method="POST">
-        {% csrf_token %}
-        <select name="filter_by" onchange="this.form.submit()" style="font-family:Arial, FontAwesome">
-          <option value="featured" {% if filtered_product == 'featured' %}selected{% endif %}> &#xf0dc; featured</option>
-          <option value="ascending" {% if filtered_product == 'ascending' %}selected{% endif %}> &#xf0dc; Low to High
-            Price</option>
-          <option value="descending" {% if filtered_product == 'descending' %}selected{% endif %}> &#xf0dc; High to Low
-            Price</option>
-        </select>
-      </form>
-    </div>
-  </div>
+      <!--End Collection Banner-->
 
-</nav>
+      <div class="container">
+         <div class="row">
+            <!--Sidebar-->
+            <div class="col-12 col-sm-12 col-md-3 col-lg-3 sidebar filterbar">
+               <div class="closeFilter d-block d-md-none d-lg-none"><i class="icon icon anm anm-times-l"></i></div>
+               <div class="sidebar_tags">
+                  <!--Categories-->
+                  <div class="sidebar_widget categories filter-widget mt-5">
+                     <div class="widget-title">
+                        <h2>Categories</h2>
+                     </div>
+                     <div class="widget-content">
+                        <ul class="sidebar_categories">
+                           {% for cat in categories %}
+                           <li class="level1 sub-level"><a href="{% url 'all_products' cat|private:'_id' %}"
+                                 class="site-nav">{{cat.category_name}}</a>
+                           </li>
+                           {% endfor %}
+                        </ul>
+                     </div>
+                  </div>
+                  <!--Categories-->
+               
+                  <!--Banner-->
+                  <div class="sidebar_widget static-banner">
+                     <img src="{% static 'assets/images/side-banner-2.jpg' %} " alt="" />
+                  </div>
+                  <!--Banner-->
+               </div>
+            </div>
+            <!--End Sidebar-->
+            <!--Main Content-->
+            <div class="col-12 col-sm-12 col-md-9 col-lg-9 main-col">
+               <div class="search-bar">
+                  <form method="POST">
+                    {% csrf_token %}
+                    <div>
+                      <input type="search" name="search_product" placeholder=" &#xF002; Search Product" value="{{searched_product}}"
+                        style="font-family:Arial, FontAwesome">
+                    </div>
+                  </form>
+                  <div>
+                    <form method="POST">
+                      {% csrf_token %}
+                      <select name="filter_by" onchange="this.form.submit()" style="font-family:Arial, FontAwesome">
+                        <option value="featured" {% if filtered_product == 'featured' %}selected{% endif %}> &#xf0dc; featured</option>
+                        <option value="ascending" {% if filtered_product == 'ascending' %}selected{% endif %}> &#xf0dc; Low to High
+                          Price</option>
+                        <option value="descending" {% if filtered_product == 'descending' %}selected{% endif %}> &#xf0dc; High to Low
+                          Price</option>
+                      </select>
+                    </form>
+                  </div>
+                </div>
+               <div class="productList mt-5">
+                  <div class="grid-products grid--view-items">
+                     <div class="row">
+                        {% for product in products %}
+                        <div class="col-6 col-sm-6 col-md-4 col-lg-4 item">
+                           <!-- start product image -->
+                           <div class="product-image">
+                              <!-- start product image -->
+                              <a href="{% url 'product_detail' product|private:'_id' %}">
+                                 <img class="primary blur-up lazyload"
+                                    src="{{product.product_img.url}}" alt="image">  
+                              </a>
+                              <!-- end product image -->
 
+                              <!-- Start product button -->
+                              <form class="variants add" action="#" onclick="window.location.href='cart.html'"
+                                 method="post">
+                                 <a href="#" class="btn btn-addto-cart w-100" type="button">Add To Cart</a>
+                              </form>
+                           
+                              <!-- end product button -->
+                           </div>
+                           <!-- end product image -->
 
+                           <!--start product details -->
+                           <div class="product-details text-center">
+                              <!-- product name -->
+                              <div class="product-name">
+                                 <a>{{product.product_name}}</a>
+                              </div>
+                              <!-- End product name -->
+                              <!-- product price -->
+                              <div class="product-price">
+                                 <span class="price">&#8377 {{product.Price}}/~</span>
+                              </div>
+                              <!-- End product price -->
 
-<section class="container">
-  {% if messages %}
-  <div>
-    {% for message in messages %}
-    <div class="alert alert-danger">
-      <a class="close" href="#" data-dismiss="alert">×</a>
-      {{ message }}
-    </div>
-    {% endfor %}
-  </div>
-  {% endif %}
-
-  <div class="product-main container m-auto">
-    {% for product in products %}
-
-      <div class="product-card mb-3 ">
-        <div>
-          <a href="{% url 'product_detail' product|private:'_id' %}" ><img
-              src="{{product.product_img.url}}" class="product-img" /></a>
-        </div>
-        <div>
-          <h6 class="text-center mt-1">{{product.product_enterprsie}}'s</h6>
-          <h5 class="text-center product-title">{{product.product_name}}</h5>
-          <h5 class="text-center price">&#8377 {{product.Price}}</h5>
-        </div>
-        <a href="{% url 'add_to_cart' product|private:'_id' %}" class="text-center cart-btn "><i
-          class="fas fa-shopping-cart fa-1x"></i> Add to cart </a>
+                              <div class="product-review">
+                                 <i class="font-13 fa fa-star"></i>
+                                 <i class="font-13 fa fa-star"></i>
+                                 <i class="font-13 fa fa-star"></i>
+                                 <i class="font-13 fa fa-star-o"></i>
+                                 <i class="font-13 fa fa-star-o"></i>
+                              </div>
+                           
+                           </div>
+                           <!-- End product details -->
+                        </div>
+                        {% endfor %}
+           
+                     </div>
+                  </div>
+               </div>
+               <hr class="clear">
+               <div class="pagination">
+                  {% if products.has_other_pages %}
+                  <ul>
+                    {% if products.has_previous %}
+                    <li><a href="?page={{ products.previous_page_number }}">&laquo;</a></li>
+                    {% else %}
+                    <li class="disabled"><span>&laquo;</span></li>
+                    {% endif %}
+                    {% for i in products.paginator.page_range %}
+                    {% if products.number == i %}
+                    <li class="active"><span>{{ i }} <span class=""></span></span></li>
+                    {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                    {% if products.has_next %}
+                    <li><a href="?page={{ products.next_page_number }}">&raquo;</a></li>
+                    {% else %}
+                    <li class="disabled"><span>&raquo;</span></li>
+                    {% endif %}
+                  </ul>
+                  {% endif %}
+               </div>
+            </div>
+            <!--End Main Content-->
+         </div>
       </div>
-    {% endfor %}
-  </div>
+
+   </div>
+   <!--End Body Content-->
+
 </section>
-
-{% if products.has_other_pages %}
-<ul class="paginations">
-  {% if products.has_previous %}
-  <li><a href="?page={{ products.previous_page_number }}">&laquo;</a></li>
-  {% else %}
-  <li class="disabled"><span>&laquo;</span></li>
-  {% endif %}
-  {% for i in products.paginator.page_range %}
-  {% if products.number == i %}
-  <li class="active"><span>{{ i }} <span class=""></span></span></li>
-  {% else %}
-  <li><a href="?page={{ i }}">{{ i }}</a></li>
-  {% endif %}
-  {% endfor %}
-  {% if products.has_next %}
-  <li><a href="?page={{ products.next_page_number }}">&raquo;</a></li>
-  {% else %}
-  <li class="disabled"><span>&raquo;</span></li>
-  {% endif %}
-</ul>
-{% endif %}
-
 {% endblock body %}

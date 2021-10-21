@@ -73,11 +73,7 @@ class ChangePassword(View):
 
 class Login(View):
 	def get(self,request):
-		rendered_data = {
-			'title':'User-login',
-			'header':'User'
-		}
-		return render(request,'login.html',rendered_data)
+		return render(request,'user/login.html')
 
 	def post(self,request):
 		user_mail = request.POST['usermail']
@@ -101,7 +97,7 @@ class Registeration(View):
 	def get(self,request):
 		user_form = RegisterForm()
 		address_form = AddressForm()
-		return render(request,'registeration.html',{'userform':user_form,'addressform':address_form})
+		return render(request,'user/register.html',{'userform':user_form,'addressform':address_form})
 
 	def post(self,request):
 		user_form = RegisterForm(request.POST,request.FILES)
@@ -117,9 +113,9 @@ class Registeration(View):
 					address_form.save()
 				return redirect(reverse('login'))
 			except Exception as e:
-				return render(request,'registeration.html',{'userform':user_form,'addressform':address_form})
+				return render(request,'user/register.html',{'userform':user_form,'addressform':address_form})
 		else:
-			return render(request,'registeration.html',{'userform':user_form,'addressform':address_form})
+			return render(request,'user/register.html',{'userform':user_form,'addressform':address_form})
 				
 
 class Logout(View):
@@ -258,17 +254,20 @@ class DeleteAddress(View):
 class Index(View):
 	def get(self,request):
 		category_data = Categories.objects.all()
+		product_Data = Products.objects.all().order_by('Price')[:8]
 		if request.session.get('users_key'):
 			cart_data = Cart.objects.filter(user___id=request.session.get('users_key')).count()
 			request.session['cart_count'] = cart_data
 			rendered_data = {
 				'categories':category_data,
+				'products':product_Data,
 				'users':True,
 				'cart_count':request.session['cart_count']
 			}
 		else:
 			rendered_data = {
 					'categories':category_data,
+					'products':product_Data,
 				}
 		return render(request,'user/index.html',rendered_data)
 
@@ -285,6 +284,7 @@ class AllProducts(View):
 			page = request.GET.get('page',1)
 			paginator = Paginator(product_data,8)
 			product_obj = paginator.page(page)
+			rendered_data['categories']= Categories.objects.all()
 			rendered_data["products"] = product_obj
 			return render(request,'user/all_products.html',rendered_data)     
 
@@ -294,6 +294,7 @@ class AllProducts(View):
 	   
 	def post(self,request,id):
 		rendered_data = {}
+		rendered_data['categories']= Categories.objects.all()
 		if request.session.get('users_key'):
 			rendered_data["users"] = True 
 			rendered_data["cart_count"] = request.session['cart_count']
@@ -334,7 +335,8 @@ class ProductDetail(View):
 	def get(self,request,id):
 		rendered_data = {}
 		product_data = Products.objects.get(_id=id)
-		
+		products = Products.objects.filter( product_categories=product_data.product_categories).exclude(_id=id)
+
 		if request.session.get('users_key'):
 			address_data = Address.objects.filter(user___id=request.session.get('users_key'))
 			address_form = AddressForm()
@@ -343,11 +345,13 @@ class ProductDetail(View):
 				'cart_count':request.session['cart_count'],
 				'product':product_data,
 				'address':address_data,
-				'addressform':address_form
+				'addressform':address_form,
+				'products':products
 			}
 			return render(request,'user/product_detail.html',rendered_data)
 		else:
-			rendered_data["product"]=product_data
+			rendered_data["product"] = product_data
+			rendered_data["products"] = products
 			return render(request,'user/product_detail.html',rendered_data)
 
 	def post(self,request,id):

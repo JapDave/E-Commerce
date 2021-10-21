@@ -1,171 +1,210 @@
 {% extends 'user/user_base.html' %}
-{% block title %}{{product.product_name}}{% endblock title %}
+{% block title %}Home{% endblock title %}
+{% load static %}
 {% load tagger %}
-
-{% block head %}
-<script>
-	function displayRadioValue() {
-		var ele = document.getElementsByName('address');
-
-		for (i = 0; i < ele.length; i++) {
-			if (ele[i].checked)
-				document.getElementById("user_address").innerHTML
-					= " <i class='fas fa-location-arrow fa-1x'> </i>  Deliver to-" + ele[i].value.slice(0,15)+'...';
-		}
-	}
-</script>
-{% endblock head %}
-
-
-
 {% block body %}
-<section class="container-fluid">
-	{% if messages %}
-	<div>
-		{% for message in messages %}
-		<div class="alert {% if message.level == 25 %}alert-primary {% else %}alert-danger {% endif %}">
-			<a class="close" href="#" data-dismiss="alert">×</a>
-			{{ message }}
-		</div>
-		{% endfor %}
-	</div>
-	{% endif %}
+<div id="page-content">
+   <!--MainContent-->
+   <div id="MainContent" class="main-content" role="main">
+      <!--Breadcrumb-->
+      <div class="bredcrumbWrap">
+         <div class="container breadcrumbs">
+            <a href="{% url 'index' %}" title="Back to the home page">Home</a><span
+               aria-hidden="true">›</span><span>Product With Right Thumbs</span>
+         </div>
+      </div>
+      <!--End Breadcrumb-->
 
-	<div class="row container">
-		<div class="col-sm-6 product-image">
-			<img src="{{product.product_img.url}}">
-		</div>
+      <div id="ProductSection-product-template"
+         class="product-template__container prstyle1 container product-right-sidebar">
+         <!--product-single-->
+         <div class="product-single">
+            <div class="row">
+               <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                  <div class="product-details-img">
+                     <div class="zoompro-wrap product-zoom-right pl-20">
+                        <div class="zoompro-span">
+                           <img class="zoompro blur-up lazyload" data-zoom-image="{{product.product_img.url}}" alt=""
+                              src="{{product.product_img.url}}" />
+                        </div>
+                        <div class="product-labels"><span class="lbl on-sale">Sale</span><span
+                              class="lbl pr-label1">new</span></div>
+                     </div>
 
-		<div class="col-sm-6 product-detail">
-			<h5>{{product.product_name}}</h5>
-			<h6><small class="text-secondary">Brand: </small> {{product.product_enterprsie}}</h6>
-			<hr>
-			<p>Price:</p>
-			<p class="price">&#8377 {{product.Price}}</p>
-			<hr>
-			<h4>About this item:</h4>
-			<p class="text-muted">{{product.Description}}</p>
+                  </div>
+                  <div class="product-information">
+                     <div class="product-single__meta">
+                        <h1 class="product-single__title">{{product.product_name}}</h1>
+                        <div class="product-nav clearfix">
+                           <a href="#" class="next" title="Next"><i class="fa fa-angle-right"
+                                 aria-hidden="true"></i></a>
+                        </div>
+                        <div class="prInfoRow">
+                           <div class="product-stock"> <span class="instock ">In Stock</span> <span
+                                 class="outstock hide">Unavailable</span> </div>
+                           <div class="product-sku">SKU: <span class="variant-sku">19115-rdxs</span></div>
+                           <div class="product-review"><a class="reviewLink" href="#tab2"><i
+                                    class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i
+                                    class="font-13 fa fa-star"></i><i class="font-13 fa fa-star-o"></i><i
+                                    class="font-13 fa fa-star-o"></i><span class="spr-badge-caption">6
+                                    reviews</span></a></div>
+                        </div>
+                        <p class="product-single__price product-single__price-product-template">
+                           <span class="visually-hidden">Regular price</span>
+                           <span class="product-price__price product-price__price-product-template">
+                              <span id="ProductPrice-product-template"><span class="money">&#8377
+                                    {{product.Price}}/~</span></span>
+                           </span>
+                        </p>
+                        <div class="product-single__description rte">
+                           <p>{{product.Description}}</p>
+                        </div>
+                        <form method="post" accept-charset="UTF-8"
+                           class="product-form product-form-product-template hidedropdown"
+                           enctype="multipart/form-data">
+                           <!-- Product Action -->
+                           {% csrf_token %}
+                           <div class="product-action clearfix">
+                              <div class="product-form__item--quantity">
+                                 <div class="wrapQtyBtn">
+                                    <div class="qtyField">
+                                       <a class="qtyBtn minus" href="javascript:void(0);"><i class="fa anm anm-minus-r"
+                                             aria-hidden="true"></i></a>
+                                       <input type="text" id="Quantity" name="selected_qty" value="1"
+                                          class="product-form__input qty">
+                                       <a class="qtyBtn plus" href="javascript:void(0);"><i class="fa anm anm-plus-r"
+                                             aria-hidden="true"></i></a>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="product-form__item--submit">
+                                 <button type="submit" name="buy_btn" class="btn product-form__cart-submit">
+                                    <span id="AddToCartText-product-template">Order Now!</span>
+                                 </button>
+                              </div>
+                           </div>
+                           <!-- End Product Action -->
+                        </form>
+                        <div class="display-table shareRow">
 
-			<div class="user-detail">
-				<button data-toggle="modal" data-target="#address-modal" class="price mb-2" id="user_address">
-					<!-- <i class="fas fa-map-marker-alt"></i> --> <i class="fas fa-location-arrow fa-1x"></i> Deliver to-
-					{% for add in address %}
-					{% if forloop.counter <= 1 %} 
-						{{add.postal_address|slice:':15'}} {% if add.postal_address|length > 15 %}...{% endif %}
-					{% endif %}
-			 {% endfor %}
-			 </button>
-				<form method="POST">
-					{% csrf_token %}
-					<label class="ml-5">Qty:</label>
-					<select name="selected_qty">
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="4">4</option>
-						<option value="5">5</option>
-						<option value="6">6</option>
-						<option value="7">7</option>
-						<option value="8">8</option>
-					</select>
+                           <div class="display-table-cell text-right">
+                              <div class="social-sharing">
+                                 <a target="_blank" href="#"
+                                    class="btn btn--small btn--secondary btn--share share-facebook"
+                                    title="Share on Facebook">
+                                    <i class="fa fa-facebook-square" aria-hidden="true"></i> <span class="share-title"
+                                       aria-hidden="true">Share</span>
+                                 </a>
+                                 <a target="_blank" href="#"
+                                    class="btn btn--small btn--secondary btn--share share-twitter"
+                                    title="Tweet on Twitter">
+                                    <i class="fa fa-twitter" aria-hidden="true"></i> <span class="share-title"
+                                       aria-hidden="true">Tweet</span>
+                                 </a>
+                                 <a href="#" title="Share on google+" class="btn btn--small btn--secondary btn--share">
+                                    <i class="fa fa-google-plus" aria-hidden="true"></i> <span class="share-title"
+                                       aria-hidden="true">Google+</span>
+                                 </a>
+                                 <a target="_blank" href="#"
+                                    class="btn btn--small btn--secondary btn--share share-pinterest"
+                                    title="Pin on Pinterest">
+                                    <i class="fa fa-pinterest" aria-hidden="true"></i> <span class="share-title"
+                                       aria-hidden="true">Pin it</span>
+                                 </a>
+                                 <a href="#" class="btn btn--small btn--secondary btn--share share-pinterest"
+                                    title="Share by Email" target="_blank">
+                                    <i class="fa fa-envelope" aria-hidden="true"></i> <span class="share-title"
+                                       aria-hidden="true">Email</span>
+                                 </a>
+                              </div>
+                           </div>
+                        </div>
 
-					<div class="modal fade" id="address-modal" tabindex="-1" role="dialog"
-						aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-						<div class="modal-dialog modal-dialog-centered" role="document">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title" id="exampleModalLongTitle">Choose Address </h5>
-									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>
-								</div>
-								<div class="modal-body">
-									<table>
-									{% for add in address %}
-										<tr>
-											<td>
-												{% if forloop.counter <= 1 %}<input type="radio" name="address" value="{{add}} "checked>
-													{% else %}
-													<input type="radio" name="address" value="{{add}}">
-												{% endif %}
-												{{add}}
-											</td>
-										</tr>
-										{% endfor %}
-										<tr>
-											<td>
-												<button type="button" data-dismiss="modal" aria-label="Close" data-toggle="modal"
-													data-target="#add-address-modal" href="#add-address-modal">
-													+ add address
-												</button>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<button type="button" class="buy-btn w-50" data-dismiss="modal" aria-label="Close"
-													onclick="displayRadioValue()">
-													Submit
-												</button>
-											</td>
-										</tr>
-									</table>
-								</div>
-							</div>
-						</div>
-					</div>
-					<input type="submit" value="&#xf290; Buy Now" name="buy_btn" class="buy-btn"
-						style="font-family:system-ui, FontAwesome">
-				</form>
-				<div class="modal fade" id="add-address-modal" tabindex="-1" role="dialog"
-					aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
-					<div class="modal-dialog modal-dialog-centered" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="exampleModalLongTitle">Add Address</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body">
-								<form method="POST">
-									{% csrf_token %}
-									<table cellpadding="10px">
-											{{addressform.user}}
-										<tr>
-											<td><label>country:</label></td>
-											<td>{{addressform.country}}</td>
-										</tr>
-										<tr>
-											<td><label>State: </label></td>
-											<td>{{addressform.state}}</td>
-										</tr>
-										<tr>
-											<td><label>City: </label></td>
-											<td>{{addressform.city}}</td>
-										</tr>
-										<tr>
-											<td><label>Pincode: </label></td>
-											<td>{{addressform.pin_code}}</td>
-										</tr>
-										<tr>
-											<td><label>Postal-Detail: </label></td>
-											<td>{{addressform.postal_address}}</td>
-										</tr>
-										<tr>
-											<td colspan="5"><input type="submit" value="submit" name="add_address"
-													class="add-address-btn"></td>
-										</tr>
-									</table>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- <button onclick="this.form.submit();" class="buy-btn"><i class="fas fa-shopping-bag fa-1x"></i> Buy Now</button>  -->
-				<a href="{% url 'add_to_cart' product|private:'_id' %}"><i class="fas fa-shopping-cart fa-1x"></i> Add
-					to cart</a><br>
-			</div>
-		</div>
-	</div>
-</section>
-{% endblock body %}
+                     </div>
+                  </div>
+               </div>
+               <!--Product Sidebar-->
+               <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                  <div class="prSidebar sidebar-product">
+                     <!--Product Feature-->
+                     <div class="prFeatures">
+                        <div class="feature">
+                           <img src="{% static 'assets/images/credit-card.png' %}" alt="Safe Payment"
+                              />
+                           <div class="details">
+                              <h5>Safe Payment</h5>Pay with the world's most payment methods.
+                           </div>
+                        </div>
+                        <div class="feature">
+                           <img src="{% static 'assets/images/shield.png' %}" alt="Confidence"  />
+                           <div class="details">
+                              <h5>Confidence</h5>Protection covers your purchase and personal data.
+                           </div>
+                        </div>
+                        <div class="feature">
+                           <img src="{% static 'assets/images/worldwide.png' %}" alt="Worldwide Delivery"
+                               />
+                           <div class="details">
+                              <h5>Worldwide Delivery</h5>FREE &amp; fast shipping to over 200+ countries &amp; regions.
+                           </div>
+                        </div>
+                        <div class="feature">
+                           <img src="{% static 'assets/images/phone-call.png' %}" alt="Hotline"/>
+                           <div class="details">
+                              <h5>Hotline</h5>Talk to help line for your question on 4141 456 789, 4125 666 888
+                           </div>
+                        </div>
+                     </div>
+                     <!--End Product Feature-->
+                     <!--Related Product-->
+                     <div class="related-product grid-products clearfix">
+                        <header class="section-header">
+                           <h2 class="section-header__title text-center h2"><span>Related Products</span></h2>
+                        </header>
+                        <div class="grid">
+                           {% for product in products|slice:':3' %}
+                           <div class="grid__item">
+                              <div class="mini-list-item">
+                                 <div class="mini-view_image">
+                                    <a class="grid-view-item__link" href="{% url 'product_detail' product|private:'_id' %}">
+                                       <img class="grid-view-item__image"
+                                          src="{{product.product_img.url}}" alt="">
+                                    </a>
+                                 </div>
+                                 <div class="details">
+                                    <a class="grid-view-item__title" >{{product.product_name}}</a>
+                                    <div class="grid-view-item__meta"><span class="product-price__price"><span
+                                             class="money">&#8377 {{product.Price}}/~</span></span></div>
+                                    <div class="product-review">
+                                       <i class="font-13 fa fa-star"></i>
+                                       <i class="font-13 fa fa-star"></i>
+                                       <i class="font-13 fa fa-star"></i>
+                                       <i class="font-13 fa fa-star"></i>
+                                       <i class="font-13 fa fa-star"></i>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           {% endfor %}
+                        </div>
+                     </div>
+                     <!--End Related Product-->
+
+                  </div>
+               </div>
+               <!--Product Sidebar-->
+            </div>
+         </div>
+         <!--End-product-single-->
+
+
+      </div>
+      <!--#ProductSection-product-template-->
+   </div>
+   <!--MainContent-->
+</div>
+
+
+
+
+{% endblock body%}

@@ -1,0 +1,171 @@
+{% extends 'user/user_base.html' %}
+{% block title %}{{product.product_name}}{% endblock title %}
+{% load tagger %}
+
+{% block head %}
+<script>
+	function displayRadioValue() {
+		var ele = document.getElementsByName('address');
+
+		for (i = 0; i < ele.length; i++) {
+			if (ele[i].checked)
+				document.getElementById("user_address").innerHTML
+					= " <i class='fas fa-location-arrow fa-1x'> </i>  Deliver to-" + ele[i].value.slice(0,15)+'...';
+		}
+	}
+</script>
+{% endblock head %}
+
+
+
+{% block body %}
+<section class="container-fluid">
+	{% if messages %}
+	<div>
+		{% for message in messages %}
+		<div class="alert {% if message.level == 25 %}alert-primary {% else %}alert-danger {% endif %}">
+			<a class="close" href="#" data-dismiss="alert">×</a>
+			{{ message }}
+		</div>
+		{% endfor %}
+	</div>
+	{% endif %}
+
+	<div class="row container">
+		<div class="col-sm-6 product-image">
+			<img src="{{product.product_img.url}}">
+		</div>
+
+		<div class="col-sm-6 product-detail">
+			<h5>{{product.product_name}}</h5>
+			<h6><small class="text-secondary">Brand: </small> {{product.product_enterprsie}}</h6>
+			<hr>
+			<p>Price:</p>
+			<p class="price">&#8377 {{product.Price}}</p>
+			<hr>
+			<h4>About this item:</h4>
+			<p class="text-muted">{{product.Description}}</p>
+
+			<div class="user-detail">
+				<button data-toggle="modal" data-target="#address-modal" class="price mb-2" id="user_address">
+					<!-- <i class="fas fa-map-marker-alt"></i> --> <i class="fas fa-location-arrow fa-1x"></i> Deliver to-
+					{% for add in address %}
+					{% if forloop.counter <= 1 %} 
+						{{add.postal_address|slice:':15'}} {% if add.postal_address|length > 15 %}...{% endif %}
+					{% endif %}
+			 {% endfor %}
+			 </button>
+				<form method="POST">
+					{% csrf_token %}
+					<label class="ml-5">Qty:</label>
+					<select name="selected_qty">
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+					</select>
+
+					<div class="modal fade" id="address-modal" tabindex="-1" role="dialog"
+						aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLongTitle">Choose Address </h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<table>
+									{% for add in address %}
+										<tr>
+											<td>
+												{% if forloop.counter <= 1 %}<input type="radio" name="address" value="{{add}} "checked>
+													{% else %}
+													<input type="radio" name="address" value="{{add}}">
+												{% endif %}
+												{{add}}
+											</td>
+										</tr>
+										{% endfor %}
+										<tr>
+											<td>
+												<button type="button" data-dismiss="modal" aria-label="Close" data-toggle="modal"
+													data-target="#add-address-modal" href="#add-address-modal">
+													+ add address
+												</button>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<button type="button" class="buy-btn w-50" data-dismiss="modal" aria-label="Close"
+													onclick="displayRadioValue()">
+													Submit
+												</button>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<input type="submit" value="&#xf290; Buy Now" name="buy_btn" class="buy-btn"
+						style="font-family:system-ui, FontAwesome">
+				</form>
+				<div class="modal fade" id="add-address-modal" tabindex="-1" role="dialog"
+					aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLongTitle">Add Address</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<form method="POST">
+									{% csrf_token %}
+									<table cellpadding="10px">
+											{{addressform.user}}
+										<tr>
+											<td><label>country:</label></td>
+											<td>{{addressform.country}}</td>
+										</tr>
+										<tr>
+											<td><label>State: </label></td>
+											<td>{{addressform.state}}</td>
+										</tr>
+										<tr>
+											<td><label>City: </label></td>
+											<td>{{addressform.city}}</td>
+										</tr>
+										<tr>
+											<td><label>Pincode: </label></td>
+											<td>{{addressform.pin_code}}</td>
+										</tr>
+										<tr>
+											<td><label>Postal-Detail: </label></td>
+											<td>{{addressform.postal_address}}</td>
+										</tr>
+										<tr>
+											<td colspan="5"><input type="submit" value="submit" name="add_address"
+													class="add-address-btn"></td>
+										</tr>
+									</table>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- <button onclick="this.form.submit();" class="buy-btn"><i class="fas fa-shopping-bag fa-1x"></i> Buy Now</button>  -->
+				<a href="{% url 'add_to_cart' product|private:'_id' %}"><i class="fas fa-shopping-cart fa-1x"></i> Add
+					to cart</a><br>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock body %}

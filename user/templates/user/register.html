@@ -1,0 +1,126 @@
+{% extends 'user/user_base.html' %}
+{% block title %}Home{% endblock title %}
+{% load static %}
+{% load tagger
+{% block body %}
+
+<!--Body Content-->
+<div id="page-content">
+   <!--Page Title-->
+   <div class="page section-header text-center">
+      <div class="page-title">
+         <div class="wrapper">
+            <h1 class="page-width">Create an Account</h1>
+         </div>
+      </div>
+   </div>
+   <!--End Page Title-->
+
+   <div class="container">
+      <div class="row">
+         <div class="col-12 col-sm-12 col-md-6 col-lg-6 main-col offset-md-3">
+            <div class="mb-4">
+               <form method="post" action="#" id="CustomerLoginForm" accept-charset="UTF-8" class="contact-form">
+                  <div class="row">
+                     <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="form-group">
+                           <label for="">Name: </label>
+                           {{userform.user_name}}
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="form-group">
+                           <label for="">Password: </label>
+                           {{userform.user_name}}
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="form-group">
+                           <label for="">Email: </label>
+                           {% if userform.user_email.errors %}
+                           <p class="formerror">{{userform.user_email.errors.as_text}}
+                           <p>
+                              {% endif %}
+                              {{userform.user_email}}
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="form-group">
+                           <label for="">Profile: </label>
+                           {% if userform.user_photo.errors %}
+                           <p class="formerror">{{userform.user_photo.errors.as_text}}
+                           <p>
+                              {% endif %}
+                              {{userform.user_photo}}
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="form-group">
+                           <label for="">Age: </label>
+                           {{userform.user_age}}
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="form-group">
+                           <label for="">Gender: </label>
+                           {{userform.user_gender}}
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="form-group">
+                           <label for="">Contact-No: </label>
+                           {% if userform.user_contact.errors %}
+                           <p class="formerror">{{userform.user_contact.errors.as_text}}
+                           <p>
+                              {% endif %}
+                              {{userform.user_contact}}
+                        </div>
+                     </div>
+                     {{addressform.user}}
+                     <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="form-group">
+                           <label for="">Country: </label>
+                           {{addressform.country}}
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="form-group">
+                           <label for="">State: </label>
+                           {{addressform.state}}
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="form-group">
+                           <label for="">City: </label>
+                           {{addressform.city}}
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="form-group">
+                           <label for="">Pincode: </label>
+                           {{addressform.pin_code}}
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="form-group">
+                           <label for="">Postal-Detail: </label>
+                           {{addressform.postal_address}}
+                        </div>
+                     </div>
+
+                  </div>
+                  <div class="row">
+                     <div class="text-center col-12 col-sm-12 col-md-12 col-lg-12">
+                        <input type="submit" class="btn mb-3" value="Create">
+                     </div>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+
+</div>
+<!--End Body Content-->
+
+{% endblock body %}

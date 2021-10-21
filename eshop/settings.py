@@ -104,10 +104,10 @@ WSGI_APPLICATION = 'eshop.wsgi.application'
 DATABASES = {
      'default': {
          'ENGINE': 'djongo',
-         'NAME':env("DATABASE_NAME"),
+         'NAME':'E-Shop',
          'ENFORCE_SCHEMA': False,
          'CLIENT': {
-           'host':env("DATABASE_URL"),
+           'host':'mongodb://localhost:27017',
         }
      }
  }

@@ -1,0 +1,105 @@
+{% extends 'user/user_base.html' %}
+{% block title %}Home{% endblock title %}
+{% load static %}
+{% load tagger %}
+
+{% block head %}
+<script>
+  function displaytitle(counter) {
+    document.getElementById('title-' + counter).style.visibility = "visible";
+  }
+  function hidetitle(counter) {
+    document.getElementById('title-' + counter).style.visibility = "hidden";
+  }
+</script>
+{% endblock head %}
+
+{% block body %}
+<section class="brand-poster">
+  <div id="carouselExample" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="{%static 'images/poster1.jpeg' %}" class="d-block" alt="..." />
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'images/poster2.jpeg' %}" class="d-block" alt="..." />
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'images/poster1.jpeg' %}" class="d-block" alt="..." />
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container mt-5">
+  <div class="zigzag-bottom"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3 col-sm-6">
+        <div class="promo">
+          <i class="fa fa-refresh"></i>
+          <p>30 Days return</p>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="promo">
+          <i class="fa fa-truck"></i>
+          <p>Free shipping</p>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="promo">
+          <i class="fa fa-lock"></i>
+          <p>Secure payments</p>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="promo">
+          <i class="fa fa-gift"></i>
+          <p>New products</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  h
+  <div class="product-main container m-auto">
+    {% for product in products %}
+      <div class="product-card mb-3 ">
+        <div>
+          <a href="{% url 'product_detail' product|private:'_id' %}" ><img
+              src="{{product.product_img.url}}" class="product-img" /></a>
+        </div>
+        <div>
+          <h6 class="text-center mt-1">{{product.product_enterprsie}}'s</h6>
+          <h5 class="text-center product-title">{{product.product_name}}</h5>
+          <h5 class="text-center price">&#8377 {{product.Price}}</h5>
+        </div>
+        <a href="{% url 'add_to_cart' product|private:'_id' %}" class="text-center cart-btn "><i
+          class="fas fa-shopping-cart fa-1x"></i> Add to cart </a>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+
+<section class="container-fluid mt-4">
+  <div class="main container-fluid">
+    {% for category in categories %}
+
+    <div class="category mb-3" onmouseover="displaytitle('{{forloop.counter}}')"
+      onmouseleave="hidetitle('{{forloop.counter}}')">
+      <img class="card-img-top rounded" src="{{category.category_image.url}}" width="100px" height="200px" />
+      <a href="{% url 'all_products' category|private:'_id' %}">
+        <div class='category-title' id='title-{{forloop.counter}}'>
+          <h5>{{category.category_name}}</h5>
+        </div>
+      </a>
+    </div>
+
+    {% endfor %}
+  </div>
+</section>
+{% endblock body %}

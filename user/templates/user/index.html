@@ -2,58 +2,307 @@
 {% block title %}Home{% endblock title %}
 {% load static %}
 {% load tagger %}
-
-{% block head %} 
-  <script>
-    function displaytitle(counter){
-      document.getElementById('title-'+counter).style.visibility = "visible";
-    }
-    function hidetitle(counter){
-      document.getElementById('title-'+counter).style.visibility = "hidden";
-    }
-  </script>
-{% endblock head %}
-
 {% block body %}
-<section class="brand-poster">
-    <div id="carouselExample" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img
-              src="{%static 'images/poster1.jpeg' %}"
-              class="d-block"
-              alt="..."
-            />
-          </div>
-          <div class="carousel-item">
-            <img
-              src="{% static 'images/poster2.jpeg' %}"
-              class="d-block"
-              alt="..."
-            />
-          </div>
-          <div class="carousel-item">
-            <img
-              src="{% static 'images/poster1.jpeg' %}"
-              class="d-block"
-              alt="..."
-            />
-          </div>
-        </div>
+<!--Home slider-->
+<section>
+<div class="slideshow slideshow-wrapper pb-section sliderFull">
+   <div class="home-slideshow">
+      <div class="slide">
+         <div class="blur-up lazyload bg-size">
+            <img class="blur-up lazyload bg-img" data-src="assets/images/slideshow-banners/belle-banner1.jpg"
+               src="assets/images/slideshow-banners/belle-banner1.jpg" alt="Shop Our New Collection"
+               title="Shop Our New Collection" />
+            <div class="slideshow__text-wrap slideshow__overlay classic bottom">
+               <div class="slideshow__text-content bottom">
+                  <div class="wrap-caption center">
+                     <h2 class="h1 mega-title slideshow__title">Shop Our New Collection</h2>
+                     <span class="mega-subtitle slideshow__subtitle">From Hight to low, classic or
+                        modern. We have you covered</span>
+                  </div>
+               </div>
+            </div>
+         </div>
       </div>
-</section>    
+      <div class="slide">
+         <div class="blur-up lazyload bg-size">
+            <img class="blur-up lazyload bg-img" data-src="assets/images/slideshow-banners/belle-banner1.jpg"
+               src="assets/images/slideshow-banners/belle-banner1.jpg" alt="Summer  Collection"
+               title="Summer  Collection" />
+            <div class="slideshow__text-wrap slideshow__overlay classic bottom">
+               <div class="slideshow__text-content bottom">
+                  <div class="wrap-caption center">
+                     <h2 class="h1 mega-title slideshow__title">Summer Collection</h2>
+                     <span class="mega-subtitle slideshow__subtitle">Save up to 50% off this weekend
+                        only</span>
 
-<section class="container-fluid mt-4">
-    <div class="main container-fluid">
-        {% for category in categories %}
-        
-          <div class="category mb-3" onmouseover="displaytitle('{{forloop.counter}}')" onmouseleave="hidetitle('{{forloop.counter}}')">
-            <img class="card-img-top rounded" src="{{category.category_image.url}}" width="100px" height="200px" />
-            <a href="{% url 'all_products' category|private:'_id' %}"> <div class='category-title' id='title-{{forloop.counter}}'><h5>{{category.category_name}}</h5></div>
-            </a> 
-          </div>
-       
-        {% endfor %}
-    </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!--End Home slider-->
+
+<div class="tab-slider-product section">
+   <div class="container">
+      <div class="row">
+         <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="section-header text-center">
+               <h2 class="h2">New Arrivals</h2>
+               <p>Browse the huge variety of our products</p>
+            </div>
+            <div class="tabs-listing">
+               <div class="tab_container">
+                  <div id="tab1" class="tab_content grid-products">
+                     <div class="productSlider">
+                        {% for product in products %}
+                        <div class="col-12 item">
+                           <!-- start product image -->
+
+                           <div class="product-image">
+                              <!-- start product image -->
+                              <a href="{% url 'product_detail' product|private:'_id' %}">
+                                 <!-- image -->
+                                 <img class="primary blur-up lazyload" data-src="{{product.product_img.url}}"
+                                    src="{{product.product_img.url}}" alt="image">
+                              </a>
+                              <!-- end product image -->
+
+                              <!-- Start product button -->
+                              <form class="variants add" action="#" onclick="window.location.href='cart.html'"
+                                 method="post">
+                                 <a href="#" class="btn btn-addto-cart w-100" type="button" tabindex="0">Add To Cart</a>
+                              </form>
+
+                              <!-- end product button -->
+                           </div>
+
+                           <!-- end product image -->
+                           <!--start product details -->
+                           <div class="product-details text-center">
+                              <!-- product name -->
+                              <div class="product-name">
+                                 <a >{{Product.product_name}}</a>
+                              </div>
+                              <!-- End product name -->
+                              <!-- product price -->
+                              <div class="product-price">
+                                 <span class="old-price">&#8377 500.00/~</span>
+                                 <span class="price">&#8377 {{product.Price}}/~</span>
+                              </div>
+                              <!-- End product price -->
+
+                              <div class="product-review">
+                                 <i class="font-13 fa fa-star"></i>
+                                 <i class="font-13 fa fa-star"></i>
+                                 <i class="font-13 fa fa-star"></i>
+                                 <i class="font-13 fa fa-star-o"></i>
+                                 <i class="font-13 fa fa-star-o"></i>
+                              </div>
+                           </div>
+                           <!-- End product details -->
+                        </div>
+                        {% endfor %}
+                     </div>
+                  </div>
+                  <div id="tab2" class="tab_content grid-products">
+                     <div class="productSlider">
+                        {% for product in products %}
+                        <div class="col-12 item">
+                           <!-- start product image -->
+                           <div class="product-image">
+                              <!-- start product image -->
+                              <a href="{% url 'product_detail' product|private:'_id' %}">
+                                 <!-- image -->
+                                 <img class="primary blur-up lazyload" data-src="{{product.product_img.url}}"
+                                    src="{{product.product_img.url}}" alt="image">
+
+                              </a>
+                              <!-- end product image -->
+
+                              <!-- Start product button -->
+                              <form class="variants add" action="#" onclick="window.location.href='cart.html'"
+                                 method="post">
+                                 <a href="#" class="btn btn-addto-cart" type="button" tabindex="0">Add To Cart</a>
+                              </form>
+                              <!-- end product button -->
+                           </div>
+                           <!-- end product image -->
+
+                           <!--start product details -->
+                           <div class="product-details text-center">
+                              <!-- product name -->
+                              <div class="product-name">
+                                 <a>{{product.product_name}</a>
+                              </div>
+                              <!-- End product name -->
+                              <!-- product price -->
+                              <div class="product-price">
+                                 <span class="price">&#8377 {{product.price}}/~</span>
+                              </div>
+                              <!-- End product price -->
+
+                              <div class="product-review">
+                                 <i class="font-13 fa fa-star"></i>
+                                 <i class="font-13 fa fa-star"></i>
+                                 <i class="font-13 fa fa-star"></i>
+                                 <i class="font-13 fa fa-star-o"></i>
+                                 <i class="font-13 fa fa-star-o"></i>
+                              </div>
+                           </div>
+                           <!-- End product details -->
+                        </div>
+                        {% endfor %}
+                     </div>
+                  </div>
+                  <div id="tab3" class="tab_content grid-products">
+                     <div class="productSlider">
+                        {% for product in products%}
+                        <div class="col-12 item">
+                           <!-- start product image -->
+                           <div class="product-image">
+                              <!-- start product image -->
+                              <a href="{% url 'product_detail' product|private:'_id' %}">
+                                 <!-- image -->
+                                 <img class="primary blur-up lazyload" data-src="{{product.product_img.url}}"
+                                    src="{{product.product_img.url}}" alt="image">
+
+                              </a>
+                              <!-- end product image -->
+
+                              <!-- Start product button -->
+                              <form class="variants add" action="#" onclick="window.location.href='cart.html'"
+                                 method="post">
+                                 <a href="#" class="btn btn-addto-cart" type="button" tabindex="0">Add To Cart</a>
+                              </form>
+                              <div class="button-set">
+
+                              </div>
+                              <!-- end product button -->
+                           </div>
+                           <!-- end product image -->
+
+                           <!--start product details -->
+                           <div class="product-details text-center">
+                              <!-- product name -->
+                              <div class="product-name">
+                                 <a>{{product.product_name}}</a>
+                              </div>
+                              <!-- End product name -->
+                              <!-- product price -->
+                              <div class="product-price">
+                                 <span class="price">&#8377 {{product.Price}}/~</span>
+                              </div>
+                              <!-- End product price -->
+
+                              <div class="product-review">
+                                 <i class="font-13 fa fa-star"></i>
+                                 <i class="font-13 fa fa-star"></i>
+                                 <i class="font-13 fa fa-star"></i>
+                                 <i class="font-13 fa fa-star-o"></i>
+                                 <i class="font-13 fa fa-star-o"></i>
+                              </div>
+                           </div>
+                           <!-- End product details -->
+                        </div>
+                        {% endfor %}
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!--Collection Tab slider-->
+
+<!--Collection Box slider-->
+<div class="collection-box section">
+   <div class="container">
+      <div class="collection-grid">
+         {% for category in categories %}
+         <div class="collection-grid-item">
+            <a href="{% url 'all_products' category|private:'_id' %}" class="collection-grid-item__link">
+               <img data-src="{{category.category_image.url}}" src="{{category.category_image.url}}" alt="Fashion"
+                  class="blur-up lazyload" />
+               <div class="collection-grid-item__title-wrapper">
+                  <h3 class="collection-grid-item__title btn btn--secondary no-border">{{category.category_name}}</h3>
+               </div>
+            </a>
+         </div>
+         {% endfor %}
+      </div>
+   </div>
+</div>
+<!--End Collection Box slider-->
+
+<!--Logo Slider-->
+<div class="section logo-section">
+   <div class="container">
+      <div class="row">
+         <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="logo-bar">
+               <div class="logo-bar__item">
+                  <img src="assets/images/logo/brandlogo1.png" alt="" title="" />
+               </div>
+               <div class="logo-bar__item">
+                  <img src="assets/images/logo/brandlogo2.png" alt="" title="" />
+               </div>
+               <div class="logo-bar__item">
+                  <img src="assets/images/logo/brandlogo3.png" alt="" title="" />
+               </div>
+               <div class="logo-bar__item">
+                  <img src="assets/images/logo/brandlogo4.png" alt="" title="" />
+               </div>
+               <div class="logo-bar__item">
+                  <img src="assets/images/logo/brandlogo5.png" alt="" title="" />
+               </div>
+               <div class="logo-bar__item">
+                  <img src="assets/images/logo/brandlogo6.png" alt="" title="" />
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<!--Store Feature-->
+<div class="store-feature section">
+   <div class="container">
+      <div class="row">
+         <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+            <ul class="display-table store-info">
+               <li class="display-table-cell">
+                  <i class="icon anm anm-truck-l"></i>
+                  <h5>Free Shipping &amp; Return</h5>
+                  <span class="sub-text">Free shipping on all US orders</span>
+               </li>
+               <li class="display-table-cell">
+                  <i class="icon anm anm-dollar-sign-r"></i>
+                  <h5>Money Guarantee</h5>
+                  <span class="sub-text">30 days money back guarantee</span>
+               </li>
+               <li class="display-table-cell">
+                  <i class="icon anm anm-comments-l"></i>
+                  <h5>Online Support</h5>
+                  <span class="sub-text">We support online 24/7 on day</span>
+               </li>
+               <li class="display-table-cell">
+                  <i class="icon anm anm-credit-card-front-r"></i>
+                  <h5>Secure Payments</h5>
+                  <span class="sub-text">All payment are Secured and trusted.</span>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </div>
+</div>
+<!--End Store Feature-->
+</div>
+<!--End Body Content-->
+
+<span id="site-scroll"><i class="icon anm anm-angle-up-r"></i></span>
+<!--End Scoll Top-->
 </section>
 {% endblock body %}

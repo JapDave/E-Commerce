@@ -70,11 +70,10 @@
                               <!-- end product image -->
 
                               <!-- Start product button -->
-                              <form class="variants add" action="#" onclick="window.location.href='cart.html'"
-                                 method="post">
-                                 <a href="#" class="btn btn-addto-cart w-100" type="button" tabindex="0">Add To Cart</a>
+                              <form class="variants add w-100" action="#"
+                              method="post">
+                              <a href="{% url 'add_to_cart' product|private:'_id' %}" class="btn btn-addto-cart w-100" type="button" tabindex="0">Add To Cart</a>
                               </form>
-
                               <!-- end product button -->
                            </div>
 
@@ -124,7 +123,7 @@
                               <!-- Start product button -->
                               <form class="variants add" action="#" onclick="window.location.href='cart.html'"
                                  method="post">
-                                 <a href="#" class="btn btn-addto-cart" type="button" tabindex="0">Add To Cart</a>
+                                 <a href="{% url 'add_to_cart' product|private:'_id' %}" class="btn btn-addto-cart" type="button" tabindex="0">Add To Cart</a>
                               </form>
                               <!-- end product button -->
                            </div>
@@ -174,7 +173,7 @@
                               <!-- Start product button -->
                               <form class="variants add" action="#" onclick="window.location.href='cart.html'"
                                  method="post">
-                                 <a href="#" class="btn btn-addto-cart" type="button" tabindex="0">Add To Cart</a>
+                                 <a href="{% url 'add_to_cart' product|private:'_id' %}" class="btn btn-addto-cart" type="button" tabindex="0">Add To Cart</a>
                               </form>
                               <div class="button-set">
 

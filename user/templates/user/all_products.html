@@ -88,9 +88,8 @@
                               <!-- end product image -->
 
                               <!-- Start product button -->
-                              <form class="variants add" action="#" onclick="window.location.href='cart.html'"
-                                 method="post">
-                                 <a href="#" class="btn btn-addto-cart w-100" type="button">Add To Cart</a>
+                              <form class="variants add" >
+                                 <a href="{% url 'add_to_cart' product|private:'_id' %}" class="btn btn-addto-cart w-100" type="button">Add To Cart</a>
                               </form>
                            
                               <!-- end product button -->

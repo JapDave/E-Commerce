@@ -26,104 +26,235 @@
 		}
 		document.getElementById('place-order').style.visibility = "visible";
 	}
-</script>
 
+	function displayRadioValue1() {
+		var ele = document.getElementsByName('address');
+
+		for (i = 0; i < ele.length; i++) {
+			if (ele[i].checked)
+				document.getElementById("user_address").innerHTML
+					= " <i class='fas fa-location-arrow fa-1x'> </i>  Deliver to-" + ele[i].value.slice(0, 15) + '...';
+		}
+	}
+
+</script>
 {% endblock head %}
 
-{% block body %}
-<section class="container checkout-menu">
-	<h5 class="text-muted m-4">Checkout</h5>
-	<table class="table table-striped table-bordered w-75 m-3" id="checkouttable">
-		<thead class="checkout-title">
-			<tr>
-				<th>Sr.no</th>
-				<th>Product</th>
-				<th>Qty</th>
-				<th>Price</th>
-				<th>Total</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% if products %}
-			{% firstof 'product' as slug_value %}
-			<tr>
-				<td>1</td>
-				<td>{{products.product_name}}</td>
-				<td>{{qty}}</td>
-				<td>&#8377 {{products.Price}}</td>
-				<td>&#8377 {% widthratio qty 1 products.Price %}</td>
-			</tr>
-			{% else %}
-			{% firstof 'cart' as slug_value %}
-			{% for item in cart_item %}
-			<tr>
-				<td>{{forloop.counter}}</td>
-				<td>{{item.product_items.product_name}}</td>
-				<td>{{item.qty}}</td>
-				<td>&#8377 {{item.product_items.Price}}</td>
-				<td>&#8377 {% widthratio item.qty 1 item.product_items.Price %}</td>
-			</tr>
-			{% endfor %}
-			{% endif %}
-			<tr>
-				<td colspan="5">
-					<p class="sub_total">Total:&nbsp &#8377 {{total}}/~</p>
-				</td>
-			</tr>
-		</tbody>
-	</table>
 
-	<div class="checkout-box">
-		<h5>Payment Summary</h5>
-		<p class="text-secondary" id="user_address"><i class="fas fa-map-marker-alt"></i> Deliver to- <br>
-		 	{{address}}	
-		</p>
-		<button data-toggle="modal" data-target="#payment-modal" class="payment mb-2" id="user_payment">Click for <br>  Payment Method</button>
-		<div class="modal fade" id="payment-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-			aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLongTitle">Choose Payment Method </h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+{% block body %}
+
+{% if messages %}
+<div>
+	{% for message in messages %}
+	<div class="alert {% if message.level == 25 %}alert-primary {% else %}alert-danger {% endif %}">
+		<a class="close" href="#" data-dismiss="alert">×</a>
+		{{ message }}
+	</div>
+	{% endfor %}
+</div>
+{% endif %}
+
+<section class="container checkout-menu">
+	<div class="row">
+		<div class="col-md-10 col-sm-12">
+			<h5 class="text-muted m-4 ">Checkout</h5>
+			<table class="table table-striped table-bordered w-75 m-3" id="checkouttable">
+				<thead class="checkout-title">
+					<tr>
+						<th>Sr.no</th>
+						<th>Product</th>
+						<th>Qty</th>
+						<th>Price</th>
+						<th>Total</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% if products %}
+					{% firstof 'product' as slug_value %}
+					<tr>
+						<td>1</td>
+						<td>{{products.product_name}}</td>
+						<td>{{qty}}</td>
+						<td>&#8377 {{products.Price}}/~</td>
+						<td>&#8377 {% widthratio qty 1 products.Price %}/~</td>
+					</tr>
+					{% else %}
+					{% firstof 'cart' as slug_value %}
+					{% for item in cart_item %}
+					<tr>
+						<td>{{forloop.counter}}</td>
+						<td>{{item.product_items.product_name}}</td>
+						<td>{{item.qty}}</td>
+						<td>&#8377 {{item.product_items.Price}}/~</td>
+						<td>&#8377 {% widthratio item.qty 1 item.product_items.Price %}/~</td>
+					</tr>
+					{% endfor %}
+					{% endif %}
+					<tr>
+						<td colspan="5">
+							<p class="sub_total">Total:&nbsp &#8377 {{total}}/~</p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="checkout-box col-md-2 col-sm-4 container">
+			<div>
+				<h5>Payment Summary</h5>
+				<p data-toggle="modal" data-target="#address-modal" class="price mb-2" id="user_address">
+					<!-- <i class="fas fa-map-marker-alt"></i> --> <i class="fas fa-location-arrow fa-1x"></i> Deliver to-
+					{% for add in address %}
+					{% if forloop.counter <= 1 %} {{add.postal_address|slice:':15'}} {% if add.postal_address|length > 15 %}...
+						{% endif %}
+						{% endif %}
+						{% endfor %}
+				</p>
+				<p data-toggle="modal" data-target="#payment-modal" class="price mb-2" id="user_payment">Click for
+					<br>
+					Payment Method</p>
+			</div>
+		
+		<div>
+			<form method="POST" action="{% url 'place_order' slug=slug_value %}">
+				{% csrf_token %}
+				<!-- Address Modal-->
+				<div class="modal fade" id="address-modal" tabindex="-1" role="dialog"
+					aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLongTitle">Choose Address </h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<table>
+									{% for add in address %}
+									<tr>
+										<td>
+											{% if forloop.counter <= 1 %}<input type="radio" name="address" value="{{add}}" checked>
+												{% else %}
+												<input type="radio" name="address" value="{{add}}">
+												{% endif %}
+												{{add}}
+										</td>
+									</tr>
+									{% endfor %}
+									<tr>
+										<td>
+											<button type="button" data-dismiss="modal" aria-label="Close" data-toggle="modal"
+												data-target="#add-address-modal" href="#add-address-modal">
+												+ add address
+											</button>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<button type="button" class="btn newsletter__submit-text--small w-50" data-dismiss="modal" aria-label="Close"
+												onclick="displayRadioValue1()">
+												Submit
+											</button>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
 					</div>
-					<div class="modal-body">
-						<table>
-						<form method="GET" action="{% url 'place_order' slug=slug_value %}">
-							{% if products %}
-								<input type="hidden" name="product" value="{{products|private:'_id'}}">
-								<input type="hidden" name="qty" value="{{qty}}">
-							{% endif %}
-								<input type="hidden" name="address" value="{{address}}">
-							<tr>
-								<td>
-									<input type="radio" name="payment_method" value='Cash On Delivery'> Cash On Delivery
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<input type="radio" name="payment_method" value='Online Mode' >  Online Mode
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<button type="button" class="buy-btn" data-dismiss="modal" aria-label="Close"
-										onclick="displayRadioValue()">
-										Submit
-									</button>
-								</td>
-							</tr>
-						</table>
+				</div>
+
+				<!-- payment Modal -->
+				<div class="modal fade" id="payment-modal" tabindex="-1" role="dialog"
+					aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLongTitle">Choose Payment Method </h5>
+								<button type="button"  class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<table>
+
+									{% if products %}
+									<input type="hidden" name="product" value="{{products|private:'_id'}}">
+									<input type="hidden" name="qty" value="{{qty}}">
+									{% endif %}
+									<tr>
+										<td>
+											<input type="radio" name="payment_method" value='Cash On Delivery'> Cash On Delivery
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<input type="radio" name="payment_method" value='Online Mode'> Online Mode
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<button type="button" class="btn newsletter__submit-text--small"" data-dismiss="modal" aria-label="Close"
+												onclick="displayRadioValue()">
+												Submit
+											</button>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div id="place-order">
+					<input type="submit" value="Place Order" class="btn newsletter__submit-text--small">
+				</div>
+			</form>
+		</div>
+			<div class="modal fade" id="add-address-modal" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLongTitle">Add Address</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<form method="POST">
+								{% csrf_token %}
+								<table cellpadding="10px">
+									{{addressform.user}}
+									<tr>
+										<td><label>country:</label></td>
+										<td>{{addressform.country}}</td>
+									</tr>
+									<tr>
+										<td><label>State: </label></td>
+										<td>{{addressform.state}}</td>
+									</tr>
+									<tr>
+										<td><label>City: </label></td>
+										<td>{{addressform.city}}</td>
+									</tr>
+									<tr>
+										<td><label>Pincode: </label></td>
+										<td>{{addressform.pin_code}}</td>
+									</tr>
+									<tr>
+										<td><label>Postal-Detail: </label></td>
+										<td>{{addressform.postal_address}}</td>
+									</tr>
+									<tr>
+										<td colspan="5"><input type="submit" value="submit" name="add_address"
+												class="add-address-btn"></td>
+									</tr>
+								</table>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-
-		<div id="place-order">
-				<input type="submit" value ="Place Order" class="buy-btn">
-			</form>
 		</div>
 	</div>
 

@@ -12,6 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
     <link rel="shortcut icon" href="{% static 'assets/images/favicon.png' %}" />
+	 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
     <!-- Plugins CSS -->
     <link rel="stylesheet" href="{% static 'assets/css/plugins.css' %}">
     <!-- Bootstap CSS -->
@@ -19,6 +20,8 @@
     <!-- Main Style CSS -->
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+
+   {% block head %} {% endblock head %} 
 </head>
 
 <body class="template-index belle template-index-belle">
@@ -130,11 +133,11 @@
                     <!--Mobile Logo-->
                     <div class="col-4 col-sm-3 col-md-3 col-lg-2">
                         <div class="site-cart">
-                            <a href="#;" class="site-header__cart" title="Cart">
-                                <i class="icon anm anm-bag-l"></i>
+                            <div class="site-header">
+                                <a href="{% url 'cart' %}"> <i class="icon anm anm-bag-l"></i>
                                 <span id="CartCount" class="site-header__cart-count"
-                                    data-cart-render="item_count">{{cart_count}}</span>
-                            </a>
+                                    data-cart-render="item_count">{{cart_count}}</span></a>
+                            </div>
                         </div>
                       
                     </div>
@@ -225,35 +228,25 @@
                         <!--Footer Links-->
                         <div class="footer-top">
                             <div class="row">
-                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 footer-links">
-                                    <h4 class="h4">Quick Shop</h4>
-                                    <ul>
-													{% for cat in categories|slice:":5" %}
-                                        <li><a href="#">{{cat.category_name}}</a></li>
-													{% endfor%}
-                                    </ul>
-                                </div>
-                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 footer-links">
+                                <div class="col-12 col-sm-12 col-md-4 col-lg-4 footer-links">
                                     <h4 class="h4">Informations</h4>
                                     <ul>
                                         <li><a href="#">About us</a></li>
-                                        <li><a href="#">Careers</a></li>
                                         <li><a href="#">Privacy policy</a></li>
                                         <li><a href="#">Terms &amp; condition</a></li>
                                         <li><a href="#">My Account</a></li>
                                     </ul>
                                 </div>
-                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 footer-links">
+                                <div class="col-12 col-sm-12 col-md-4 col-lg-4 footer-links">
                                     <h4 class="h4">Customer Services</h4>
                                     <ul>
-                                        <li><a href="#">Request Personal Data</a></li>
                                         <li><a href="#">FAQ's</a></li>
                                         <li><a href="#">Contact Us</a></li>
-                                        <li><a href="#">Orders and Returns</a></li>
+                                        <li><a href="#">Orders</a></li>
                                         <li><a href="#">Support Center</a></li>
                                     </ul>
                                 </div>
-                                <div class="col-12 col-sm-12 col-md-3 col-lg-3 contact-box">
+                                <div class="col-12 col-sm-12 col-md-4 col-lg-4 contact-box">
                                     <h4 class="h4">Contact Us</h4>
                                     <ul class="addressFooter">
                                         <li><i class="icon anm anm-map-marker-al"></i>

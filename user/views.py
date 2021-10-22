@@ -14,6 +14,8 @@ import random
 from django.core.paginator import Paginator
 from django.db.models import  Count
 import hashlib
+from django.core.serializers.json import DjangoJSONEncoder
+import json     
 
 class ForgotPassword(View):
 	def get(self,request):
@@ -254,12 +256,13 @@ class DeleteAddress(View):
 class Index(View):
 	def get(self,request):
 		category_data = Categories.objects.all()
+	
 		product_Data = Products.objects.all().order_by('Price')[:8]
 		if request.session.get('users_key'):
 			cart_data = Cart.objects.filter(user___id=request.session.get('users_key')).count()
 			request.session['cart_count'] = cart_data
 			rendered_data = {
-				'categories':category_data,
+				'categories': category_data,
 				'products':product_Data,
 				'users':True,
 				'cart_count':request.session['cart_count']
@@ -336,64 +339,27 @@ class ProductDetail(View):
 		rendered_data = {}
 		product_data = Products.objects.get(_id=id)
 		products = Products.objects.filter( product_categories=product_data.product_categories).exclude(_id=id)
+		category_data = Categories.objects.all()
 
 		if request.session.get('users_key'):
-			address_data = Address.objects.filter(user___id=request.session.get('users_key'))
-			address_form = AddressForm()
+			
 			rendered_data = {
 				'users':True,
 				'cart_count':request.session['cart_count'],
 				'product':product_data,
-				'address':address_data,
-				'addressform':address_form,
-				'products':products
+				'products':products,
+				'categories':category_data
 			}
 			return render(request,'user/product_detail.html',rendered_data)
 		else:
-			rendered_data["product"] = product_data
-			rendered_data["products"] = products
+			rendered_data = {
+				'product':product_data,
+				'products':products,
+				'categories':category_data
+			}
 			return render(request,'user/product_detail.html',rendered_data)
 
-	def post(self,request,id):
-		if request.session.get('users_key'):
-			
-			if request.POST.get('add_address'):
-				user_data = Users.objects.get(_id = request.session.get('users_key'))
-				address_form = AddressForm(request.POST)
-				address_form.data._mutable = True
-				address_form.data['user'] = user_data
-				address_form.data._mutable = False
-				if address_form.is_valid:
-					address_form.save()	
-					messages.success(request,'address was added.')
-					return redirect(reverse('product_detail', kwargs={'id':id}))
-				else:
-					messages.error(request,'sorry address was not added.')
-					return redirect(reverse('product_detail', kwargs={'id':id}))
-			
-
-			elif request.POST.get('buy_btn'):
-				product_data = Products.objects.get(_id=id)
-				qty = request.POST['selected_qty']
-				address = request.POST.get('address')
-				
-				rendered_data = {
-					'users':True,
-					'products': product_data,
-					'qty' : int(qty),
-					'total' : int(qty) * product_data.Price,
-					'address': address
-				}
-
-				if int(qty) <= product_data.product_qty: 
-					return render(request,'user/checkout.html',rendered_data)
-				
-				else:
-					messages.error(request,'Sorry that much quantity not available.')
-					return redirect(reverse('product_detail', kwargs={'id':id}))
-		else:
-			return redirect(reverse('login'))
-
+	
 
 class AddItem(View):
 	def get(self,request,id):
@@ -418,7 +384,7 @@ class AddItem(View):
 class RemoveItem(View):
 	def get(self,request,id):
 		if request.session.get('users_key'):
-			cart_data = Cart.objects.get(user___id=request.session.get('users_key'),product_items___id=id)
+			cart_data = Cart.objects.get(_id=id)
 			cart_data.delete()
 			request.session['cart_count'] -= 1
 			return redirect(reverse('cart'))
@@ -431,9 +397,7 @@ class CartList(View):
 	def get(self,request):
 		if request.session.get('users_key'):
 			cart_data = Cart.objects.filter(user___id=request.session.get('users_key'))
-			address_data = Address.objects.filter(user___id=request.session.get('users_key'))
-			address_form = AddressForm()
-			
+		
 			sub_total = 0
 			item_count = 0
 
@@ -450,8 +414,6 @@ class CartList(View):
 				'sub_total':sub_total,
 				'item_count':item_count,
 				'cart_count':request.session['cart_count'],
-				'address':address_data,
-				'addressform':address_form
 			}
 			return render(request,'user/cart.html',rendered_data)
 		else:
@@ -468,10 +430,66 @@ class CartList(View):
 				cart_data = Cart.objects.get(user___id=request.session.get('users_key'),product_items=product_data)
 				cart_data.qty = int(qty)
 				cart_data.save()
+				print("yes")
 				return redirect(reverse('cart'))
 			else:
 				messages.error(request,'Sorry that much quantity not available.')
 				return redirect(reverse('cart'))
+
+class PlaceOrder(View):
+
+	def get(self,request,slug):
+		if request.session.get('users_key'):
+
+			if slug == 'cart':
+				address_data = Address.objects.filter(user___id=request.session.get('users_key'))
+				address_form = AddressForm()
+				cart_data = Cart.objects.filter(user___id=request.session.get('users_key'))
+				sub_total = 0
+				for item in cart_data:
+					sub_total += item.qty * item.product_items.Price 
+
+				rendered_data = {
+					'users':True,
+					'cart_item':cart_data,
+					'address':address_data,
+					'addressform':address_form,
+					'total':sub_total
+				}
+				return render(request,'user/checkout.html',rendered_data)
+
+			if request.GET.get('buy_btn'):
+				qty = request.GET['selected_qty']
+				request.session['selected_qty'] = int(qty)
+				product_data = Products.objects.get(_id=slug)
+
+				address_data = Address.objects.filter(user___id=request.session.get('users_key'))
+				address_form = AddressForm()
+			else:
+				product_data = Products.objects.get(_id=slug)
+
+				address_data = Address.objects.filter(user___id=request.session.get('users_key'))
+				address_form = AddressForm()
+
+			rendered_data = {
+				'users':True,
+				'products': product_data,
+				'qty' : request.session['selected_qty'],
+				'total' : request.session['selected_qty'] * product_data.Price,
+				'address': address_data,
+				'addressform':address_form,
+			}
+
+			if request.session['selected_qty'] <= product_data.product_qty: 
+				return render(request,'user/checkout.html',rendered_data)
+			
+			else:
+				messages.error(request,'Sorry that much quantity not available.')
+				return redirect(reverse('product_detail', kwargs={'id':slug}))
+		else:
+			return redirect(reverse('login'))
+
+	def post(self,request,slug):
 
 		if request.POST.get('add_address'):
 			user_data = Users.objects.get(_id = request.session.get('users_key'))
@@ -482,40 +500,17 @@ class CartList(View):
 			if address_form.is_valid:
 				address_form.save()	
 				messages.success(request,'address was added.')
-				return redirect(reverse('cart'))
+				return redirect(reverse('place_order', kwargs={'slug':slug}))
 			else:
-				print(address_form.errors)
 				messages.error(request,'sorry address was not added.')
-				return(redirect(reverse('cart')))
-		
-		
-		elif request.POST.get('checkout_btn'):
-			address = request.POST.get('address')
-			cart_data = Cart.objects.filter(user___id=request.session.get('users_key'))
-			sub_total = 0
-			for item in cart_data:
-				sub_total += item.qty * item.product_items.Price 
+				return redirect(reverse('place_order', kwargs={'slug':slug}))
+	
+		user_data = Users.objects.get(_id = request.session.get('users_key'))
+		address = request.POST.get('address')
+		payment_method = request.POST.get('payment_method')
+		order_no = random.randint(111111,999999)
 
-			rendered_data = {
-				'users':True,
-				'cart_item':cart_data,
-				'address':address,
-				'total':sub_total
-			}
-
-			return render(request,'user/checkout.html',rendered_data)
-
-
-class PlaceOrder(View):
-
-	def get(self,request,slug):
-		if request.session.get('users_key'):
-			user_data = Users.objects.get(_id = request.session.get('users_key'))
-			address = request.GET.get('address')
-			payment_method = request.GET.get('payment_method')
-			order_no = random.randint(111111,999999)
-
-			if slug == 'cart':
+		if slug == 'cart':
 				cart_data = Cart.objects.filter(user=user_data)
 				total=0
 				for item in cart_data:
@@ -536,29 +531,29 @@ class PlaceOrder(View):
 				cart_data.delete()
 				request.session['cart_count'] = 0
 			
-			elif slug == 'product':
-				product_id = request.GET.get('product')
-				qty = request.GET.get('qty')
-				product_data = Products.objects.get(_id=product_id)
-				total = int(qty) * product_data.Price
-				
-				order_obj = Order(order_no=order_no,
-								user=user_data,
-								product=product_data,
-								qty=qty,
-								total=total,
-								address=address,
-								payment_method=payment_method,
-								status='0'
-								)
-				order_obj.save()
-				mail_sender_enterprise.delay(order_obj._id)
-				
+		elif slug == 'product':
+			product_id = request.POST.get('product')
+			qty = request.POST.get('qty')
+			product_data = Products.objects.get(_id=product_id)
+			total = int(qty) * product_data.Price
+			
+			order_obj = Order(order_no=order_no,
+							user=user_data,
+							product=product_data,
+							qty=qty,
+							total=total,
+							address=address,
+							payment_method=payment_method,
+							status='0'
+							)
+			order_obj.save()
+			mail_sender_enterprise.delay(order_obj._id)
+			del request.session['selected_qty']	
 
-			mail_sender_user.delay(order_no,user_data.user_email)				
-			return render(request,'user/order_success.html',{'users':True})
-		else:
-			return redirect(reverse('login'))
+		mail_sender_user.delay(order_no,user_data.user_email)			
+		
+		return render(request,'user/order_success.html',{'users':True})
+
 
 	
 class OrderHistory(View):

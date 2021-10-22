@@ -10,7 +10,7 @@
       <div class="bredcrumbWrap">
          <div class="container breadcrumbs">
             <a href="{% url 'index' %}" title="Back to the home page">Home</a><span
-               aria-hidden="true">›</span><span>Product With Right Thumbs</span>
+               aria-hidden="true">›</span><span>{{product.product_name}}</span>
          </div>
       </div>
       <!--End Breadcrumb-->
@@ -32,13 +32,22 @@
                      </div>
 
                   </div>
+
+                  {% if messages %}
+                  <div>
+                     {% for message in messages %}
+                     <div class="alert {% if message.level == 25 %}alert-primary {% else %}alert-danger {% endif %}">
+                        <a class="close" href="#" data-dismiss="alert">×</a>
+                        {{ message }}
+                     </div>
+                     {% endfor %}
+                  </div>
+                  {% endif %}
+
                   <div class="product-information">
                      <div class="product-single__meta">
                         <h1 class="product-single__title">{{product.product_name}}</h1>
-                        <div class="product-nav clearfix">
-                           <a href="#" class="next" title="Next"><i class="fa fa-angle-right"
-                                 aria-hidden="true"></i></a>
-                        </div>
+
                         <div class="prInfoRow">
                            <div class="product-stock"> <span class="instock ">In Stock</span> <span
                                  class="outstock hide">Unavailable</span> </div>
@@ -59,11 +68,12 @@
                         <div class="product-single__description rte">
                            <p>{{product.Description}}</p>
                         </div>
-                        <form method="post" accept-charset="UTF-8"
+                        <form method="GET" accept-charset="UTF-8" action="{% url 'place_order' product|private:'_id' %}"
                            class="product-form product-form-product-template hidedropdown"
                            enctype="multipart/form-data">
                            <!-- Product Action -->
                            {% csrf_token %}
+
                            <div class="product-action clearfix">
                               <div class="product-form__item--quantity">
                                  <div class="wrapQtyBtn">
@@ -78,9 +88,7 @@
                                  </div>
                               </div>
                               <div class="product-form__item--submit">
-                                 <button type="submit" name="buy_btn" class="btn product-form__cart-submit">
-                                    <span id="AddToCartText-product-template">Order Now!</span>
-                                 </button>
+                                 <input type="submit" name="buy_btn" class="btn product-form__cart-submit" value="Order Now!">   
                               </div>
                            </div>
                            <!-- End Product Action -->
@@ -129,27 +137,25 @@
                      <!--Product Feature-->
                      <div class="prFeatures">
                         <div class="feature">
-                           <img src="{% static 'assets/images/credit-card.png' %}" alt="Safe Payment"
-                              />
+                           <img src="{% static 'assets/images/credit-card.png' %}" alt="Safe Payment" />
                            <div class="details">
                               <h5>Safe Payment</h5>Pay with the world's most payment methods.
                            </div>
                         </div>
                         <div class="feature">
-                           <img src="{% static 'assets/images/shield.png' %}" alt="Confidence"  />
+                           <img src="{% static 'assets/images/shield.png' %}" alt="Confidence" />
                            <div class="details">
                               <h5>Confidence</h5>Protection covers your purchase and personal data.
                            </div>
                         </div>
                         <div class="feature">
-                           <img src="{% static 'assets/images/worldwide.png' %}" alt="Worldwide Delivery"
-                               />
+                           <img src="{% static 'assets/images/worldwide.png' %}" alt="Worldwide Delivery" />
                            <div class="details">
                               <h5>Worldwide Delivery</h5>FREE &amp; fast shipping to over 200+ countries &amp; regions.
                            </div>
                         </div>
                         <div class="feature">
-                           <img src="{% static 'assets/images/phone-call.png' %}" alt="Hotline"/>
+                           <img src="{% static 'assets/images/phone-call.png' %}" alt="Hotline" />
                            <div class="details">
                               <h5>Hotline</h5>Talk to help line for your question on 4141 456 789, 4125 666 888
                            </div>
@@ -166,13 +172,13 @@
                            <div class="grid__item">
                               <div class="mini-list-item">
                                  <div class="mini-view_image">
-                                    <a class="grid-view-item__link" href="{% url 'product_detail' product|private:'_id' %}">
-                                       <img class="grid-view-item__image"
-                                          src="{{product.product_img.url}}" alt="">
+                                    <a class="grid-view-item__link"
+                                       href="{% url 'product_detail' product|private:'_id' %}">
+                                       <img class="grid-view-item__image" src="{{product.product_img.url}}" alt="">
                                     </a>
                                  </div>
                                  <div class="details">
-                                    <a class="grid-view-item__title" >{{product.product_name}}</a>
+                                    <a class="grid-view-item__title">{{product.product_name}}</a>
                                     <div class="grid-view-item__meta"><span class="product-price__price"><span
                                              class="money">&#8377 {{product.Price}}/~</span></span></div>
                                     <div class="product-review">
@@ -203,8 +209,5 @@
    </div>
    <!--MainContent-->
 </div>
-
-
-
 
 {% endblock body%}

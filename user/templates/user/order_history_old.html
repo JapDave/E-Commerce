@@ -1,0 +1,102 @@
+{% extends 'user/user_base.html' %}
+{% block title %}Cart{% endblock title %}
+{% load tagger %}
+
+{% block head %}
+<script>
+	function displayRadioValue() {
+		var ele = document.getElementsByName('address');
+	
+		for (i = 0; i < ele.length; i++) {
+			if (ele[i].checked)
+				document.getElementById("user_address").innerHTML
+					= " <i class='fas fa-map-marker-alt'></i> Deliver to-<br>" + ele[i].value;
+		}
+	}
+</script>
+{% endblock head %}
+
+{% block body %}
+<section class="container-fluid">
+	{% if messages %}
+	<div>
+		{% for message in messages %}
+		<div class="alert {% if message.level == 25 %}alert-success {% else %}alert-danger {% endif %} m-2">
+			<a class="close" href="#" data-dismiss="alert">×</a>
+			{{ message }}
+		</div>
+		{% endfor %}
+	</div>
+	{% endif %}
+{% if orders %}
+<div class = "order-card-container">
+   {% for order in orders %}
+			<div class="order-card">
+				<div>
+					<table cellpadding="4px">
+						<tr>
+							<th>Order No </th>
+							<td>{{order.0.1}}</td>
+						</tr>
+						<tr>
+							<th>Address </th>
+							<td>{{order.1.1}}</td>
+						</tr>
+						<tr>
+							<th>Payment Mode </th>
+							<td>{{order.2.1}}</td>
+						</tr>
+						<tr>
+							<th>Ordered Date </th>
+							<td>{{order.3.1}}</td>
+						</tr>
+						<tr>
+							<th>Total Products </th>
+							<td>{{order.4.1}}</td>
+						</tr>
+						<tr>
+							<th>Total Amount Paid </th>
+							<td>&#8377 {{order.5.1}}/~</td>
+						</tr>
+					</table>
+					<a href="{% url 'user_order_detail' order.0.1 %}" class="detail-btn">view detail</a>   
+				</div>
+			</div>
+		{% endfor %}
+</div> 
+	{% else %}
+		<div class="alert alert-secondary m-2 ">
+			<a class="close" href="#" data-dismiss="alert">×</a>
+			<p>No Orders Placed Yet.</p>
+		</div>
+{% endif %}	
+</section>
+
+
+<section>
+	<div>
+		{% if orders.has_other_pages %}
+		<ul class="paginations">
+			{% if orders.has_previous %}
+			<li><a href="?page={{ orders.previous_page_number }}">&laquo;</a></li>
+			{% else %}
+			<li class="disabled"><span>&laquo;</span></li>
+			{% endif %}
+			{% for i in orders.paginator.page_range %}
+			{% if orders.number == i %}
+			<li class="active"><span>{{ i }} <span class=""></span></span></li>
+			{% else %}
+			<li><a href="?page={{ i }}">{{ i }}</a></li>
+			{% endif %}
+			{% endfor %}
+			{% if orders.has_next %}
+			<li><a href="?page={{ orders.next_page_number }}">&raquo;</a></li>
+			{% else %}
+			<li class="disabled"><span>&raquo;</span></li>
+			{% endif %}
+		</ul>
+		{% endif %}
+	</div>
+</section>
+
+{% endblock body %}

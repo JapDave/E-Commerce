@@ -532,27 +532,31 @@ class PlaceOrder(View):
 				request.session['cart_count'] = 0
 			
 		elif slug == 'product':
-			product_id = request.POST.get('product')
-			qty = request.POST.get('qty')
-			product_data = Products.objects.get(_id=product_id)
-			total = int(qty) * product_data.Price
-			
-			order_obj = Order(order_no=order_no,
-							user=user_data,
-							product=product_data,
-							qty=qty,
-							total=total,
-							address=address,
-							payment_method=payment_method,
-							status='0'
-							)
-			order_obj.save()
-			mail_sender_enterprise.delay(order_obj._id)
-			del request.session['selected_qty']	
+			if request.session['selected_qty']:
+				product_id = request.POST.get('product')
+				qty = request.POST.get('qty')
+				product_data = Products.objects.get(_id=product_id)
+				total = int(qty) * product_data.Price
+				
+				order_obj = Order(order_no=order_no,
+								user=user_data,
+								product=product_data,
+								qty=qty,
+								total=total,
+								address=address,
+								payment_method=payment_method,
+								status='0'
+								)
+				order_obj.save()
+				mail_sender_enterprise.delay(order_obj._id)
+				del request.session['selected_qty']	
 
-		mail_sender_user.delay(order_no,user_data.user_email)			
+				mail_sender_user.delay(order_no,user_data.user_email)			
+				return render(request,'user/order_success.html',{'users':True})
+			else:
+				messages.error(request,'You Have Already Palced An Order')
+				return redirect(reverse('place_order', kwargs={'slug':slug}))
 		
-		return render(request,'user/order_success.html',{'users':True})
 
 
 	
@@ -560,7 +564,7 @@ class OrderHistory(View):
 	
 	def get(self,request):
 		if request.session.get('users_key'):
-			# user_data = Users.objects.get(_id = request.session.get('users_key'))
+			
 			orders = Order.objects.values('order_no','address','payment_method','ordered_date').annotate(order_count=Count('_id'),total_amount=Sum('total')).filter(user___id=request.session.get('users_key')).order_by('-ordered_date')
 			order_list=[]
 	
@@ -571,7 +575,7 @@ class OrderHistory(View):
 			page = request.GET.get('page',1)
 			paginator = Paginator(order_list,6)
 			order_obj =  paginator.page(page)
-			# cart_data = Cart.objects.filter(user___id=request.session.get('users_key'))
+
 	
 			rendered_data = {
 				'users':True,
@@ -595,5 +599,24 @@ class OrderDetail(View):
 				'orders':order_data
 			}			
 			return render(request,'user/order_detail.html',rendered_data)
+		else:
+			return redirect(reverse('login'))
+
+
+class OrderHistoryDelete(View):
+	
+	def get(self,request,orderno):
+		if request.session.get('users_key'):
+
+			if orderno == 'all':
+				order_data = Order.objects.filter(user___id=request.session.get('users_key'))
+				order_data.delete()
+				messages.success(request,'Order History Cleared')
+				return redirect(reverse('order_history'))
+			else:
+				order_data = Order.objects.filter(user___id=request.session.get('users_key'),order_no=orderno)
+				order_data.delete()
+				messages.success(request,'Order History Deleted')
+				return redirect(reverse('order_history'))
 		else:
 			return redirect(reverse('login'))

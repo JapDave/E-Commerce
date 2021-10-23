@@ -24,7 +24,7 @@
    {% block head %} {% endblock head %} 
 </head>
 
-<body class="template-index belle template-index-belle">
+<body class="template-index belle template-index-belle  template-index home2-default">
     <!-- <div id="pre-loader">
     <img src="assets/images/loader.gif" alt="Loading..." />
 </div> -->
@@ -66,8 +66,12 @@
                         <span class="user-menu d-block d-lg-none"><i class="anm anm-user-al"
                                 aria-hidden="true"></i></span>
                         <ul class="customer-links list-inline">
+                            {% if users %}
+                            <li><a href="{% url 'logout' %}">Logout</a></li>
+                            {% else %}
                             <li><a href="{% url 'login' %}">Login</a></li>
                             <li><a href="{% url 'registeration' %}">Create Account</a></li>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>
@@ -101,22 +105,13 @@
                                 <li class="lvl1 parent megamenu"><a href="{% url 'index' %}">Home <i
                                             class="anm anm-angle-down-l"></i></a>
                                 </li>
-                                <li class="lvl1 parent megamenu"><a href="#">Shop <i
+                                <li class="lvl1 parent megamenu"><a href="{% url 'order_history' %}">Orders <i
                                             class="anm anm-angle-down-l"></i></a>
                                 </li>
-                                <li class="lvl1 parent megamenu"><a href="#">Product <i
+                                <li class="lvl1 parent megamenu"><a href="{% url 'user_profile' %}">Profile <i
                                             class="anm anm-angle-down-l"></i></a>
                                 </li>
-										  <li class="lvl1 parent megamenu"><a href="#">categories <i
-											class="anm anm-angle-down-l"></i></a>
-												<ul class="dropdown">
-													<li><a href="#" class="site-nav">Cart Page <i class="anm anm-angle-right-l"></i></a>
-														<ul class="dropdown">
-														</ul>
-													</li>
-												</ul>
-											</li>
-               
+
                             </ul>
                         </nav>
                         <!--End Desktop Menu-->
@@ -126,7 +121,7 @@
                         <div class="logo">
                             <a href="index.html">
                                 <img src="{%static 'assets/images/logo.svg' %}" alt="Belle Multipurpose Html Template"
-                                    title="Belle Multipurpose Html Template" />
+                                 />
                             </a>
                         </div>
                     </div>
@@ -149,9 +144,14 @@
         <div class="mobile-nav-wrapper" role="navigation">
             <div class="closemobileMenu"><i class="icon anm anm-times-l pull-right"></i> Close Menu</div>
             <ul id="MobileNav" class="mobile-nav">
-                <li class="lvl1 parent megamenu"><a href="{% url 'index' %}">Home <i class="anm anm-plus-l"></i></a>
+                <li class="lvl1 parent megamenu"><a href="{% url 'index' %}">Home </a>
                 </li>
-             
+                <li class="lvl1 parent megamenu"><a href="{% url 'order_history' %}">Orders <i
+                    class="anm anm-angle-down-l"></i></a>
+                 </li>
+                <li class="lvl1 parent megamenu"><a href="#">Profile <i
+                    class="anm anm-angle-down-l"></i></a>
+                </li>
             </ul>
         </div>
         <!--End Mobile Menu-->
@@ -190,14 +190,14 @@
                                 class="col-12 col-sm-12 col-md-12 col-lg-5 d-flex justify-content-end align-items-center">
                                 <div class="footer-social">
                                     <ul class="list--inline site-footer__social-icons social-icons">
-                                        <li><a class="social-icons__link" href="#" target="_blank"
+                                        <li><a class="social-icons__link" href="#" 
                                                 title="Belle Multipurpose Bootstrap 4 Template on Facebook"><i
                                                     class="icon icon-facebook"></i></a></li>
-                                        <li><a class="social-icons__link" href="#" target="_blank"
+                                        <li><a class="social-icons__link" href="#"
                                                 title="Belle Multipurpose Bootstrap 4 Template on Twitter"><i
                                                     class="icon icon-twitter"></i> <span
                                                     class="icon__fallback-text">Twitter</span></a></li>
-                                        <li><a class="social-icons__link" href="#" target="_blank"
+                                        <li><a class="social-icons__link" href="#" 
                                                 title="Belle Multipurpose Bootstrap 4 Template on Pinterest"><i
                                                     class="icon icon-pinterest"></i> <span
                                                     class="icon__fallback-text">Pinterest</span></a></li>
@@ -205,15 +205,15 @@
                                                 title="Belle Multipurpose Bootstrap 4 Template on Instagram"><i
                                                     class="icon icon-instagram"></i> <span
                                                     class="icon__fallback-text">Instagram</span></a></li>
-                                        <li><a class="social-icons__link" href="#" target="_blank"
+                                        <li><a class="social-icons__link" href="#" 
                                                 title="Belle Multipurpose Bootstrap 4 Template on Tumblr"><i
                                                     class="icon icon-tumblr-alt"></i> <span
                                                     class="icon__fallback-text">Tumblr</span></a></li>
-                                        <li><a class="social-icons__link" href="#" target="_blank"
+                                        <li><a class="social-icons__link" href="#" 
                                                 title="Belle Multipurpose Bootstrap 4 Template on YouTube"><i
                                                     class="icon icon-youtube"></i> <span
                                                     class="icon__fallback-text">YouTube</span></a></li>
-                                        <li><a class="social-icons__link" href="#" target="_blank"
+                                        <li><a class="social-icons__link" href="#" 
                                                 title="Belle Multipurpose Bootstrap 4 Template on Vimeo"><i
                                                     class="icon icon-vimeo-alt"></i> <span
                                                     class="icon__fallback-text">Vimeo</span></a></li>
@@ -234,7 +234,7 @@
                                         <li><a href="#">About us</a></li>
                                         <li><a href="#">Privacy policy</a></li>
                                         <li><a href="#">Terms &amp; condition</a></li>
-                                        <li><a href="#">My Account</a></li>
+                                        <li><a href="{% url 'user_profile' %}">My Account</a></li>
                                     </ul>
                                 </div>
                                 <div class="col-12 col-sm-12 col-md-4 col-lg-4 footer-links">

@@ -76,6 +76,18 @@
                <div class="productList mt-5">
                   <div class="grid-products grid--view-items">
                      <div class="row">
+
+                        {% if messages %}
+                        <div>
+                           {% for message in messages %}
+                           <div class="alert {% if message.level == 25 %}alert-success {% else %}alert-danger {% endif %} m-2">
+                              <a class="close" href="#" data-dismiss="alert">×</a>
+                              {{ message }}
+                           </div>
+                           {% endfor %}
+                        </div>
+                        {% endif %}                     
+
                         {% for product in products %}
                         <div class="col-6 col-sm-6 col-md-4 col-lg-4 item">
                            <!-- start product image -->

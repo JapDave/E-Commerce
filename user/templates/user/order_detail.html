@@ -17,12 +17,12 @@
 {% if orders %}
    <div class="row">
    {% for order in orders %}
-			<div class="col-lg-3 order-card-detail">
+			<div class="col-lg-3 col-md-4 col-sm-6 col-12 order-card-detail">
             <div>
                <img src="{{order.product.product_img.url}}" width="200px" height='200px' class="rounded mb-3">
             </div>
 				<div>
-					<table cellpadding="5px">
+					<table cellpadding="2px">
                   <tr>
                      <th>Product Name </th>
                      <td>{{order.product.product_name}}</td>

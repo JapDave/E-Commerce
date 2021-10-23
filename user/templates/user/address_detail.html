@@ -14,34 +14,39 @@
 	{% endif %}
 
    <div class="address-form">
-      <h5 class="text-center">Address Detail</h5>
-      <form method="POST">
+      <div class="page section-header text-center">
+         <div class="page-title">
+             <div class="wrapper"><h1 class="page-width">Add Address</h1></div>
+         </div>
+      </div>
+      <!-- <h5 class="text-center">Address Detail</h5> -->
+      <form method="POST" class="cart style2">
          {% csrf_token %}
-         <table cellpadding="10px">
+         <table>
             {{addressform.user}}
             <tr>
-               <td>{{addressform.country.label}} : </td>
+               <td>{{addressform.country.label}} </td>
                <td>{{addressform.country}}</td>
             </tr>
             <tr>
-               <td>{{addressform.state.label}} : </td>
+               <td>{{addressform.state.label}}  </td>
                <td>{{addressform.state}}</td>
             </tr>
             <tr>
-               <td>{{addressform.city.label}} : </td>
+               <td>{{addressform.city.label}} </td>
                <td>{{addressform.city}}</td>
             </tr>
             <tr>
-               <td>{{addressform.pin_code.label}} : </td>
+               <td>{{addressform.pin_code.label}}</td>
                <td>{{addressform.pin_code}}</td>
             </tr>
             <tr>
-               <td>{{addressform.postal_address.label}} : </td>
+               <td>{{addressform.postal_address.label}} </td>
                <td>{{addressform.postal_address}}</td>
             </tr>
             <tr>
-               <td colspan="2">
-                  <input type="submit" value="Save"  class="buy-btn w-75 ml-5">
+               <td colspan="2" class="text-center m-2">
+                  <button type="submit" value="Save"  class="btn ">Save</button>
                </td>
             </tr>
          </table>

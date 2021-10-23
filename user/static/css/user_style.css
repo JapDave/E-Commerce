@@ -439,7 +439,6 @@ button{
 }
 
 .success-box{
-    background-color: #faebd7ad;
     margin: auto;
     padding: 3%;
     width: 50%;
@@ -530,19 +529,21 @@ button{
     
 }
 
-.address-form{
-    margin: auto;
-    width: 34%;
-    margin-top: 5%;
+.address-box{
+    box-shadow: 0px 1px 4px 1px rgb(0 0 0 / 30%);
+    border-radius: 9px;
+    display: flex;
+    padding: 1%;
+    align-items: flex-end;
+    justify-content: space-around;
+    flex-direction: column;
 }
 
-.address-form h5{
-    color: #f0f8ff;
-    padding: 11px;
-    width: 81%;
-    font-weight: 600;
-    font-size: larger;
-    background-color: #6c757d94;
+.address-box a:hover,
+.address-card a:hover{
+    text-decoration: none;
+    color:black;
+    
 }
 
 .footer{

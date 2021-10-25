@@ -107,7 +107,7 @@ DATABASES = {
          'NAME':'E-Shop',
          'ENFORCE_SCHEMA': False,
          'CLIENT': {
-           'host':'mongodb://localhost:27017',
+           'host':env("DATABASE_URL") ,
         }
      }
  }

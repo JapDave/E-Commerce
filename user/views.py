@@ -18,16 +18,16 @@ import hashlib
 class Faqs(View):
 	def get(self,request):
 		if request.session.get('users_key'):
-			return render(request,'user/faqs.html',{'users':True})
+			return render(request,'user/faqs.html',{'users':True,'categories':Categories.objects.all()})
 		else:
-			return render(request,'user/faqs.html')
+			return render(request,'user/faqs.html',{'categories':Categories.objects.all()})
 
 class Aboutus(View):
 	def get(self,request):
 		if request.session.get('users_key'):
-			return render(request,'user/aboutus.html',{'users':True})
+			return render(request,'user/aboutus.html',{'users':True,'categories':Categories.objects.all()})
 		else:
-			return render(request,'user/aboutus.html')
+			return render(request,'user/aboutus.html',{'categories':Categories.objects.all()})
 
 
 class ForgotPassword(View):

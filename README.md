@@ -8,7 +8,7 @@ This E-Commerece Project gives general glimes of commerical shopping site where 
 
 * [Enterprise-Panel](https://www.dropbox.com/s/i7m6a12m78fhb31/enterprise%20panel%20recording.webm?dl=0)
 
-* [Customer-Panel](https://www.dropbox.com/s/47j0gmg4x8inw4k/user%20panel%20recording.webm?dl=0)
+* [Customer-Panel](https://www.dropbox.com/s/x3shf8ptssw88dj/user%20panel%20recording.webm?dl=0)
 
 # Requirments (Prerequisites)
 

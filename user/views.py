@@ -17,11 +17,17 @@ import hashlib
 
 class Faqs(View):
 	def get(self,request):
-		return render(request,'user/faqs.html')
+		if request.session.get('users_key'):
+			return render(request,'user/faqs.html',{'users':True})
+		else:
+			return render(request,'user/faqs.html')
 
 class Aboutus(View):
 	def get(self,request):
-		return render(request,'user/aboutus.html')
+		if request.session.get('users_key'):
+			return render(request,'user/aboutus.html',{'users':True})
+		else:
+			return render(request,'user/aboutus.html')
 
 
 class ForgotPassword(View):

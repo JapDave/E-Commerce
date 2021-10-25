@@ -1716,7 +1716,6 @@ body.home15-funiture-template { font-size:14px; }
 .success-box{
   margin: auto;
   padding: 3%;
-  width: 50%;
   margin-top: 2%;
 }
 
@@ -1832,4 +1831,18 @@ body.home15-funiture-template { font-size:14px; }
   color: #212529;
   font-weight: 500;
   text-align: center;
+}
+
+.formerror{
+  color: #ce3434;
+  margin-left: 12px;
+  margin-bottom: 0px;
+}
+
+li{
+  list-style: none;
+}
+
+a:hover{
+  text-decoration: none;
 }

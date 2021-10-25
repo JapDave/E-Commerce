@@ -1,0 +1,56 @@
+{% extends 'user/user_base.html' %}
+{% block title %}FAQs{% endblock title %}
+{% load static %}
+{% load tagger %}
+
+{% block body %}
+<div id="page-content">
+    	<!--Page Title-->
+    	<div class="page section-header text-center">
+			<div class="page-title">
+        		<div class="wrapper"><h1 class="page-width">FAQs</h1></div>
+      		</div>
+		</div>
+        <div class="container">
+        	<div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col">
+                	<div id="accordionExample">
+                        <h2 class="title h2">Pyment and Returns</h2>
+                        <div class="faq-body">
+                            <h4 class="panel-title" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">What payment methods can I use?</h4>
+                            <div id="collapseOne" class="collapse panel-content" data-parent="#accordionExample">You can use all the major online modes or cash on delivery.</div>
+                        </div>
+                        <div class="faq-body">
+                            <h4 class="panel-title" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">What are the delivery charges?</h4>
+                            <div id="collapseTwo" class="collapse panel-content"> Delivery charges are dependent on the shipment requirements. If the products on your order are due to special requirements (for example dry ice) extra fee will be added to the shipment charges. You can see the shipping fees on the checkout process before the payment is made.</div>
+                        </div>
+                        <div class="faq-body">
+                            <h4 class="panel-title" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">Can I pay with invoice?</h4>
+                            <div class="panel-content collapse" id="collapseThree">If you have already established customer relationship with HyTest, you will be granted ability to pay using invoice. If you have ordered several times from HyTest but you don't see the invoice as a paying option on the checkout, please contact hytest@hytest.fi and we will check why the invoice is not activated on your account.</div>
+                        </div>
+                        <h2 class="title h2">Other Resources</h2>
+                        <div class="faq-body">
+                            <h4 class="panel-title" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour"> How can I change delivery address.?</h4>
+                            <div class="panel-content collapse" id="collapseFour">ign in to your account and go to “Profile”. On “Profile you can change all your contact information.</div>
+                        </div>
+                        <div class="faq-body">
+                            <h4 class="panel-title" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">How to contact customer service?</h4>
+                            <div class="panel-content collapse" id="collapseFive">If you have question regarding our online store (ordering, account questions, technical questions). </div>
+                        </div>
+                        <div class="faq-body">
+                            <h4 class="panel-title" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">How can I retrieve my password?</h4>
+                            <div class="panel-content collapse" id="collapseSix">You can retrieve your password by clicking “forgot password?”. Instruction on password retrieval will be send to your email.</div>
+                        </div>
+                    </div>
+               	</div>
+            </div>
+        </div>
+        
+    </div>
+
+
+
+
+
+
+{% endblock body %}

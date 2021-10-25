@@ -101,7 +101,7 @@
 		<div class="checkout-box col-md-2 col-sm-4 container">
 			<div>
 				<h5>Payment Summary</h5>
-				<p data-toggle="modal" data-target="#address-modal" class="price mb-2" id="user_address">
+				<p data-toggle="modal" data-target="#address-modal" class="price mb-2" id="user_address" title="Select Address">
 					<!-- <i class="fas fa-map-marker-alt"></i> --> <i class="fas fa-location-arrow fa-1x"></i> Deliver to-
 					{% for add in address %}
 					{% if forloop.counter <= 1 %} {{add.postal_address|slice:':15'}} {% if add.postal_address|length > 15 %}...
@@ -109,7 +109,7 @@
 						{% endif %}
 						{% endfor %}
 				</p>
-				<p data-toggle="modal" data-target="#payment-modal" class="price mb-2" id="user_payment">Click for
+				<p data-toggle="modal" data-target="#payment-modal" class="price mb-2" id="user_payment" title="Select Payment Mode">Click for
 					<br>
 					Payment Method</p>
 			</div>
@@ -135,7 +135,8 @@
 										<td>
 											{% if forloop.counter <= 1 %}<input type="radio" name="address" value="{{add}}" checked>
 												{% else %}
-												<input type="radio" name="address" value="{{add}}">
+												<input type="radio" name="address" value="{{add}}" id="{{add|private:'_id'}}">
+												<label for="{{add|private:'_id'}}">{{add}}</label>
 												{% endif %}
 												{{add}}
 										</td>
@@ -144,8 +145,8 @@
 									<tr>
 										<td>
 											<button type="button" data-dismiss="modal" aria-label="Close" data-toggle="modal"
-												data-target="#add-address-modal" href="#add-address-modal">
-												+ add address
+												data-target="#add-address-modal" href="#add-address-modal" class="m-2">
+												+ Add Address
 											</button>
 										</td>
 									</tr>
@@ -178,17 +179,20 @@
 								<table>
 
 									{% if products %}
-									<input type="hidden" name="product" value="{{products|private:'_id'}}">
-									<input type="hidden" name="qty" value="{{qty}}">
+										<input type="hidden" name="product" value="{{products|private:'_id'}}">
+										<input type="hidden" name="qty" value="{{qty}}">
 									{% endif %}
 									<tr>
 										<td>
-											<input type="radio" name="payment_method" value='Cash On Delivery'> Cash On Delivery
+											<input type="radio" name="payment_method" value='Cash On Delivery' id="cod">
+											<label for="cod">Cash On Delivery</label> 
+										
 										</td>
 									</tr>
 									<tr>
 										<td>
-											<input type="radio" name="payment_method" value='Online Mode'> Online Mode
+											<input type="radio" name="payment_method" value='Online Mode' id='online'> 
+											<label for="online">Online Mode</label> 
 										</td>
 									</tr>
 									<tr>

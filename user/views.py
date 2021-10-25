@@ -14,12 +14,19 @@ import random
 from django.core.paginator import Paginator
 from django.db.models import  Count
 import hashlib
-from django.core.serializers.json import DjangoJSONEncoder
-import json     
+
+class Faqs(View):
+	def get(self,request):
+		return render(request,'user/faqs.html')
+
+class Aboutus(View):
+	def get(self,request):
+		return render(request,'user/aboutus.html')
+
 
 class ForgotPassword(View):
 	def get(self,request):
-		return render(request,'email_verification.html')
+		return render(request,'user/email_verification.html')
 	
 	def post(self,request):
 		user_email = request.POST['email']
@@ -27,14 +34,13 @@ class ForgotPassword(View):
 			user_data = Users.objects.get(user_email=user_email)
 			request.session['temp_data'] = str(user_data._id)
 			generated_otp = random.randint(1111,9999)
-			request.session['otp']=generated_otp
+			request.session['otp']=generated_otp	
 			subject = 'Acount Recovery'
 			message = f'''your otp for account recovery is {generated_otp}'''
 			email_from = settings.EMAIL_HOST_USER
 			recepient  = [user_email,]
 			send_mail(subject, message, email_from, recepient)
 			return redirect(reverse('user_otp_verification'))
-
 		except:
 			messages.error(request,'Email id not found try again.')
 			return redirect(reverse('user_forgot_password'))
@@ -42,7 +48,7 @@ class ForgotPassword(View):
 
 class OtpVerification(View):
 	def get(self,request):
-		return render(request,'otp.html')
+		return render(request,'user/otp.html')
 
 	def post(self,request):
 		user_otp = request.POST['otp']
@@ -55,7 +61,7 @@ class OtpVerification(View):
 
 class ChangePassword(View):
 	def get(self,request):
-		return render(request,'change_password.html')
+		return render(request,'user/change_password.html')
 
 	def post(self,request):
 		password = request.POST['password']
@@ -104,7 +110,9 @@ class Registeration(View):
 	def post(self,request):
 		user_form = RegisterForm(request.POST,request.FILES)
 		address_form = AddressForm(request.POST,request.FILES)
-		if user_form.is_valid and address_form.is_valid:
+
+
+		if user_form.is_valid:
 			try:
 				user_obj = user_form.save(commit=False)
 				if user_obj:
@@ -155,7 +163,7 @@ class Profile(View):
 class ProfileChangePassword(View):
 	def get(self,request):
 		if request.session.get('users_key'):
-			return render(request,'profile_change_password.html')
+			return render(request,'user/profile_change_password.html')
 		else:
 			return redirect(reverse('login'))
 
@@ -338,7 +346,7 @@ class ProductDetail(View):
 	def get(self,request,id):
 		rendered_data = {}
 		product_data = Products.objects.get(_id=id)
-		products = Products.objects.filter( product_categories=product_data.product_categories).exclude(_id=id)
+		products = Products.objects.filter(product_categories=product_data.product_categories).exclude(_id=id)
 		category_data = Categories.objects.all()
 
 		if request.session.get('users_key'):
@@ -397,7 +405,6 @@ class CartList(View):
 	def get(self,request):
 		if request.session.get('users_key'):
 			cart_data = Cart.objects.filter(user___id=request.session.get('users_key'))
-		
 			sub_total = 0
 			item_count = 0
 
@@ -430,7 +437,6 @@ class CartList(View):
 				cart_data = Cart.objects.get(user___id=request.session.get('users_key'),product_items=product_data)
 				cart_data.qty = int(qty)
 				cart_data.save()
-				print("yes")
 				return redirect(reverse('cart'))
 			else:
 				messages.error(request,'Sorry that much quantity not available.')
@@ -486,6 +492,11 @@ class PlaceOrder(View):
 			else:
 				messages.error(request,'Sorry that much quantity not available.')
 				return redirect(reverse('product_detail', kwargs={'id':slug}))
+			
+		if not request.session.get('selected_qty'):
+			messages.error(request,'You Have Already Palced An Order')
+			return redirect(reverse('place_order', kwargs={'slug':slug}))
+
 		else:
 			return redirect(reverse('login'))
 
@@ -532,7 +543,7 @@ class PlaceOrder(View):
 				request.session['cart_count'] = 0
 			
 		elif slug == 'product':
-			if request.session['selected_qty']:
+			if request.session.get('selected_qty'):
 				product_id = request.POST.get('product')
 				qty = request.POST.get('qty')
 				product_data = Products.objects.get(_id=product_id)
@@ -551,15 +562,11 @@ class PlaceOrder(View):
 				mail_sender_enterprise.delay(order_obj._id)
 				del request.session['selected_qty']	
 
-				mail_sender_user.delay(order_no,user_data.user_email)			
-				return render(request,'user/order_success.html',{'users':True})
-			else:
-				messages.error(request,'You Have Already Palced An Order')
-				return redirect(reverse('place_order', kwargs={'slug':slug}))
+				mail_sender_user.delay(order_no,user_data.user_email)		
+					
+		return render(request,'user/order_success.html',{'users':True})
 		
 
-
-	
 class OrderHistory(View):
 	
 	def get(self,request):

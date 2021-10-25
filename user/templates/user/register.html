@@ -1,5 +1,5 @@
 {% extends 'user/user_base.html' %}
-{% block title %}Home{% endblock title %}
+{% block title %}Register{% endblock title %}
 {% load static %}
 {% load tagger
 {% block body %}
@@ -20,7 +20,8 @@
       <div class="row">
          <div class="col-12 col-sm-12 col-md-6 col-lg-6 main-col offset-md-3">
             <div class="mb-4">
-               <form method="post" action="#" id="CustomerLoginForm" accept-charset="UTF-8" class="contact-form">
+               <form method="POST" id="CustomerLoginForm" accept-charset="UTF-8" class="contact-form" enctype="multipart/form-data" >
+                  {% csrf_token %}
                   <div class="row">
                      <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                         <div class="form-group">
@@ -31,7 +32,7 @@
                      <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                         <div class="form-group">
                            <label for="">Password: </label>
-                           {{userform.user_name}}
+                           {{userform.user_password}}
                         </div>
                      </div>
                      <div class="col-12 col-sm-12 col-md-12 col-lg-12">

@@ -6,9 +6,11 @@ from django.conf import settings
 urlpatterns = [
 #User Basic Start
 path('',Index.as_view(),name='index'),
+path('faqs',Faqs.as_view(),name='faqs'),
+path('aboutus',Aboutus.as_view(),name='aboutus'),
 path('login/',Login.as_view(),name='login'),
 path('logout/',Logout.as_view(),name='logout'),
-path('Registeration/',Registeration.as_view(),name='registeration'),
+path('registeration/',Registeration.as_view(),name='registeration'),
 path('forgotpassword/',ForgotPassword.as_view(),name='user_forgot_password'),
 path('otpverification/',OtpVerification.as_view(),name='user_otp_verification'),
 path('changepassword/',ChangePassword.as_view(),name='user_change_password'),

@@ -1,5 +1,5 @@
 {% extends 'user/user_base.html' %}
-{% block title %}Home{% endblock title %}
+{% block title %}Login{% endblock title %}
 {% load static %}
 {% load tagger
 {% block body %}
@@ -17,6 +17,13 @@
           <div class="row">
                <div class="col-12 col-sm-12 col-md-6 col-lg-6 main-col offset-md-3">
                   <div class="mb-4">
+                    {% for message in messages %}
+                      <div class="alert alert-danger">
+                        <a class="close" href="#" data-dismiss="alert">×</a>
+                          {{ message }}
+                      </div>
+                   {% endfor %}
+
                       <form method="post"  id="CustomerLoginForm" accept-charset="UTF-8" class="contact-form">	
                          {% csrf_token %}
                          <div class="row">
@@ -37,8 +44,8 @@
                            <div class="text-center col-12 col-sm-12 col-md-12 col-lg-12">
                                <input type="submit" class="btn mb-3" value="Sign In">
                                <p class="mb-4">
-                          <a href="#" id="RecoverPassword">Forgot your password?</a> &nbsp; | &nbsp;
-                           <a href="register.html" id="customer_register_link">Create account</a>
+                          <a href="{% url 'user_forgot_password' %}" id="RecoverPassword">Forgot your password?</a> &nbsp; | &nbsp;
+                           <a href="{% url 'registeration' %}" id="customer_register_link">Create account</a>
                                </p>
                            </div>
                         </div>

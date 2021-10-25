@@ -1,11 +1,11 @@
 {% extends 'user/user_base.html' %}
-{% block title %}Home{% endblock title %}
+{% block title %}Cart{% endblock title %}
 {% load static %}
 {% load tagger %}
 {% block body %}
 
   <!--Body Content-->
-  <div id="page-content">
+<div id="page-content">
    <!--Page Title-->
    <div class="page section-header text-center">
      <div class="page-title">
@@ -15,20 +15,20 @@
     <!--End Page Title-->
 
     {% if messages %}
-	<div>
-		{% for message in messages %}
-		<div class="alert {% if message.level == 25 %}alert-success {% else %}alert-danger {% endif %} m-2">
-			<a class="close" href="#" data-dismiss="alert">×</a>
-			{{ message }}
-		</div>
-		{% endfor %}
-	</div>
+      <div>
+        {% for message in messages %}
+        <div class="alert {% if message.level == 25 %}alert-success {% else %}alert-danger {% endif %} m-2">
+          <a class="close" href="#" data-dismiss="alert">×</a>
+          {{ message }}
+        </div>
+        {% endfor %}
+      </div>
 	{% endif %}
 
+  {% if cart_item %}
     <div class="container">
        <div class="row">
             <div class="col-12 col-sm-12 col-md-8 col-lg-8 main-col">
-
                   <table>
                         <thead class="cart__row cart__header">
                             <tr>
@@ -172,6 +172,15 @@
       </ul>
       {% endif %}
    </div>
+
+   {% else %}
+    <div class="success-box">
+        <h5>No Item In Cart</h5>
+        <a href="{% url 'index' %}" class="btn--link cart-continue"><i class="icon icon-arrow-circle-left"></i> Continue shopping</a>
+    </div>
+  {% endif %}	
+
+
 
 </div>
 <!--End Body Content-->

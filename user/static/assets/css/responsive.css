@@ -169,7 +169,7 @@
 	.prstyle3 .prFeatures .grid__item { margin-bottom:30px }
 	.prstyle3 .prFeatures img { max-width:40px }
 	.prstyle3 .prFeatures .details { margin-left:50px }
-	.variants.add { bottom:0px; margin-top:10px; position:absolute; left:0; right:0; }
+	.variants.add {margin-top:10px; position:absolute; left:0; right:0; }
 	.variants.add .btn { padding:5px 12px; font-size:10px; background-color:black; }
 }
 

@@ -36,19 +36,6 @@ Table of Content:
 27. Image Banners
 28. Homepages Demo
 	28.1 Home 2 - Default
-	28.2 Home 3 - Boxed
-	28.3 Home 4 - Fulwidth
-	28.4 Home 5 - Cosmetic
-	28.5 Home 6 - Modern
-	28.6 Home 7 - Shoes
-	28.7 Home 8 - Jewellery
-	28.8 Home 9 - Parallax
-	28.9 Home 10 - Minimal
-	28.10 Home 11 - Grid
-	28.11 Home 12 - Category
-	28.12 Home 13 - Autoparts
-	28.13 Home 14 - Bags
-	28.14 Home 15 - Furniture
 29. Testimonial Slider
 30. Instagram Feed
 31. Hero Banners
@@ -199,11 +186,6 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { opacity:
 input::-moz-placeholder, textarea::-moz-placeholder { opacity:1; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; }
 input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:1; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; }
 
-/*======================================================================
-  8. Pre Loader
-========================================================================*/
-#pre-loader { background-color:#fff; height:100%; width:100%; position:fixed; z-index:1; margin-top:0px; top:0px; left:0px; bottom:0px; overflow:hidden !important; right:0px; z-index:999999; }
-#pre-loader img { text-align:center; left:0; position:absolute; right:0; top:50%;transform:translateY(-50%); -webkit-transform:translateY(-50%); -o-transform:translateY(-50%); -ms-transform:translateY(-50%); -moz-transform:translateY(-50%); z-index:99; margin:0 auto; }
 
 /*======================================================================
   9. Header Style
@@ -1211,296 +1193,9 @@ input.checkbox { height:auto; vertical-align:middle; padding:0; box-shadow:none;
 .home2-default .hero--large { background-attachment:fixed; }
 
 .home2-default .grid-products .slick-arrow { margin-top:-30px; }
-/*---------------------------------------
-  28.2 Home 3 - Boxed  ------------------
-  ---------------------------------------*/
-.home3-boxed-layout { overflow-x:hidden; background-color:#f5f5f5; padding-bottom:60px; }
-.home3-boxed-layout .search { margin-left:-20px; }
-.home3-boxed-layout .container { padding-left:15px; padding-right:15px; }
-.layout-boxed { max-width:1300px; padding:0 20px; margin:0 auto; position:relative; background-color:#fff; }
-.layout-boxed .container-fluid { padding: 0 35px; }
-.layout-boxed .top-header { background:#f5f5f5; }
-.layout-boxed .top-header p, .layout-boxed .top-header a, .layout-boxed .top-header select, .layout-boxed .top-header .anm, 
-.layout-boxed .top-header span.selected-currency, .layout-boxed .top-header .language-dd { color:#000; }
-
-.layout-boxed #siteNav > li .megamenu { width:110%; }
-.layout-boxed #siteNav.medium > li a { font-weight:400; }
-.layout-boxed #siteNav > li > a { padding:0 15px; } 
-.layout-boxed .slideshow__text-content { margin:0; }
-.layout-boxed .slideshow .slideshow__title { font-family:Poppins,Helvetica,Tahoma,Arial,sans-serif; color:#000000; font-weight:700; font-size:40px; text-transform:uppercase; line-height:1.1; text-shadow:1px 1px 7px rgba(0,0,0,0); }
-.layout-boxed .slideshow .slideshow__subtitle { color:#000000; font-weight:300; font-size:20px; text-transform:none; margin-bottom:20px;line-height:1.2; text-shadow:1px 1px 4px rgba(0,0,0,0); }
-
-.layout-boxed .imgBnrOuter .inner .ttl h5 { font-weight:400; text-transform:uppercase; }
-.layout-boxed .section-header { margin-bottom:20px; }
-.layout-boxed .tab-slider-product .tabs > li.active { color:#31a3a3; }
-
-.feature-row { display:-webkit-flex; display:-ms-flexbox; display:flex; width:100%; -webkit-justify-content:space-between; -ms-justify-content:space-between; justify-content:space-between; -ms-flex-align:center; -webkit-align-items:center; -moz-align-items:center; -ms-align-items:center; -o-align-items:center; align-items:center; }
-.feature-row__item { -webkit-flex:0 1 50%; -moz-flex:0 1 50%; -ms-flex:0 1 50%; flex:0 1 50%; }
-.feature-row__text--left { padding-left:20px; }
-.feature-row__text--right { padding-right:20px; }
-.feature-row__text--right .row-text { margin-right:-100px; z-index:222; position:relative; }
-.feature-row__text { padding-top:20px; padding-bottom:20px; }
-.row-text { background:#fff; padding:50px; }
-.feature-row__text .row-text { margin-left:-100px; }
-.row-text h2, .row-text .h2 { font-size:17px; font-family:Poppins,Helvetica,Tahoma,Arial,sans-serif; text-transform:uppercase; letter-spacing:1px; }
 
 /*---------------------------------------
-  28.3 Home 4 - Fulwidth  ---------------
-  ---------------------------------------*/
-.home4-fullwidth .top-header { background:#5d5e5e; }
-.home4-fullwidth #siteNav.medium > li a { font-weight:400; }
-.home4-fullwidth .slideshow__overlay.bottom:before { background:#fff; }
-.home4-fullwidth .slideshow .slideshow__title { color:#0c0101; font-family:Poppins,Helvetica,Tahoma,Arial,sans-serif; font-weight:700; font-size:81px; text-transform:uppercase; line-height:1.1; text-shadow:1px 1px 7px rgba(0,0,0,0); }
-.home4-fullwidth .slideshow .slideshow__subtitle { color:#0c0101; font-weight:400; font-size:18px; text-transform:uppercase; margin-bottom:20px; line-height:1.2; text-shadow:1px 1px 4px rgba(0,0,0,0); }
-.home4-fullwidth .section-header h2, .home4-fullwidth .section-header .h2 { font-family:Poppins,Helvetica,Tahoma,Arial,sans-serif; font-size:1.69231em; font-weight:400;letter-spacing:0.03em; }
-.home4-fullwidth .footer-top h4, .home4-fullwidth .footer-top .h4 { font-family:Poppins,Helvetica,Tahoma,Arial,sans-serif; }
 
-/*---------------------------------------
-  28.4 Home 5 - Cosmetic  ---------------
-  ---------------------------------------*/
-.home5-cosmetic #siteNav.medium > li a { font-weight:400; }
-.home5-cosmetic .top-header { background:#23232c; }
-.home5-cosmetic .slideshow .slideshow__title { color:#000; font-weight:700; font-size:66px; text-transform:uppercase; line-height:1.1; text-shadow: 1px 1px 7px #fff; }
-.home5-cosmetic .slideshow .slideshow__subtitle { color:#0c0101; font-weight:400; font-size:24px; text-transform:none; margin-bottom:20px; line-height:1.2; text-shadow: 1px 1px 4px #fff; }
-.home5-cosmetic .slideshow .wrap-caption { display:inline-block; padding:25px; }
-.home5-cosmetic .section-header h2 { font-size:26px; }
-.home5-cosmetic .tab-slider-product .tabs > li:hover,
-.home5-cosmetic .tab-slider-product .tabs > li.active { color:#31a3a3; }
-
-.home5-cosmetic .hero--large { background-attachment:fixed; }
-
-.home5-cosmetic .grid-products .slick-arrow { margin-top:-20px;}
-
-.home5-cosmetic .featured-column .btn, .home5-cosmetic .hero .btn, .home5-cosmetic .product-single .btn,
-.footer-5 .footer-newsletter .btn { background-color:#ff708e; }
-
-.featured-column .text-center h3 { font-size:18px; text-transform:uppercase; }
-.featured-column .text-center .rte-setting { max-width:320px; margin:0 auto 20px; }
-  
-/*---------------------------------------
-  28.5 Home 6 - Modern  -----------------
-  ---------------------------------------*/
-.home6-modern .section-header h2, .home6-modern .section-header .h2 { font-family:Poppins,Helvetica,Tahoma,Arial,sans-serif; font-size:22px; font-weight:400; letter-spacing:0.03em; }
-.home6-modern .top-header { background:#f58f93; }
-.home6-modern #siteNav.medium > li a { font-weight:400; }
-.home6-modern .section.imgBanners { padding-bottom:0; }
-.home6-modern .imgBnrOuter .inner { margin-bottom:30px; }
-.home6-modern .imgBnrOuter .img-bnr { padding:0; }
-.home6-modern .featured-column .h4 { font-size:16px; font-family:Poppins,Helvetica,Tahoma,Arial,sans-serif; font-weight:600; }
-.home6-modern .btn { background-color:#f58f93; }
-.home6-modern .footer-5 .site-footer { border-top:0; }
-
-/*---------------------------------------
-  28.6 Home7 - Shoes  -------------------
-  ---------------------------------------*/
-.home7-shoes h1, .home7-shoes .h1, .home7-shoes h2, .home7-shoes .h2, .home7-shoes h3, .home7-shoes .h3, .home7-shoes h4, .home7-shoes .h4, .home7-shoes h5,
-.home7-shoes .h5, .home7-shoes h6, .home7-shoes .h6 { font-family:Montserrat,Helvetica,Tahoma,Arial,sans-serif; font-weight:700; }
-.home7-shoes #siteNav.medium > li a { font-weight:400; }
-.home7-shoes .slideshow .slideshow__title { color:#000000; font-weight:700; font-size:36px; text-transform:uppercase; line-height:1.1; text-shadow:1px 1px 7px rgba(0,0,0,0); }
-.home7-shoes .slideshow .slideshow__subtitle { color:#000000; font-weight:400; font-size:18px; text-transform:none; margin-bottom:20px; line-height:1.2; text-shadow:1px 1px 4px rgba(0,0,0,0); }
-.home7-shoes .mini-list-item .mini-view_image img { max-width:100%; }
-.home7-shoes .footer-4 .site-footer { background:#f5f5f5; padding:0; }
-.home7-shoes .footer-4 .newsletter-section .btn { background-color:#fc895d; }
-.home7-shoes .footer-4 .newsletter-section .btn:hover, .home7-shoes .footer-4 .newsletter-section .btn:focus { background-color:#444; }
-.home7-shoes .footer-4 .footer-top h4, .home7-shoes .footer-4 .footer-top .h4 { color:#000000; font-family:Montserrat,Helvetica,Tahoma,Arial,sans-serif; font-size:15px; font-weight:600; margin-bottom:15px; text-transform:uppercase; }
-  
-/*---------------------------------------
-  28.7 Home8 - Jewellery  ---------------
-  ---------------------------------------*/
-body.home8-jewellery { font-size:14px; }
-.home8-jewellery .section-header h2, .home8-jewellery .section-header .h2 { font-family:Poppins,Helvetica,Tahoma,Arial,sans-serif; font-size:20px; font-weight:400;letter-spacing:0.03em; }
-.home8-jewellery-top { background:#141414; color:#fff; }
-.home8-jewellery-top p, .home8-jewellery-top a, .home8-jewellery-top select, .home8-jewellery-top .fa, .home8-jewellery-top span.selected-currency { color:#fff; }
-.home8-jewellery-header .site-header__search { float:none; }
-
-.home8-jewellery #AccessibleNav.belowlogo { border-top:1px solid #eeeeee; border-bottom:1px solid #eeeeee; }
-.home8-jewellery #siteNav.medium > li a { font-weight:400; }
-
-.home8-jewellery .slideshow__text-content { margin-top:0; }
-.home8-jewellery .slideshow .slideshow__title { font-family:Poppins,Helvetica,Tahoma,Arial,sans-serif; color:#000; font-size:40px; }
-.home8-jewellery .slideshow .slideshow__subtitle { color:#000; font-size:16px; line-height:normal; text-transform:none; }
-
-.home8-jewellery .variants.add button, .home8-jewellery a.quick-view, .home8-jewellery a.wishlist, .home8-jewellery .cartIcon,
-.home8-jewellery .add-to-compare { color:#fff; background-color:#000; }
-.home8-jewellery .variants.add button:hover, .home15-funiture-template a.quick-view:hover, .home15-funiture-template a.wishlist:hover, .home15-funiture-template .cartIcon:hover, .home15-funiture-template .add-to-compare:hover { color:#000; background-color:#fff; }
-.home-lookbook .custom-text { max-width:800px; margin:0 auto; font-size:14px; }
-.home8-jewellery .store-info .anm { margin-right:15px; font-size:40px; vertical-align:middle; display:block; margin-bottom:20px; }
-.home8-jewellery .anm, .home8-jewellery .mfp-container::before, .home8-jewellery .mfp-content { vertical-align:middle; }
-
-.home8-jewellery .imgBnrOuter .inner .ttl { font-size:16px; background-color:rgba(255,255,255,0.8); }
-.home8-jewellery .collection-box-style1 a img { width:100%; }
-.home8-jewellery .hero .text-medium .mega-title { font-family:Poppins,Helvetica,Tahoma,Arial,sans-serif; font-weight:600; }
-.home8-jewellery .hero { margin:35px 0; }
-.home8-jewellery #instafeed.imlow_resolution .insta-img { width:12.5%; }
-
-.home8-jewellery .hero .btn, .home8-jewellery .footer-newsletter .btn { background-color:#339498; }
-.home8-jewellery .hero .btn:hover, .home8-jewellery .footer-newsletter .btn:hover { background-color:#40b9be; }
-
-.home8-jewellery .site-footer { background:#000; }
-@media (min-width: 999px) {
-.home8-jewellery .footer-3 .col-md-3.col-lg-3 { -ms-flex:0 0 25%; flex:0 0 25%; max-width:25%; }
-}
-.home8-jewellery .social-icons .icon { color:#fff; }
-
-/*---------------------------------------
-  28.8 Home9 - Parallax  ----------------
-  ---------------------------------------*/
-.home9-parallax #siteNav > li > a { color:#fff; font-weight:400; }
-.home9-parallax #siteNav > li > a:hover, .home9-parallax .site-header__search .search-trigger,
-.home9-parallax .site-header__cart .icon { color:#fff; }
-.home9-parallax .stickyNav #siteNav > li > a, .home9-parallax #siteNav > li > a:hover, .home9-parallax .stickyNav .site-header__search .search-trigger, .home9-parallax .stickyNav .site-header__cart .icon { color:#000; }
-.home9-parallax .stickyNav .site-header__cart-count { color:#fff; background-color:#000; }
-.home9-parallax .site-header__cart-count { color:#000; background-color:#fff; }
-.home9-parallax .section { padding:0; }
-.home9-parallax .hero { background-attachment:fixed; }
-
-.home9-parallax .slideshow .slideshow__subtitle { color:#ffffff;font-weight:300; font-size:24px; text-transform:none; line-height:1.2; text-shadow:1px 1px 4px rgba(0,0,0,0); max-width:90%; margin:0 auto 20px; }
-.home9-parallax .slick-slide img { display:inline-block; }
-.home9-parallax .hero__inner h2, .home9-parallax .hero__inner .h2, .home9-parallax .hero__inner p, .home9-parallax .hero .mega-subtitle { color:#fff; }
-
-.home9-parallax #footer { margin-top:0; }
-.home9-parallax .site-footer { background-color:#fff; }
-.home9-parallax .footer-top h4 { text-transform:uppercase; }
-.home9-parallax .footer-top h4, .home9-parallax .footer-top .h4, .home9-parallax .footer-top, .home9-parallax .footer-links a, .home9-parallax .footer-top p, .home9-parallax .footer-bottom, .home9-parallax .footer-bottom a { color:#000; }
-.home9-parallax .site-footer hr { border-color:#e8e9eb; }
-
-/*---------------------------------------
-  28.9 Home10 - Minimal  ----------------
-  ---------------------------------------*/
-.home10-minimal .container-fluid { padding-left:30px; padding-right:30px; }
-.home10-minimal #siteNav > li > a { font-weight:400; }
-.home10-minimal .top-header { background:#333333; text-transform:uppercase; }
-
-.home10-minimal .section-header h2, .home10-minimal .section-header .h2 { font-family:Poppins,Helvetica,Tahoma,Arial,sans-serif; font-size:20px; font-weight:400;letter-spacing:0.03em; }
-.home10-minimal h1, .home10-minimal .h1, .home10-minimal h2, .home10-minimal .h2, .home10-minimal h3, .home10-minimal .h3, .home10-minimal h4, .home10-minimal .h4, .home10-minimal h5,
-.home10-minimal .h5, .home10-minimal h6, .home10-minimal .h6 { font-family:Poppins,Helvetica,Tahoma,Arial,sans-serif; font-weight:600; }
-  
-/*---------------------------------------
-  28.10 Home11 - Grid  ------------------
-  ---------------------------------------*/
-.home11-grid .section-header h2, .home11-grid .section-header .h2 { font-size:23px; font-weight:700; }
-.home11-grid .slideshow .slideshow__title { font-family:Poppins,Helvetica,Tahoma,Arial,sans-serif; color:#111111; font-weight:700; font-size:60px; text-transform:uppercase; line-height:1.1; text-shadow:1px 1px 7px rgba(0,0,0,0); }
-.home11-grid .slideshow .wrap-caption { display:inline-block; max-width:750px; padding:25px; }
-.home11-grid .slideshow .slideshow__subtitle { font-family:Poppins,Helvetica,Tahoma,Arial,sans-serif; color:#111111; font-weight:600; font-size:19px; text-transform:none; margin-bottom:20px; line-height:1.2; text-shadow:1px 1px 4px rgba(0,0,0,0); }
-
-.home11-grid .section-header h2, .home11-grid .section-header .h2 { font-weight:700; font-family:Poppins,Helvetica,Tahoma,Arial,sans-serif; }
-.home11-grid .imgBnrOuter .inner .ttl { background-color:transparent; }
-.home11-grid .imgBnrOuter .inner .ttl h5 { font-weight:normal; }
-.img-grid-banner1 { margin-bottom:30px; }
-.img-grid-banner2 .inner, .img-grid-banner3 .inner { margin-bottom:30px; }
-
-.home11-grid .site-footer { background:#339498; }
-.home11-grid .site-footer hr { border-color:#4da4a4; }
-.home11-grid .footer-top .footer-newsletter .btn { border-radius:3px !important; background-color:#000; }
-  
-/*---------------------------------------
-  28.11 Home 12 - Category  -------------
-  ---------------------------------------*/
-.home12-category #siteNav.medium > li a { font-weight:normal; }
-.home12-category .section-header h2, .home12-category .section-header .h2 { font-family:Poppins,Helvetica,Tahoma,Arial,sans-serif; font-size:20px; font-weight:700;letter-spacing:0.03em; }
-.home12-category .slideshow .slideshow__title { font-family:Poppins,Helvetica,Tahoma,Arial,sans-serif; color:#111111; font-weight:600; font-size:50px; text-transform:capitalize; line-height:1.1; text-shadow:1px 1px 7px rgba(0,0,0,0); }
-.home12-category .slideshow .wrap-caption { display:inline-block; max-width:750px; padding:25px; }
-.home12-category .slideshow .slideshow__subtitle { font-family:Poppins,Helvetica,Tahoma,Arial,sans-serif; color:#111111; font-weight:400; font-size:19px; text-transform:capitalize; margin-bottom:20px; line-height:1.2; text-shadow:1px 1px 4px rgba(0,0,0,0); }
-
-.home12-category .feature-row .btn { padding:8px 18px 8px; background-color:#bb5864; }
-.home12-category .feature-row h2 { font-weight:600; }
-
-.home12-category .section-header h2, .home12-category .section-header .h2 { font-size:24px; font-weight:400; }
-
-.home12-category .three-column-pro .section-header h2, .home12-category .three-column-pro .section-header .h2 { font-size:22px; font-weight:600; }
-.home12-category .three-column-pro .mini-list-item .mini-view_image img { width:100%; max-width:100%; }
-.home12-category .footer-5 .footer-top h4, .home12-category .footer-5 .footer-top .h4 { font-family:Poppins,Helvetica,Tahoma,Arial,sans-serif; }
-.home12-category .footer-5 .site-footer { border:0; }
-.home12-category .footer-5 .footer-top { padding-top:0; }
-.home12-category .footer-5 .addressFooter .icon { margin-top:4px; }
-  
-/*---------------------------------------
-  28.12 Home 13 - Autoparts  ------------
-  ---------------------------------------*/
-.store-feature-top { background:#000000; padding:7px !important; text-align:center; border-bottom:1px solid #000000; }
-.flex { display:flex; display:-ms-flexbox; display:-webkit-flexbox; }
-.flex .flex-item { flex:1; }
-.flex-item { color:#ffffff; font-size:13px; font-weight:400; text-transform:none; }
-
-.home13-auto-parts { font-size:14px; }
-.home13-auto-parts .top-header { background-color:#d41618; }
-.home13-auto-parts .slideshow .slideshow__title { font-family:Poppins,Helvetica,Tahoma,Arial,sans-serif; font-weight:700; font-size:35px; }
-.home13-auto-parts .slideshow .slideshow__subtitle { font-size:16px; }
-.slideshow .mobile-show { display:none; }
-
-.home13-auto-parts .section-header h2, .home13-auto-parts .section-header .h2 { font-family:Poppins,Helvetica,Tahoma,Arial,sans-serif; font-size:20px; font-weight:400;letter-spacing:0.03em; }
-.home13-auto-parts .section-header p { font-size:14px; }
-
-.featured-content .list-items .col-12 { margin-bottom:35px; }
-.featured-content .list-items img { display:block; vertical-align:middle; margin:0 auto 20px; }
-.featured-content .list-items .h4 { font-size:16px; font-family:Poppins,Helvetica,Tahoma,Arial,sans-serif; text-transform:uppercase; }
-.featured-content .list-items p { max-width:300px; margin:0 auto 20px; }
-
-.home13-auto-parts .btn { background-color:#d41618; }
-
-.home13-auto-parts .hero__overlay.hero { background-attachment:fixed; }
-.home13-auto-parts .hero .text-small .mega-title { font-weight:400; }
-.home13-auto-parts .hero__inner h2, .home13-auto-parts .hero__inner .h2, .home13-auto-parts .hero__inner p, .home13-auto-parts .mega-subtitle { color:#ffffff; }
-.home13-auto-parts .hero__overlay:before { content: ''; position:absolute; top:0; right:0; bottom:0; left:0; background-color:#000; opacity:0.4; z-index:1; }
-
-.home13-auto-parts .footer-2 .site-footer { background-color:#000000; }
-.home13-auto-parts .footer-2 .footer-top h4, .home13-auto-parts .footer-2 .footer-top .h4, .home13-auto-parts .footer-2 .footer-top, .home13-auto-parts .footer-2 .footer-links a, .home13-auto-parts .footer-2 .footer-top p, 
-.home13-auto-parts .footer-2 .footer-bottom, .home13-auto-parts .footer-2 .footer-bottom a { color:#ffffff; }
-.home13-auto-parts .footer-2 .site-footer hr { border-color:#454545; }
-.home13-auto-parts .footer-2 .site-footer .addressFooter .icon { color:#ffffff !important; }
-
-/*---------------------------------------
-  28.13 Home 14 - Bags  -----------------
-  ---------------------------------------*/
-.home14-bags .imgBnrOuter .custom-text { max-width:800px; margin:0 auto; }
-.home14-bags .imgBnrOuter .inner { margin-bottom:20px; }
-.home14-bags .imgBnrOuter .custom-text .h3 { font-size:22px; text-transform:uppercase; line-height:normal; }
-.home14-bags .imgBnrOuter .custom-text .h3 a:hover { text-decoration:none; }
-
-.home14-bags .hero__overlay.hero { background-attachment:fixed; }
-.home14-bags .hero .text-small .mega-title { font-weight:400; font-family: "Roboto Slab",Helvetica,Tahoma,Arial,serif; }
-.home14-bags .hero__inner h2, .home14-bags .hero__inner .h2, .home14-bags .hero__inner p, .home14-bags .mega-subtitle { color:#ffffff; }
-.home14-bags .hero__overlay:before { content: ''; position:absolute; top:0; right:0; bottom:0; left:0; background-color:#000; opacity:0.2; z-index:1; }
-
-.home14-bags .section-header h2, .home14-bags .section-header .h2 { font-size:26px; }
-.home14-bags .footer-2 .site-footer { background:#141414; }
-.home14-bags .footer-2 .footer-top h4, .home14-bags .footer-2 .footer-top .h4, .home14-bags .footer-2 .footer-top, .home14-bags .footer-2 .footer-links a, .home14-bags .footer-2 .footer-top p, 
-.home14-bags .footer-2 .footer-bottom, .home14-bags .footer-2 .footer-bottom a { color:#ffffff; }
-.home14-bags .footer-2 .site-footer hr { border-color:#454545; }
-.home14-bags .footer-2 .site-footer .addressFooter .icon { color:#ffffff !important; }
-
-.video-wrapper { position:relative; overflow:hidden; max-width:100%; padding-bottom:56.25%; height:0; }
-.video-wrapper iframe { position:absolute; top:0; left:0; width:100%; height:100%; }
-  
-/*---------------------------------------
-  28.14 Home 15 - Furniture  ------------
-  ---------------------------------------*/
-body.home15-funiture-template { font-size:14px; }
-.home15-funiture-template .section-header h2, .home15-funiture-template .section-header .h2 { font-family:Poppins,Helvetica,Tahoma,Arial,sans-serif; font-size:20px; font-weight:700;letter-spacing:0.03em; }
-.home15-funiture-top { background:#141414; color:#fff; }
-.home15-funiture-top .container-fluid, .home15-funiture-header .container-fluid { padding:0 35px; }
-.home15-funiture-top p, .home15-funiture-top a, .home15-funiture-top select, .home15-funiture-top .fa, .home15-funiture-top span.selected-currency { color:#fff; }
-.home15-funiture-header { padding-bottom:15px; }
-.home15-funiture-header .site-header__search { float:none; }
-
-.home15-funiture-template .variants.add button, .home15-funiture-template a.quick-view, .home15-funiture-template a.wishlist, .home15-funiture-template .cartIcon,
-.home15-funiture-template .add-to-compare { color:#fff; background-color:#000; }
-.home15-funiture-template .variants.add button:hover, .home15-funiture-template a.quick-view:hover, .home15-funiture-template a.wishlist:hover, .home15-funiture-template .cartIcon:hover, .home15-funiture-template .add-to-compare:hover { color:#000; background-color:#fff; }
-.home-lookbook .custom-text { max-width:800px; margin:0 auto; font-size:14px; }
-.home15-funiture-template .store-info .anm { margin-right:15px; font-size:40px; vertical-align:middle; display:block; margin-bottom:20px; }
-.home15-funiture-template .anm, .home15-funiture-template .mfp-container::before, .home15-funiture-template .mfp-content { vertical-align:middle; }
-
-.home15-funiture-template .imgBnrOuter .inner .ttl, .home15-funiture-template .imgBnrOuter .inner:hover .ttl { background-color:transparent; }
-
-.home-lookbook img { width:100%; }
-
-.footer-3 .footer-top { padding:40px 0 30px; }
-.footer-3 .h4 { font-family:Poppins,Helvetica,Tahoma,Arial,sans-serif; }
-@media only screen and (min-width:1199px) {
-.footer-3 .col-md-3.col-lg-3 { -ms-flex:0 0 20%; flex:0 0 20%; max-width:20% }
-}
-.footer-3 .footer-newsletter .newsletter__input { background-color:#fff; margin-bottom:10px; }
-.footer-3 hr { border-color:#454545; }
 
 /*======================================================================
   29. Testimonial Slider
@@ -1543,29 +1238,6 @@ body.home15-funiture-template { font-size:14px; }
 .hero .text-medium .mega-title { font-size:35px; }
 .hero .text-medium .mega-subtitle { font-size:18px; }
 
-/*======================================================================
-  32. Newsletter Cookie Popup
-========================================================================*/
-#modalOverly { height:auto !important; position:fixed; bottom:0; left:0; right:0; top:0; z-index:10; background-color:rgba(0,0,0,0.7); -ms-transition:all 0.45s cubic-bezier(0.29, 0.63, 0.44, 1); -webkit-transition:all 0.45s cubic-bezier(0.29, 0.63, 0.44, 1); transition:all 0.45s cubic-bezier(0.29, 0.63, 0.44, 1); }
-#popup-container { display:none; max-width:700px; position:fixed; left:0; right:0; top:50%; background:#fafafa; margin:20px auto; z-index:444; -ms-transform:translateY(-50%); -webkit-transform:translateY(-50%); transform:translateY(-50%); }
-#popup-window { position:relative; }
-#popup-container .row-cell.first { width:65%; text-align:center }
-#popup-container .row-cell.last { width:35%; text-align:right }
-#popup-container .closepopup { display:block; color:#fff; font-size:11px; height:30px; line-height:19px; padding:5px; position:absolute; right:-14px; top:-14px; width:30px; z-index:333 }
-#popup-container .closepopup:hover { opacity:0.8 }
-#popup-container .width40 { width:40% }
-#popup-container .width60 { width:60% }
-.newsletter-left { padding:40px 30px }
-.newsletter-left h1, .newsletter-left .h1 { font-weight:700; font-size:20px; text-transform:uppercase; margin:0 0 15px 0; color:#000000; letter-spacing:0.08em }
-.newsletter-left h2 { font-size:20px; margin:0 0 15px 0; color:#000000; letter-spacing:0.08em; text-transform:uppercase; }
-.newsletter-left .input-group__field { border-right:1px solid #e8e9eb }
-.newsletter-left .input-group { display:block; margin:0 auto 20px; position:relative; width:100% }
-.newsletter-left .input-group input { width:100%; margin:0 0 10px 0 }
-.newsletter-left .social { margin:10px 0 0 }
-.newsletter-left .social li { display:inline-block; margin:0 5px; list-style:none }
-.newsletter-left .social a { border-radius:50%; color:#141515; display:inline-block; font-size:18px; height:30px; line-height:20px; padding:5px; text-align:center; width:30px }
-.newsletter-left #Subscribe { width:100%; height:auto; padding:12px 20px }
-.newsletter-left #Subscribe:hover {  background:!important }
 
 /*======================================================================
   33. Footer
@@ -1649,8 +1321,6 @@ body.home15-funiture-template { font-size:14px; }
 
 .blur-up.lazyloaded { -webkit-filter:blur(0); filter:blur(0); }
 .blur-up { -webkit-filter:blur(5px); filter:blur(5px); transition:filter 400ms, -webkit-filter 400ms; -webkit-transition:filter 400ms, -webkit-filter 400ms; }
-
-
 
 .search-bar{
   display: flex;

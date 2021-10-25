@@ -75,7 +75,7 @@
                                  class="text-info">Details</a></span>
                         </td>
 
-                        <td class="text-center small--hide"><a href="{% url 'order_history_delete' order.0.1 %}"
+                        <td class="text-center"><a href="{% url 'order_history_delete' order.0.1 %}"
                               class="btn btn--secondary cart__remove" title="Remove Order History"><i
                                  class="icon icon anm anm-times-l"></i></a></td>
                      </tr>
@@ -86,7 +86,7 @@
                         <td colspan="3" class="text-left"><a href="{% url 'index' %}"
                               class="btn btn-secondary btn--small cart-continue">Continue shopping</a></td>
                         <td colspan="3" class="text-right">
-                           <a href="{% url 'order_history_delete' orderno='all' %}" type="button" name="clear" class="btn btn-secondary btn--small  small--hide">Clear
+                           <a href="{% url 'order_history_delete' orderno='all' %}" type="button" name="clear" class="btn btn-secondary btn--small">Clear
                               Order History</a>
                         </td>
                      </tr>

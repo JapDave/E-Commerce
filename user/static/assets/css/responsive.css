@@ -155,6 +155,10 @@
 	.product-labels.rounded .lbl { height:35px; width:35px; font-size:10px; }
 	
 	.feature-row__text .row-text { padding: 20px; }
+
+	.variants.add { bottom:0px; margin-top:10px; position:absolute; left:0; right:0; }
+	.variants.add .btn { padding:5px 12px; font-size:10px; background-color:#f7f7f7; }
+	
 }
 
 @media only screen and (min-width: 767px) {
@@ -165,6 +169,8 @@
 	.prstyle3 .prFeatures .grid__item { margin-bottom:30px }
 	.prstyle3 .prFeatures img { max-width:40px }
 	.prstyle3 .prFeatures .details { margin-left:50px }
+	.variants.add { bottom:0px; margin-top:10px; position:absolute; left:0; right:0; }
+	.variants.add .btn { padding:5px 12px; font-size:10px; background-color:black; }
 }
 
 @media only screen and (max-width: 767px) {
@@ -326,6 +332,8 @@
 	.store-info li:last-child { border-bottom:0; }
 	
 	#footer .addressFooter li:last-of-type { padding-bottom:0; }
+	.variants.add { bottom:0px; margin-top:10px; position:absolute; left:0; right:0; }
+	.variants.add .btn { padding:5px 12px; font-size:10px; background-color:black; }
 }
 
 @media only screen and (max-width: 575px) {	
@@ -380,6 +388,8 @@
 	.cart-flex {width:100%; }
 	.cart-flex-item { display:table-cell; min-width:0; }
 	.cart__price-wrapper { text-align:right; }
+	.variants.add { bottom:0px; margin-top:10px; position:absolute; left:0; right:0; }
+	.variants.add .btn { padding:5px 12px; font-size:10px; background-color:black; }
 
 }
 
@@ -419,6 +429,8 @@
 	.cart-flex-item { display:table-cell; min-width:0; }
 	.cart__price-wrapper { text-align:right; }
 
+	.variants.add { bottom:0px; margin-top:10px; position:absolute; left:0; right:0; }
+	.variants.add .btn { padding:5px 12px; font-size:10px; background-color:black; }
 	#footer { margin-top:20px; }
 	
 }

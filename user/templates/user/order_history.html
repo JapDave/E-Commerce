@@ -4,106 +4,107 @@
 {% load tagger %}
 {% block body %}
 
-<div id="page-content">
-   <!--Page Title-->
-   <div class="page section-header text-center">
-      <div class="page-title">
-         <div class="wrapper">
-            <h1 class="page-width">Order History</h1>
-         </div>
-
-         {% if messages %}
-         <div>
-            {% for message in messages %}
-            <div class="alert {% if message.level == 25 %}alert-success {% else %}alert-danger {% endif %} m-2">
-               <a class="close" href="#" data-dismiss="alert">×</a>
-               {{ message }}
+<section>
+   <div id="page-content">
+      <!--Page Title-->
+      <div class="page section-header text-center">
+         <div class="page-title">
+            <div class="wrapper">
+               <h1 class="page-width">Order History</h1>
             </div>
-            {% endfor %}
-         </div>
-         {% endif %}
-      </div>
-   </div>
-   <!--End Page Title-->
-{% if orders %}
-   <div class="container">
-      <div class="row">
-         <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col">
-            <div class="cart style2">
-               <table>
-                  <thead class="cart__row cart__header">
-                     <tr>
-                        <th class="text-center">Order-No</th>
-                        <th class="text-center">Address</th>
-                        <th class="text-center">Payment Mode</th>
-                        <th class="text-center">Ordered Date</th>
-                        <th class="text-center">Total Products</th>
-                        <th class="text-center">Total Amount Paid</th>
-                        <th class="text-center">Action</th>
-                        <th class="action">&nbsp;</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     {% for order in orders %}
-                     <tr class="cart__row border-bottom line1 cart-flex border-top">
-                        <td class="cart__price-wrapper cart-flex-item text-center">
-                           <span class="money ">{{forloop.counter}}</span>
-                        </td>
 
-                        <td class="cart__price-wrapper cart-flex-item text-center">
-                           <span class="money">{{order.1.1}}</span>
-                        </td>
-
-                        <td class="cart__price-wrapper cart-flex-item text-center">
-                           <span class="money">{{order.2.1}}</span>
-                        </td>
-
-                        <td class="cart__price-wrapper cart-flex-item text-center">
-                           <span class="money">{{order.3.1}}</span>
-                        </td>
-
-                        <td class="cart__price-wrapper cart-flex-item text-center">
-                           <span class="money">{{order.4.1}}</span>
-                        </td>
-
-                        <td class="cart__price-wrapper cart-flex-item text-center">
-                           <span class="money">&#8377 {{order.5.1}}/~ </span>
-                        </td>
-
-                        <td class="cart__price-wrapper cart-flex-item text-center">
-                           <span class="money"><a href="{% url 'user_order_detail' order.0.1 %}"
-                                 class="text-info">Details</a></span>
-                        </td>
-
-                        <td class="text-center"><a href="{% url 'order_history_delete' order.0.1 %}"
-                              class="btn btn--secondary cart__remove" title="Remove Order History"><i
-                                 class="icon icon anm anm-times-l"></i></a></td>
-                     </tr>
-                     {% endfor %}
-                  </tbody>
-                  <tfoot>
-                     <tr>
-                        <td colspan="3" class="text-left"><a href="{% url 'index' %}"
-                              class="btn btn-secondary btn--small cart-continue">Continue shopping</a></td>
-                        <td colspan="3" class="text-right">
-                           <a href="{% url 'order_history_delete' orderno='all' %}" type="button" name="clear" class="btn btn-secondary btn--small">Clear
-                              Order History</a>
-                        </td>
-                     </tr>
-                  </tfoot>
-               </table>
+            {% if messages %}
+            <div>
+               {% for message in messages %}
+               <div class="alert {% if message.level == 25 %}alert-success {% else %}alert-danger {% endif %} m-2">
+                  <a class="close" href="#" data-dismiss="alert">×</a>
+                  {{ message }}
+               </div>
+               {% endfor %}
             </div>
+            {% endif %}
          </div>
-
       </div>
+      <!--End Page Title-->
+   {% if orders %}
+      <div class="container">
+         <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col">
+               <div class="cart style2">
+                  <table>
+                     <thead class="cart__row cart__header">
+                        <tr>
+                           <th class="text-center">Order-No</th>
+                           <th class="text-center">Address</th>
+                           <th class="text-center">Payment Mode</th>
+                           <th class="text-center">Ordered Date</th>
+                           <th class="text-center">Total Products</th>
+                           <th class="text-center">Total Amount Paid</th>
+                           <th class="text-center">Action</th>
+                           <th class="action">&nbsp;</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        {% for order in orders %}
+                        <tr class="cart__row border-bottom line1 cart-flex border-top">
+                           <td class="cart__price-wrapper cart-flex-item text-center">
+                              <span class="money ">{{forloop.counter}}</span>
+                           </td>
+
+                           <td class="cart__price-wrapper cart-flex-item text-center">
+                              <span class="money">{{order.1.1}}</span>
+                           </td>
+
+                           <td class="cart__price-wrapper cart-flex-item text-center">
+                              <span class="money">{{order.2.1}}</span>
+                           </td>
+
+                           <td class="cart__price-wrapper cart-flex-item text-center">
+                              <span class="money">{{order.3.1}}</span>
+                           </td>
+
+                           <td class="cart__price-wrapper cart-flex-item text-center">
+                              <span class="money">{{order.4.1}}</span>
+                           </td>
+
+                           <td class="cart__price-wrapper cart-flex-item text-center">
+                              <span class="money">&#8377 {{order.5.1}}/~ </span>
+                           </td>
+
+                           <td class="cart__price-wrapper cart-flex-item text-center">
+                              <span class="money"><a href="{% url 'user_order_detail' order.0.1 %}"
+                                    class="text-info">Details</a></span>
+                           </td>
+
+                           <td class="text-center"><a href="{% url 'order_history_delete' order.0.1 %}"
+                                 class="btn btn--secondary cart__remove" title="Remove Order History"><i
+                                    class="icon icon anm anm-times-l"></i></a></td>
+                        </tr>
+                        {% endfor %}
+                     </tbody>
+                     <tfoot>
+                        <tr>
+                           <td colspan="3" class="text-left"><a href="{% url 'index' %}"
+                                 class="btn btn-secondary btn--small cart-continue">Continue shopping</a></td>
+                           <td colspan="3" class="text-right">
+                              <a href="{% url 'order_history_delete' orderno='all' %}" type="button" name="clear" class="btn btn-secondary btn--small">Clear
+                                 Order History</a>
+                           </td>
+                        </tr>
+                     </tfoot>
+                  </table>
+               </div>
+            </div>
+
+         </div>
+      </div>
+
+      {% else %}
+      <div class="success-box">
+         <h5>Order History Not Found.</h5>
+      </div>
+   {% endif %}	
+
    </div>
-
-   {% else %}
-   <div class="success-box">
-      <h5>Order History Not Found.</h5>
-   </div>
-{% endif %}	
-
-</div>
-
+</section>
 {% endblock body %}

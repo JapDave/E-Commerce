@@ -47,10 +47,10 @@
                      </div>
                      <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                         <div class="form-group">
-                           <label for="">Profile: </label>
+                           <label for="">Profile Photo : </label>
                            {% if userform.user_photo.errors %}
                            <p class="formerror">{{userform.user_photo.errors.as_text}}
-                           <p>
+                           </p>
                               {% endif %}
                               {{userform.user_photo}}
                         </div>
@@ -74,7 +74,7 @@
                            <p class="formerror">{{userform.user_contact.errors.as_text}}
                            <p>
                               {% endif %}
-                              {{userform.user_contact}}
+                              <input type="number" name="user_contact" maxlength="10" required="" id="id_user_contact">
                         </div>
                      </div>
                      {{addressform.user}}

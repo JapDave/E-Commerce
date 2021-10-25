@@ -141,7 +141,7 @@ class Profile(View):
 		if request.session.get('users_key'):
 			user_data = Users.objects.get(_id=request.session.get('users_key'))
 			form = ProfileForm(instance=user_data)	
-			return render(request,'user/profile.html',{'form':form,'users':user_data,'cart_count':request.session['cart_count']})
+			return render(request,'user/profile.html',{'form':form,'users':user_data,'cart_count':request.session['cart_count'],'categories':Categories.objects.all()})
 		else:
 			return redirect(reverse('login'))
 
@@ -290,12 +290,12 @@ class AllProducts(View):
 			rendered_data["users"] = True
 			rendered_data["cart_count"] = request.session['cart_count']
 		product_data = Products.objects.filter(product_categories=id)
-
+		rendered_data['categories']= Categories.objects.all()
 		if product_data:
 			page = request.GET.get('page',1)
-			paginator = Paginator(product_data,8)
+			paginator = Paginator(product_data,9)
 			product_obj = paginator.page(page)
-			rendered_data['categories']= Categories.objects.all()
+			
 			rendered_data["products"] = product_obj
 			return render(request,'user/all_products.html',rendered_data)     
 
@@ -315,7 +315,7 @@ class AllProducts(View):
 			product_data = Products.objects.filter(Q(product_name__contains=searched_product) | Q(  product_enterprsie__enterprise_name__contains=searched_product),product_categories=id)
 			if product_data:
 				page = request.GET.get('page',1)
-				paginator = Paginator(product_data,10)
+				paginator = Paginator(product_data,9)
 				product_obj = paginator.page(page)
 				rendered_data["products"] = product_obj
 				rendered_data["searched_product"] = searched_product
@@ -332,7 +332,7 @@ class AllProducts(View):
 			else:
 				product_data = Products.objects.filter(product_categories=id)
 			page = request.GET.get('page',1)
-			paginator = Paginator(product_data,10)
+			paginator = Paginator(product_data,9)
 			product_obj = paginator.page(page)
 			rendered_data["products"] = product_obj
 			rendered_data["filtered_product"] = sort_by
@@ -404,7 +404,7 @@ class CartList(View):
 
 	def get(self,request):
 		if request.session.get('users_key'):
-			cart_data = Cart.objects.filter(user___id=request.session.get('users_key'))
+			cart_data = Cart.objects.filter(user___id=request.session.get('users_key'))	
 			sub_total = 0
 			item_count = 0
 
@@ -422,6 +422,7 @@ class CartList(View):
 				'item_count':item_count,
 				'cart_count':request.session['cart_count'],
 			}
+			rendered_data['categories']= Categories.objects.all()
 			return render(request,'user/cart.html',rendered_data)
 		else:
 			return redirect(reverse('login'))
@@ -445,6 +446,7 @@ class CartList(View):
 class PlaceOrder(View):
 
 	def get(self,request,slug):
+
 		if request.session.get('users_key'):
 
 			if slug == 'cart':
@@ -486,86 +488,89 @@ class PlaceOrder(View):
 				'addressform':address_form,
 			}
 
+				
+			if not request.session.get('selected_qty'):
+				messages.error(request,'You Have Already Palced An Order')
+				return redirect(reverse('place_order', kwargs={'slug':slug}))
+
 			if request.session['selected_qty'] <= product_data.product_qty: 
 				return render(request,'user/checkout.html',rendered_data)
 			
 			else:
 				messages.error(request,'Sorry that much quantity not available.')
 				return redirect(reverse('product_detail', kwargs={'id':slug}))
-			
-		if not request.session.get('selected_qty'):
-			messages.error(request,'You Have Already Palced An Order')
-			return redirect(reverse('place_order', kwargs={'slug':slug}))
-
+		
 		else:
 			return redirect(reverse('login'))
 
 	def post(self,request,slug):
+		if request.session.get('users_key'):
 
-		if request.POST.get('add_address'):
+			if request.POST.get('add_address'):
+				user_data = Users.objects.get(_id = request.session.get('users_key'))
+				address_form = AddressForm(request.POST)
+				address_form.data._mutable = True
+				address_form.data['user'] = user_data
+				address_form.data._mutable = False
+				if address_form.is_valid:
+					address_form.save()	
+					messages.success(request,'address was added.')
+					return redirect(reverse('place_order', kwargs={'slug':slug}))
+				else:
+					messages.error(request,'sorry address was not added.')
+					return redirect(reverse('place_order', kwargs={'slug':slug}))
+		
 			user_data = Users.objects.get(_id = request.session.get('users_key'))
-			address_form = AddressForm(request.POST)
-			address_form.data._mutable = True
-			address_form.data['user'] = user_data
-			address_form.data._mutable = False
-			if address_form.is_valid:
-				address_form.save()	
-				messages.success(request,'address was added.')
-				return redirect(reverse('place_order', kwargs={'slug':slug}))
-			else:
-				messages.error(request,'sorry address was not added.')
-				return redirect(reverse('place_order', kwargs={'slug':slug}))
-	
-		user_data = Users.objects.get(_id = request.session.get('users_key'))
-		address = request.POST.get('address')
-		payment_method = request.POST.get('payment_method')
-		order_no = random.randint(111111,999999)
+			address = request.POST.get('address')
+			payment_method = request.POST.get('payment_method')
+			order_no = random.randint(111111,999999)
 
-		if slug == 'cart':
-				cart_data = Cart.objects.filter(user=user_data)
-				total=0
-				for item in cart_data:
-					total += item.qty * item.product_items.Price
+			if slug == 'cart':
+					cart_data = Cart.objects.filter(user=user_data)
+					total=0
+					for item in cart_data:
+						total += item.qty * item.product_items.Price
+						
+						order_obj = Order(order_no=order_no,
+										user=user_data,
+										product=item.product_items,
+										qty=item.qty,
+										total=total,
+										address=address,
+										payment_method=payment_method,
+										status='0'
+										)
+						order_obj.save()
+						total=0
+						mail_sender_enterprise.delay(order_obj._id)
+					cart_data.delete()
+					request.session['cart_count'] = 0
+				
+			elif slug == 'product':
+				if request.session.get('selected_qty'):
+					product_id = request.POST.get('product')
+					qty = request.POST.get('qty')
+					product_data = Products.objects.get(_id=product_id)
+					total = int(qty) * product_data.Price
 					
 					order_obj = Order(order_no=order_no,
 									user=user_data,
-									product=item.product_items,
-									qty=item.qty,
+									product=product_data,
+									qty=qty,
 									total=total,
 									address=address,
 									payment_method=payment_method,
 									status='0'
 									)
 					order_obj.save()
-					total=0
 					mail_sender_enterprise.delay(order_obj._id)
-				cart_data.delete()
-				request.session['cart_count'] = 0
-			
-		elif slug == 'product':
-			if request.session.get('selected_qty'):
-				product_id = request.POST.get('product')
-				qty = request.POST.get('qty')
-				product_data = Products.objects.get(_id=product_id)
-				total = int(qty) * product_data.Price
-				
-				order_obj = Order(order_no=order_no,
-								user=user_data,
-								product=product_data,
-								qty=qty,
-								total=total,
-								address=address,
-								payment_method=payment_method,
-								status='0'
-								)
-				order_obj.save()
-				mail_sender_enterprise.delay(order_obj._id)
-				del request.session['selected_qty']	
+					del request.session['selected_qty']	
 
-				mail_sender_user.delay(order_no,user_data.user_email)		
-					
-		return render(request,'user/order_success.html',{'users':True})
-		
+					mail_sender_user.delay(order_no,user_data.user_email)		
+						
+			return render(request,'user/order_success.html',{'users':True})
+		else:
+			return redirect(reverse('login'))
 
 class OrderHistory(View):
 	
@@ -589,7 +594,7 @@ class OrderHistory(View):
 				'orders':order_obj,
 				'cart_count': request.session['cart_count']
 			}
-			
+			rendered_data['categories']= Categories.objects.all()
 			return render(request,'user/order_history.html',rendered_data)
 		else:
 			return redirect(reverse('login'))
@@ -604,7 +609,8 @@ class OrderDetail(View):
 				'users': True,
 				'cart_count':request.session['cart_count'],
 				'orders':order_data
-			}			
+			}	
+			rendered_data['categories']= Categories.objects.all()		
 			return render(request,'user/order_detail.html',rendered_data)
 		else:
 			return redirect(reverse('login'))

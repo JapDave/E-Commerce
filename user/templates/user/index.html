@@ -16,7 +16,7 @@
                                <div class="wrap-caption right">
                                    <h2 class="h1 mega-title slideshow__title">Our New Collection</h2>
                                    <span class="mega-subtitle slideshow__subtitle">Save up to 50% Off</span>
-                                   <span class="btn">Shop now</span>
+                                 
                                </div>
                            </div>
                        </div>
@@ -31,8 +31,7 @@
                           <div class="container">
                                <div class="wrap-caption center">
                                    <h2 class="h1 mega-title slideshow__title">Fashion &amp; Show</h2>
-                                   <span class="mega-subtitle slideshow__subtitle">A World Fashion and Trendy Fashion Clother's</span>
-                                   <span class="btn">Shop now</span>
+                                   <span class="mega-subtitle slideshow__subtitle">A World Fashion and Trendy Fashion Clother's</span>   
                                </div>
                            </div>
                        </div>
@@ -120,8 +119,7 @@
                               <!-- end product image -->
 
                               <!-- Start product button -->
-                              <form class="variants add" action="#" onclick="window.location.href='cart.html'"
-                                 method="post">
+                              <form class="variants add" method="post">
                                  <a href="{% url 'add_to_cart' product|private:'_id' %}" class="btn btn-addto-cart" type="button" tabindex="0">Add To Cart</a>
                               </form>
                               <!-- end product button -->
@@ -265,22 +263,22 @@
          <div class="col-12 col-sm-12 col-md-12 col-lg-12">
             <div class="logo-bar">
                <div class="logo-bar__item">
-                  <img src="assets/images/logo/brandlogo1.png" alt="" title="" />
+                  <img src="{% static 'assets/images/logo/brandlogo1.png' %}" alt="" title="" />
                </div>
                <div class="logo-bar__item">
-                  <img src="assets/images/logo/brandlogo2.png" alt="" title="" />
+                  <img src="{% static 'assets/images/logo/brandlogo2.png' %}" alt="" title="" />
                </div>
                <div class="logo-bar__item">
-                  <img src="assets/images/logo/brandlogo3.png" alt="" title="" />
+                  <img src="{% static 'assets/images/logo/brandlogo3.png' %}" alt="" title="" />
                </div>
                <div class="logo-bar__item">
-                  <img src="assets/images/logo/brandlogo4.png" alt="" title="" />
+                  <img src="{% static 'assets/images/logo/brandlogo4.png' %}" alt="" title="" />
                </div>
                <div class="logo-bar__item">
-                  <img src="assets/images/logo/brandlogo5.png" alt="" title="" />
+                  <img src="{% static 'assets/images/logo/brandlogo5.png' %}" alt="" title="" />
                </div>
                <div class="logo-bar__item">
-                  <img src="assets/images/logo/brandlogo6.png" alt="" title="" />
+                  <img src="{% static 'assets/images/logo/brandlogo6.png' %}" alt="" title="" />
                </div>
             </div>
          </div>

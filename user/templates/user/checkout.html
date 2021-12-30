@@ -17,12 +17,17 @@
 
 	function displayRadioValue() {
 		var ele = document.getElementsByName('payment_method');
-
-
+		
 		for (i = 0; i < ele.length; i++) {
-			if (ele[i].checked)
+			if (ele[i].checked){
 				document.getElementById("user_payment").innerHTML
 					= "Payment Method- <br>" + ele[i].value;
+				
+				if (ele[i].value == 'Etherium'){
+					var amount = '{{total}}';
+					init(amount);
+				}
+			}
 		}
 		document.getElementById('place-order').style.visibility = "visible";
 	}
@@ -92,7 +97,7 @@
 					{% endif %}
 					<tr>
 						<td colspan="5">
-							<p class="sub_total">Total:&nbsp &#8377 {{total}}/~</p>
+							<p class="sub_total" id="sub_total">Total:&nbsp &#8377 {{total}}/~</p>
 						</td>
 					</tr>
 				</tbody>
@@ -115,7 +120,7 @@
 			</div>
 		
 		<div>
-			<form method="POST" action="{% url 'place_order' slug=slug_value %}">
+			<form method="POST" action="{% url 'place_order' slug=slug_value %}" name="main_form">
 				{% csrf_token %}
 				<!-- Address Modal-->
 				<div class="modal fade" id="address-modal" tabindex="-1" role="dialog"
@@ -197,7 +202,13 @@
 									</tr>
 									<tr>
 										<td>
-											<button type="button" class="btn newsletter__submit-text--small"" data-dismiss="modal" aria-label="Close"
+											<input type="radio" name="payment_method" value='Etherium' id='payment_gateway'> 
+											<label for="etherium">Using Etherium Asset</label> 
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<button type="button" class="btn newsletter__submit-text--small" data-dismiss="modal" aria-label="Close"
 												onclick="displayRadioValue()">
 												Submit
 											</button>
@@ -210,7 +221,7 @@
 				</div>
 
 				<div id="place-order">
-					<input type="submit" value="Place Order" class="btn newsletter__submit-text--small">
+					<input type="submit" value="Place Order" name="btnsubmit" id ="main_form_submit" class="btn newsletter__submit-text--small">
 				</div>
 			</form>
 		</div>
@@ -251,7 +262,7 @@
 									</tr>
 									<tr>
 										<td colspan="5"><input type="submit" value="submit" name="add_address"
-												class="add-address-btn"></td>
+												class="add-address-btn" id="add_address"></td>
 									</tr>
 								</table>
 							</form>

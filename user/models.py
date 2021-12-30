@@ -62,7 +62,7 @@ class Address(models.Model):
 
     def delete(self, hard=False, **kwargs):
         if hard:
-            super(Cart, self).delete()
+            super(Address, self).delete()
         else:
             self.deleted_at = now()
             self.save()

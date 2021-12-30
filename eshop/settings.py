@@ -100,6 +100,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'eshop.wsgi.application'
 
+#env("DATABASE_URL")
 
 DATABASES = {
      'default': {
@@ -107,7 +108,7 @@ DATABASES = {
          'NAME':'E-Shop',
          'ENFORCE_SCHEMA': False,
          'CLIENT': {
-           'host':env("DATABASE_URL") ,
+           'host': 'mongodb://localhost:27017',
         }
      }
  }

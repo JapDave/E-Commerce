@@ -569,10 +569,10 @@ class PlaceOrder(View):
 									status='0'
 									)
 					order_obj.save()
-					mail_sender_enterprise.delay(order_obj._id)
+					# mail_sender_enterprise.delay(order_obj._id)
 					del request.session['selected_qty']	
 
-					mail_sender_user.delay(order_no,user_data.user_email)		
+					# mail_sender_user.delay(order_no,user_data.user_email)		
 						
 			return render(request,'user/order_success.html',{'users':True})
 		else:

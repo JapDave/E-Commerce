@@ -12,14 +12,13 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
-import environ
+from dotenv import load_dotenv
 
-env = environ.Env() 
-environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv(dotenv_path=f'{BASE_DIR}/.env')
 
 SAFE_DELETE_INTERPRET_UNDELETED_OBJECTS_AS_CREATED = True
 
@@ -28,7 +27,7 @@ SAFE_DELETE_INTERPRET_UNDELETED_OBJECTS_AS_CREATED = True
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY=env("SECRET_KEY")
+SECRET_KEY= os.getenv("SECRET_KEY")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -42,6 +41,7 @@ ALLOWED_HOSTS = ['shopfreeapp.herokuapp.com','127.0.0.1']
 INSTALLED_APPS = [
     'user',
     'enterprise',
+    'storages',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles', 
     'whitenoise.runserver_nostatic',
+    
 ]
 
 CRISPY_TEMPLATE_PACK = 'uni_form'
@@ -164,22 +165,29 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 #---------MEDIA -------------
-MEDIA_ROOT =  BASE_DIR /'uploads/'
-MEDIA_URL = '/uploads/'
+AWS_ACCESS_KEY_ID =  os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY =  os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME =  os.getenv('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+DEFAULT_FILE_STORAGE = 'main.storage_backends.MediaStorage'
+AWS_DEFAULT_ACL = None
 
 
 
 #---------MAIL BACKEND---------
 MAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
-EMAIL_HOST=env("EMAIL_HOST")
-EMAIL_HOST_USER =env("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD=env("EMAIL_HOST_PASSWORD")
-EMAIL_PORT=env("EMAIL_PORT")
+EMAIL_HOST= os.getenv("EMAIL_HOST")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD= os.getenv("EMAIL_HOST_PASSWORD")
+EMAIL_PORT= os.getenv("EMAIL_PORT")
 
 #---------REDIS CONFIG--------
-BROKER_URL=env("REDIS_URL")
-CELERY_RESULT_BACKEND=env("REDIS_URL")
+BROKER_URL= os.getenv("REDIS_URL")
+CELERY_RESULT_BACKEND= os.getenv("REDIS_URL")
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 CELERY_ACCEPT_CONTENT = ['application/json']
@@ -192,5 +200,5 @@ CELERY_TIMEZONE = 'Asia/Kolkata'
 USE_DJANGO_JQUERY = True
 
 import dj_database_url 
-prod_db  =  dj_database_url.config(env('DATABASE_URL'),conn_max_age=500)
+prod_db  =  dj_database_url.config(os.getenv('DATABASE_URL'),conn_max_age=500)
 DATABASES['default'].update(prod_db)

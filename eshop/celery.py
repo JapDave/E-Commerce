@@ -2,9 +2,9 @@ import os
 from eshop.settings import CELERY_RESULT_BACKEND, CELERY_TASK_TRACK_STARTED,BROKER_URL
 from celery import Celery
 
-print(BROKER_URL)
 # Set the default Django settings module for the 'celery' program.
-os.getenv('DJANGO_SETTINGS_MODULE', 'eshop.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'eshop.settings')
+
 
 app = Celery('eshop',broker=BROKER_URL,
 CELERY_RESULT_BACKEND=BROKER_URL,CELERY_TASK_TRACK_STARTED=True)

@@ -10,15 +10,21 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
-from pathlib import Path
+
 import os
+
 from dotenv import load_dotenv
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
+# BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# dotenv_path = join(dirname(__file__), ".env")
+print(BASE_DIR)
 load_dotenv(dotenv_path=f'{BASE_DIR}/.env')
+
+
+
 
 SAFE_DELETE_INTERPRET_UNDELETED_OBJECTS_AS_CREATED = True
 
@@ -27,7 +33,7 @@ SAFE_DELETE_INTERPRET_UNDELETED_OBJECTS_AS_CREATED = True
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY= os.getenv("SECRET_KEY")
+SECRET_KEY=os.getenv('SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -48,8 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles', 
-    'whitenoise.runserver_nostatic',
-    
+    'whitenoise.runserver_nostatic',    
 ]
 
 CRISPY_TEMPLATE_PACK = 'uni_form'
@@ -172,8 +177,12 @@ AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
-DEFAULT_FILE_STORAGE = 'main.storage_backends.MediaStorage'
+MEDIAFILES_LOCATION = 'media'
+MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DEFAULT_FILE_STORAGE = 'eshop.storage_backend.MediaStorage'
 AWS_DEFAULT_ACL = None
+
 
 
 
@@ -199,6 +208,6 @@ CELERY_TIMEZONE = 'Asia/Kolkata'
 #-----DATABSE CONFIG--------
 USE_DJANGO_JQUERY = True
 
-import dj_database_url 
-prod_db  =  dj_database_url.config(os.getenv('DATABASE_URL'),conn_max_age=500)
-DATABASES['default'].update(prod_db)
+# import dj_database_url 
+# prod_db  =  dj_database_url.config(os.getenv('DATABASE_URL'),conn_max_age=500)
+# DATABASES['default'].update(prod_db)
